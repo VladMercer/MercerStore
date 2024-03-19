@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Enum\" />
-    <Folder Include="ViewModel\" />
+    <Folder Include="ViewModels\" />
     <Folder Include="Repository\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Services\" />
