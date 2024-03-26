@@ -30,6 +30,9 @@
     <Folder Include="Repository\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Services\" />
+    <Folder Include="wwwroot\favicon\" />
+    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\owlcarousel\" />
   </ItemGroup>
 
 </Project>
