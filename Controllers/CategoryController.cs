@@ -1,18 +1,12 @@
-using MercerStore.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Controllers
 {
-    public class HomeController : Controller
+    public class CategoryController : Controller
     {
-
-
         public IActionResult Index()
         {
             return View();
         }
-
-
     }
 }
