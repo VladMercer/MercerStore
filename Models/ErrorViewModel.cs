@@ -1,4 +1,4 @@
-namespace MercerStore.Models
+﻿namespace MercerStore.Models
 {
     public class ErrorViewModel
     {
