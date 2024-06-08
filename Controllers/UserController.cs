@@ -1,0 +1,100 @@
+﻿using CloudinaryDotNet.Actions;
+using MercerStore.Data;
+using MercerStore.Interfaces;
+using MercerStore.Models;
+using MercerStore.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+
+namespace MercerStore.Controllers
+{
+    public class UserController : Controller
+    {
+        private readonly HttpContextAccessor _httpContextAccessor;
+        private readonly IUserProfileRepository _repository;
+        private readonly AppDbContext _context;
+        private readonly IPhotoService _photoService;
+        public UserController(IUserProfileRepository repository, AppDbContext context, HttpContextAccessor httpContextAccessor, IPhotoService photoService)
+        {
+            _repository = repository;
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            _photoService = photoService;
+        }
+        private void MapUserProfileEdit(AppUser user, UserProfileViewModel userProfileViewModel, ImageUploadResult photoResult)
+        {
+            user.Id = userProfileViewModel.Id;
+            user.UserName = userProfileViewModel.UserName;
+            user.Email = userProfileViewModel.EmailAddress;
+            user.PhoneNumber = userProfileViewModel.PhoneNumber;
+            user.UserImgUrl = photoResult.Url.ToString();
+            user.Adress = userProfileViewModel.Address;
+        }
+        public async Task<IActionResult> UserProfile()
+        {
+            var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var user = await _repository.GetUserByIdAsync(curUserId);
+            var userProfileViewModel = new UserProfileViewModel()
+            {
+                Id = curUserId,
+                UserName = user.UserName,
+                EmailAddress = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                UserImgUrl = user.UserImgUrl,
+                Address = user.Adress
+            };
+            return View(userProfileViewModel);
+        }
+
+        public async Task<IActionResult> EditUserProfile()
+        {
+            var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
+            var user = await _repository.GetUserByIdAsync(curUserId);
+            var userProfileViewModel = new UserProfileViewModel()
+            {
+                Id = curUserId,
+                UserName = user.UserName,
+                EmailAddress = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                UserImgUrl = user.UserImgUrl,
+                Address = user.Adress
+            };
+            return View(userProfileViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUserProfile(UserProfileViewModel userProfileViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Ошибка редоктирвания профиля");
+                return View("EditUserProfile", userProfileViewModel);
+
+            }
+            var user = await _repository.GetUserByIdAsyncNoTracking(userProfileViewModel.Id);
+
+            if (user.UserImgUrl == "" || user.UserImgUrl == null)
+            {
+                var photoResult = await _photoService.AddPhotoAsync(userProfileViewModel.UserImage);
+                MapUserProfileEdit(user, userProfileViewModel, photoResult);
+                _repository.Update(user);
+                return RedirectToAction("UserProfile");
+            }
+            else
+            {
+                try
+                {
+                    await _photoService.DeletePhotoAsync(user.UserImgUrl);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Не удалось удалить фотографию");
+                    return View(userProfileViewModel);
+                }
+                var photoResult = await _photoService.AddPhotoAsync(userProfileViewModel.UserImage);
+                MapUserProfileEdit(user, userProfileViewModel, photoResult);
+                _repository.Update(user);
+                return RedirectToAction("UserProfile");
+            }
+
+        }
+    }
+}

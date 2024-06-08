@@ -17,9 +17,9 @@
     })
 })();
 
-window.addEventListener('scroll', function () {
-    document.getElementById('header-nav').classList.toggle('headernav-scroll', window.scrollY > 135);
-});
+//window.addEventListener('scroll', function () {
+//    document.getElementById('header-nav').classList.toggle('headernav-scroll', window.scrollY > 133);
+//});
 
 const offcanvasCartEl = document.getElementById('offcanvasCart');
 const offcanvasCart = new bootstrap.Offcanvas(offcanvasCartEl);
