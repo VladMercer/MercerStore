@@ -1,0 +1,43 @@
+﻿@using MercerStore.ViewModels
+@model LoginViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.ShowHeaderFooter = false;
+    ViewData["Title"] = "Вход";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav class="breadcrumbs">
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
+                    <li><span>Вход</span></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="register-wrapper">
+    <div class="register-background">
+        <form asp-action="Login" class="registration-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="form-label required"></label>
+                <input asp-for="EmailAddress" class="form-control" placeholder="Почта">
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="form-label required"></label>
+                <input asp-for="Password" class="form-control" placeholder="Пароль" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-success btn-block">Войти</button>
+            </div>
+            <div class="form-group text-center">
+                <p>Ещё нет аккаунта? <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a></p>
+            </div>
+        </form>
+    </div>
+</div>

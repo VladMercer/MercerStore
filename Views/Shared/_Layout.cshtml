@@ -18,109 +18,107 @@
 <body>
 
 	<div class="wrapper">
-
-		<header class="header">
-			<div class="header-top py-1">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-sm-4 d-none d-sm-block">
-							<ul class="social-icons d-flex justify-content-start">
-								<li>
-									<a href="#">
-										<i class="fa-brands fa-vk"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa-brands fa-telegram"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#">
-										<i class="fa-brands fa-instagram"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-						<div class="col-6 col-sm-4">
-							<div class="header-top-phone d-flex justify-content-end align-items-center h-100">
-								<i class="fa-solid fa-mobile-screen"></i>
-								<a href="tel:+1234567890" class="phone-number ms-2">123-456-7890</a>
+		 @if (ViewBag.ShowHeaderFooter ?? true)
+		{
+			<header class="header">
+				<div class="header-top py-1">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-4 d-none d-sm-block">
+								<ul class="social-icons d-flex justify-content-start">
+									<li>
+										<a href="#">
+											<i class="fa-brands fa-vk"></i>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="fa-brands fa-telegram"></i>
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<i class="fa-brands fa-instagram"></i>
+										</a>
+									</li>
+								</ul>
 							</div>
-						</div>
+							<div class="col-6 col-sm-4">
+								<div class="header-top-phone d-flex justify-content-end align-items-center h-100">
+									<i class="fa-solid fa-mobile-screen"></i>
+									<a href="tel:+1234567890" class="phone-number ms-2">123-456-7890</a>
+								</div>
+							</div>
 
-						
 
-						<div class="col-6 col-sm-4">
-							<div class="header-top-account d-flex justify-content-end">
-								<div class="btn-group me-2">
-									<div class="dropdown">
-										<button class="btn btn-sm dropdown-toggle" type="button"
-												data-bs-toggle="dropdown" aria-expanded="false">
-											Account
-										</button>
-										<ul class="dropdown-menu">
-											<li>
-												<a class="dropdown-item" href="#">Sign In</a>
-											</li>
-											<li>
-												<a class="dropdown-item" href="#">Sign Up</a>
-											</li>
-										</ul>
+							<div class="col-6 col-sm-4">
+								<div class="header-top-account d-flex justify-content-end">
+									<div class="btn-group me-2">
+										<div class="dropdown">
+											<button class="btn btn-sm dropdown-toggle" type="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
+												Личный кабинет
+											</button>
+											<ul class="dropdown-menu">
+												@if (User.Identity.IsAuthenticated)
+												{
+													<li>
+														<a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a>
+													</li>
+													<li>
+														<a class="dropdown-item" asp-controller="User" asp-action="UserProfile">Профиль</a>
+													</li>
+
+												}
+												else
+												{
+													<li>
+														<a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a>
+													</li>
+												}
+											
+											</ul>
+										</div>
 									</div>
 								</div>
-
-								<!--<div class="btn-group">
-									<div class="dropdown">
-										<button class="btn btn-sm dropdown-toggle" type="button"
-												data-bs-toggle="dropdown" aria-expanded="false">
-											EN
-										</button>
-										<ul class="dropdown-menu">
-											<li>
-												<a class="dropdown-item" href="#">RU</a>
-											</li>
-											<li>
-												<a class="dropdown-item" href="#">DE</a>
-											</li>
-										</ul>
-									</div>
-								</div>-->
 							</div>
 							<!-- ./header-top-account -->
 						</div>
 					</div>
 				</div>
-			</div>
-			<!-- ./header-top -->
 
-			<div class="header-middle bg-white py-4">
-				<div class="container-fluid">
-					<div class="row align-items-center">
+				<!-- ./header-top -->
 
-						<div class="col-sm-6">
-							<a href="index.html" class="header-logo h1">MERCER STORE</a>
+				<div class="header-middle bg-white py-4">
+					<div class="container-fluid">
+						<div class="row align-items-center">
+
+							<div class="col-sm-6">
+								<a href="index.html" class="header-logo h1">MERCER STORE</a>
+							</div>
+
+							<div class="col-sm-6 mt-2 mt-md-0">
+								<form action="">
+									<div class="input-group">
+										<input type="text" class="form-control" name="s" placeholder="Searching..."
+											   aria-label="Searching..." aria-describedby="button-search">
+										<button class="btn btn-outline-warning" type="submit" id="button-search">
+											<i class="fa-solid fa-magnifying-glass"></i>
+										</button>
+									</div>
+								</form>
+							</div>
+
 						</div>
-
-						<div class="col-sm-6 mt-2 mt-md-0">
-							<form action="">
-								<div class="input-group">
-									<input type="text" class="form-control" name="s" placeholder="Searching..."
-										   aria-label="Searching..." aria-describedby="button-search">
-									<button class="btn btn-outline-warning" type="submit" id="button-search">
-										<i class="fa-solid fa-magnifying-glass"></i>
-									</button>
-								</div>
-							</form>
-						</div>
-
 					</div>
+
 				</div>
-
-			</div>
+			</header>
 			<!-- ./header-middle -->
-		</header>
-
+		}
+		
+		
+		
 		<div class="header-bottom sticky-top" id="header-nav">
 			<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
 				<div class="container-fluid">
@@ -139,19 +137,16 @@
 						<div class="offcanvas-body">
 							<ul class="navbar-nav">
 								<li class="nav-item">
-									<a class="nav-link active" aria-current="page" href="index.html">Home</a>
+									<a class="nav-link " asp-controller="Home" asp-action="Index">Главная</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="#">About</a>
+									<a class="nav-link " asp-controller="Home" asp-action="Index">О нас</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="#">Contact</a>
+									<a class="nav-link " asp-controller="Home" asp-action="Index">Оплата</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="#">Payment</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="#">Delivery</a>
+									<a class="nav-link " asp-controller="Home" asp-action="Index">Доставка</a>
 								</li>
 								<li class="nav-item dropdown">
 									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -267,53 +262,87 @@
 				</div>
 			</div>
 		</div>
-
 		<main role="main" class="main">
+
 			@RenderBody();
 		</main>
+		 @if (ViewBag.ShowHeaderFooter ?? true)
+		{
+			<footer class="footer" id="footer">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-6">
+							<div class="footer-content-center">
+								<div class="center-align">
+									<h4>
+										Inforamiton 
+									</h4>
+									<ul class="list-unstyled">
+										<li><a href="index.html">Home</a></li>
+										<li><a href="#">Payment</a></li>
+										<li><a href="#">Delivery</a></li>
+										<li><a href="#">Contacts</a></li>
+									</ul>
+								</div>
 
-		<footer class="footer" id="footer">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-3 col-6" >
-						<h4>Information</h4>
-						<ul class="list-unstyled">
-							<li><a href="index.html">Home</a></li>
-							<li><a href="#">Payment</a></li>
-							<li><a href="#">Delivery</a></li>
-							<li><a href="#">Contacts</a></li>
-						</ul>
-					</div>
+							</div>
 
-					<div class="col-md-3 col-6">
-						<h4>Working hours</h4>
-						<ul class="list-unstyled">
-							<li>Paris, str. Bretan</li>
-							<li>mon-fri: 9:00 - 18:00</li>
-						</ul>
-					</div>
+						</div>
 
-					<div class="col-md-3 col-6">
-						<h4>Contacts</h4>
-						<ul class="list-unstyled">
-							<li><a href="tel:1234567890">123-456-7890</a></li>
-							<li><a href="tel:0987654321">098-765-4321</a></li>
-						</ul>
-					</div>
+						<div class="col-md-3 col-6">
+							<div class="footer-content-center">
+								<div class="center-align">
+									<h4>
+										Working hours
+									</h4>
+									<ul class="list-unstyled">
+										<li>Paris, str. Bretan</li>
+										<li>mon-fri: 9:00 - 18:00</li>
+									</ul>
+								</div>
 
-					<div class="col-md-3 col-6">
-						<h4>Follow us</h4>
-						<ul class="footer-icons">
-							<li><a href="#"><i class="fa-brands fa-vk"></i></a></li>
-							<li><a href="#"><i class="fa-brands fa-telegram"></i></a></li>
-							<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-						</ul>
+							</div>
+
+						</div>
+
+						<div class="col-md-3 col-6">
+							<div class="footer-content-center">
+								<div class="center-align">
+									<h4>
+										Contacts
+									</h4>
+									<ul class="list-unstyled">
+										<li><a href="tel:1234567890">123-456-7890</a></li>
+										<li><a href="tel:0987654321">098-765-4321</a></li>
+									</ul>
+								</div>
+
+							</div>
+
+						</div>
+
+
+						<div class="col-md-3 col-6">
+							<div class="footer-content-center">
+								<div class="center-align">
+									<h4>
+										Follow us
+									</h4>
+									<ul class="footer-icons">
+										<li><a href="#"><i class="fa-brands fa-vk"></i></a></li>
+										<li><a href="#"><i class="fa-brands fa-telegram"></i></a></li>
+										<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+									</ul>
+								</div>
+
+							</div>
+
+						</div>
 					</div>
 				</div>
-			</div>
-		</footer>
-	</div>
-
+			</footer>}
+		</div>
+		
 	<button id="top">
 		<i class="fa-solid fa-angles-up"></i>
 	</button>

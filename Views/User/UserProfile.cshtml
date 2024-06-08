@@ -1,0 +1,27 @@
+﻿@using MercerStore.ViewModels
+@model UserProfileViewModel
+
+<div class="container mt-5">
+    <div class="profile-card">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img class="profile-image" src="@(string.IsNullOrEmpty(Model.UserImgUrl) ? Model.DefaultUserImgUrl : Model.UserImgUrl)" alt="User Image">
+            </div>
+            <div class="col-md-8 profile-info">
+                <h5><i class="fas fa-user" id="userIcon"></i> @Model.UserName</h5>
+                <p>
+                    <i class="fas fa-envelope" id="userIcon"></i><strong> Email: </strong>@Model.EmailAddress
+                </p>
+                <p>
+                    <i class="fas fa-phone" id="userIcon"></i><strong> Phone: </strong>
+                    @(string.IsNullOrEmpty(Model.PhoneNumber) ? "Добавьте номер телефона" : Model.PhoneNumber)
+                </p>
+                <p>
+                    <i class="fas fa-home" id="userIcon"></i><strong> Address: </strong>
+                    @(string.IsNullOrEmpty(Model.Address) ? "Добавьте адрес" : Model.Address)
+                </p>
+                <a asp-controller="User" asp-action="EditUserProfile" class="btn btn-outline-warning mt-2">Редактировать</a>
+            </div>
+        </div>
+    </div>
+</div>
