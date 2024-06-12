@@ -1,7 +1,20 @@
 ﻿@using MercerStore.ViewModels
 @model UserProfileViewModel
-
-<div class="container mt-5">
+@{
+    ViewData["Title"] = "Профиль";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav class="breadcrumbs">
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
+                    <li><span>Профиль</span></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+<div class="container mt-3">
     <div class="profile-card">
         <div class="row">
             <div class="col-md-4 text-center">

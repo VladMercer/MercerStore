@@ -13,12 +13,13 @@
 	<link rel="stylesheet" href="~/owlcarousel/owl.carousel.min.css">
 	<link rel="stylesheet" href="~/owlcarousel/owl.theme.default.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	@RenderSection("Styles", required: false)
 </head>
 
 <body>
 
 	<div class="wrapper">
-		 @if (ViewBag.ShowHeaderFooter ?? true)
+		@if (ViewBag.ShowHeaderFooter ?? true)
 		{
 			<header class="header">
 				<div class="header-top py-1">
@@ -43,20 +44,27 @@
 									</li>
 								</ul>
 							</div>
-							<div class="col-6 col-sm-4">
+							<div class="col-6 col-sm-4 d-none d-sm-block">
 								<div class="header-top-phone d-flex justify-content-end align-items-center h-100">
 									<i class="fa-solid fa-mobile-screen"></i>
-									<a href="tel:+1234567890" class="phone-number ms-2">123-456-7890</a>
+									<a href="tel:+1234567890" class="phone-number ms-3">123-456-7890</a>
+									@if (User.IsInRole("Admin"))
+									{
+										<a class="phone-number ms-3" asp-controller="Category" asp-action="CreateCategory">Создание категории</a>
+										<a class="phone-number ms-3" asp-controller="Product" asp-action="CreateProduct">Создание продукта</a>
+
+									}
 								</div>
 							</div>
 
 
-							<div class="col-6 col-sm-4">
+							<div class="col-6 col-sm-4 ">
 								<div class="header-top-account d-flex justify-content-end">
+
 									<div class="btn-group me-2">
 										<div class="dropdown">
 											<button class="btn btn-sm dropdown-toggle" type="button"
-											data-bs-toggle="dropdown" aria-expanded="false">
+													data-bs-toggle="dropdown" aria-expanded="false">
 												Личный кабинет
 											</button>
 											<ul class="dropdown-menu">
@@ -76,7 +84,7 @@
 														<a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a>
 													</li>
 												}
-											
+
 											</ul>
 										</div>
 									</div>
@@ -94,7 +102,7 @@
 						<div class="row align-items-center">
 
 							<div class="col-sm-6">
-								<a href="index.html" class="header-logo h1">MERCER STORE</a>
+								<a asp-controller="Home" asp-action="Index" class="header-logo h1">MERCER STORE</a>
 							</div>
 
 							<div class="col-sm-6 mt-2 mt-md-0">
@@ -116,9 +124,9 @@
 			</header>
 			<!-- ./header-middle -->
 		}
-		
-		
-		
+
+
+
 		<div class="header-bottom sticky-top" id="header-nav">
 			<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
 				<div class="container-fluid">
@@ -130,7 +138,7 @@
 					<div class="offcanvas offcanvas-start" id="offcanvasNavbar" tabindex="-1"
 						 aria-labelledby="offcanvasNavbarLabel">
 						<div class="offcanvas-header">
-							<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Catalog</h5>
+							<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Каталог</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
 									aria-label="Close"></button>
 						</div>
@@ -140,47 +148,20 @@
 									<a class="nav-link " asp-controller="Home" asp-action="Index">Главная</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link " asp-controller="Home" asp-action="Index">О нас</a>
+									<a class="nav-link " asp-controller="AboutUs" asp-action="Index">О нас</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link " asp-controller="Home" asp-action="Index">Оплата</a>
+									<a class="nav-link " asp-controller="Checkout" asp-action="Payment">Оплата</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link " asp-controller="Home" asp-action="Index">Доставка</a>
+									<a class="nav-link " asp-controller="Info" asp-action="Index">Доставка</a>
 								</li>
 								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-									   aria-expanded="false" data-bs-auto-close="outside">
-										Catalog
+									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+										Каталог
 									</a>
 									<ul class="dropdown-menu dropdown-menu-end">
-										<li>
-											<a class="dropdown-item" asp-controller="Category" asp-action="Index">Видеокарты</a>
-										</li>
-										<li>
-											<a class="dropdown-item" href="category.html">Jeans</a>
-										</li>
-										<li class="nav-item dropend">
-											<a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown"
-											   data-bs-auto-close="outside">Sportswear</a>
-											<ul class="dropdown-menu dropdown-menu-end">
-												<li>
-													<a class="dropdown-item" href="category.html">Men's Sportswear</a>
-												</li>
-												<li>
-													<a class="dropdown-item" href="category.html">Women's Sportswear</a>
-												</li>
-												<li>
-													<a class="dropdown-item" href="category.html">Baby's Sportswear</a>
-												</li>
-											</ul>
-										</li>
-										<li>
-											<a class="dropdown-item" href="category.html">Coat</a>
-										</li>
-										<li>
-											<a class="dropdown-item" href="category.html">Shirts</a>
-										</li>
+										@await Component.InvokeAsync("CategoryMenu")
 									</ul>
 								</li>
 							</ul>
@@ -206,7 +187,7 @@
 
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
 			<div class="offcanvas-header">
-				<h5 class="offcanvas-title" id="offcanvasCartLabel">Cart</h5>
+				<h5 class="offcanvas-title" id="offcanvasCartLabel">Корзина</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			</div>
 			<div class="offcanvas-body">
@@ -221,7 +202,7 @@
 								<td>$65</td>
 								<td>&times;1</td>
 								<td>
-									<button class="btn btn-danger"><i class="fa-regular fa-circle-xmark"></i></button>
+									<button class="btn btn-outline-warning"><i class="fa-regular fa-circle-xmark"></i></button>
 								</td>
 							</tr>
 							<tr>
@@ -232,7 +213,7 @@
 								<td>$80</td>
 								<td>&times;2</td>
 								<td>
-									<button class="btn btn-danger"><i class="fa-regular fa-circle-xmark"></i></button>
+									<button class="btn btn-outline-warning"><i class="fa-regular fa-circle-xmark"></i></button>
 								</td>
 							</tr>
 							<tr>
@@ -243,7 +224,7 @@
 								<td>$100</td>
 								<td>&times;1</td>
 								<td>
-									<button class="btn btn-danger"><i class="fa-regular fa-circle-xmark"></i></button>
+									<button class="btn btn-outline-warning"><i class="fa-regular fa-circle-xmark"></i></button>
 								</td>
 							</tr>
 						</tbody>
@@ -257,8 +238,8 @@
 				</div>
 
 				<div class="text-end mt-3">
-					<a href="#" class="btn btn-outline-warning" id="button-ofcanvas-cart">Cart</a>
-					<a href="#" class="btn btn-outline-secondary" id="button-ofcanvas-checkout">Checkout</a>
+					<a asp-controller="Cart" asp-action="Index" class="btn btn-outline-warning" id="button-ofcanvas-cart">В корзину</a>
+					<a asp-controller="Checkout" asp-action="Payment" class="btn btn-outline-secondary" id="button-ofcanvas-checkout">Оплатить</a>
 				</div>
 			</div>
 		</div>
@@ -266,7 +247,7 @@
 
 			@RenderBody();
 		</main>
-		 @if (ViewBag.ShowHeaderFooter ?? true)
+		@if (ViewBag.ShowHeaderFooter ?? true)
 		{
 			<footer class="footer" id="footer">
 				<div class="container-fluid">
@@ -275,13 +256,12 @@
 							<div class="footer-content-center">
 								<div class="center-align">
 									<h4>
-										Inforamiton 
+										Информация
 									</h4>
 									<ul class="list-unstyled">
-										<li><a href="index.html">Home</a></li>
-										<li><a href="#">Payment</a></li>
-										<li><a href="#">Delivery</a></li>
-										<li><a href="#">Contacts</a></li>
+										<li><a asp-controller="Index" asp-action="Index">Главная</a></li>
+										<li><a asp-controller="Info" asp-action="Index">Оплата</a></li>
+										<li><a asp-controller="AboutUs" asp-action="Index">Доставка</a></li>
 									</ul>
 								</div>
 
@@ -293,11 +273,11 @@
 							<div class="footer-content-center">
 								<div class="center-align">
 									<h4>
-										Working hours
+										Расписание работы
 									</h4>
 									<ul class="list-unstyled">
-										<li>Paris, str. Bretan</li>
-										<li>mon-fri: 9:00 - 18:00</li>
+										<li>г. Луганск, кв. Жукова</li>
+										<li>пн-пт: 9:00 - 18:00</li>
 									</ul>
 								</div>
 
@@ -309,7 +289,7 @@
 							<div class="footer-content-center">
 								<div class="center-align">
 									<h4>
-										Contacts
+										Контакты
 									</h4>
 									<ul class="list-unstyled">
 										<li><a href="tel:1234567890">123-456-7890</a></li>
@@ -326,23 +306,21 @@
 							<div class="footer-content-center">
 								<div class="center-align">
 									<h4>
-										Follow us
+										Подпишись
 									</h4>
 									<ul class="footer-icons">
 										<li><a href="#"><i class="fa-brands fa-vk"></i></a></li>
 										<li><a href="#"><i class="fa-brands fa-telegram"></i></a></li>
-										<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
 									</ul>
 								</div>
-
 							</div>
-
 						</div>
 					</div>
 				</div>
-			</footer>}
-		</div>
-		
+			</footer>
+		}
+	</div>
+
 	<button id="top">
 		<i class="fa-solid fa-angles-up"></i>
 	</button>
@@ -350,9 +328,9 @@
 	<script src="~/lib/bootstrap/js/bootstrap.bundle.js" asp-append-version="true"></script>
 	<script src="~/owlcarousel/owl.carousel.min.js" asp-append-version="true"></script>
 	<script src="~/js/main.js" asp-append-version="true"></script>
-	
-	
-	
+	@RenderSection("Scripts", required: false)
+
+
 </body>
 
 </html>

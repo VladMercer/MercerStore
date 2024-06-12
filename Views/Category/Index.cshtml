@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Category Page";
+﻿@model CategoryPageViewModel
+@using MercerStore.Models.ViewModels
+@{
+    ViewData["Title"] = Model.Category.Name;
 }
 
 <div class="container-fluid">
@@ -7,9 +9,8 @@
         <div class="col-12">
             <nav class="breadcrumbs">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="#">Shop</a></li>
-                    <li><span>Category Name</span></li>
+                    <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
+                    <li><span>@Model.Category.Name</span></li>
                 </ul>
             </nav>
         </div>
@@ -20,474 +21,128 @@
     <div class="row">
         <div class="col-lg-3 col-md-4">
             <div class="sidebar">
-
-                <button class="btn btn-warning w-100 text-start collapse-filters-btn mb-3" type="button"
+                <button class="btn btn-outline-warning w-100 text-start collapse-filters-btn mb-3" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false"
                         aria-controls="collapseExample">
-                    <i class="fa-solid fa-filter"></i> Filters
+                    <i class="fa-solid fa-filter"></i> Фильтры
                 </button>
-
                 <div class="collapse collapse-filters" id="collapseFilters">
                     <div class="filter-block">
-                        <h5 class="section-title"><span>Filter by color</span></h5>
+                        <span>Производитель</span>
                         <form action="">
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="black">
-                                    <label class="form-check-label" for="black">
-                                        Black
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">100</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="NVIDIA" id="nvidia">
+                                <label class="form-check-label" for="nvidia">NVIDIA</label>
                             </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="white">
-                                    <label class="form-check-label" for="white">
-                                        White
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">87</span>
-                            </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="red">
-                                    <label class="form-check-label" for="red">
-                                        Red
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">50</span>
-                            </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="blue">
-                                    <label class="form-check-label" for="blue">
-                                        Blue
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">115</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="AMD" id="amd">
+                                <label class="form-check-label" for="amd">AMD</label>
                             </div>
                         </form>
                     </div>
-
+                    <hr class="my-4">
                     <div class="filter-block">
-                        <h5 class="section-title">
-                            <span>Filter by size</span>
-                        </h5>
-
+                        <span>Память</span>
                         <form action="">
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="xs">
-                                    <label class="form-check-label" for="xs">
-                                        XS
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">44</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="4" id="4gb">
+                                <label class="form-check-label" for="4gb">4 GB</label>
                             </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="s">
-                                    <label class="form-check-label" for="s">
-                                        S
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">105</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="8" id="8gb">
+                                <label class="form-check-label" for="8gb">8 GB</label>
                             </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="m">
-                                    <label class="form-check-label" for="m">
-                                        M
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">35</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="12" id="12gb">
+                                <label class="form-check-label" for="12gb">12 GB</label>
                             </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="l">
-                                    <label class="form-check-label" for="l">
-                                        L
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">57</span>
-                            </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="xl">
-                                    <label class="form-check-label" for="xl">
-                                        XL
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">12</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="16" id="16gb">
+                                <label class="form-check-label" for="16gb">16 GB</label>
                             </div>
                         </form>
                     </div>
-
+                    <hr class="my-4">
                     <div class="filter-block">
-                        <h5 class="section-title">
-                            <span>Filter by type</span>
-                        </h5>
-
+                        <span>Вендор</span>
                         <form action="">
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="man">
-                                    <label class="form-check-label" for="man">
-                                        Man
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">44</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="MSI" id="msi">
+                                <label class="form-check-label" for="msi">MSI</label>
                             </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="woman">
-                                    <label class="form-check-label" for="woman">
-                                        Woman
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">105</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="ASUS" id="asus">
+                                <label class="form-check-label" for="asus">ASUS</label>
                             </div>
-                            <div class="form-check d-flex justify-content-between">
-                                <div>
-                                    <input class="form-check-input" type="checkbox" value="" id="baby">
-                                    <label class="form-check-label" for="baby">
-                                        Baby
-                                    </label>
-                                </div>
-                                <span class="badge border rounded-0">35</span>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Gigabyte" id="gigabyte">
+                                <label class="form-check-label" for="gigabyte">Gigabyte</label>
                             </div>
                         </form>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
         <div class="col-lg-9 col-md-8">
             <div class="row mb-3">
                 <div class="col-12">
-                    <h1 class="section-title h3"><span>Category Name</span></h1>
+                    <h3><span>@Model.Category.Name</span></h3>
                 </div>
                 <div class="col-4 col-sm-2">
-                    <img src="~/img/products/1.jpg" alt="" class="img-thumbnail">
+                    <img src="@Model.Category.CategoryImgUrl" alt="" class="img-thumbnail">
                 </div>
                 <div class="col-8 col-sm-10">
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa voluptate porro
-                        suscipit sit earum quia aliquid, illum eos esse fuga nam sed molestiae non laborum
-                        exercitationem saepe, dolores incidunt quidem!
+                        <h5>@Model.Category.Description</h5>
                     </p>
                 </div>
             </div>
 
-            <hr>
+            <hr class="my-4">
 
             <div class="row">
-                <div class="col-sm-6">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Sort By:</span>
-                        <select class="form-select" aria-label="Sort by:">
-                            <option selected>Default</option>
-                            <option value="1">Name (a-z)</option>
-                            <option value="2">Name (z-a)</option>
-                            <option value="3">Price (low &gt; high)</option>
-                            <option value="4">Price (high &gt; low)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Show:</span>
-                        <select class="form-select" aria-label="Show:">
-                            <option selected>9</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <div class="offer-hit">Hit</div>
-                            <div class="offer-new">New</div>
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/1.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">
-                                    Product 1 Lorem ipsum dolor, sit amet consectetur
-                                    adipisicing.
-                                </a>
-                            </h4>
-                            <p class="product-excerpt">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing
-                                elit.
-                                Placeat, aperiam!
-                            </p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    <small>$70</small>
-                                    $65
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Сортировать:</span>
+                                <select class="form-select" aria-label="Sort by:" onchange="location = this.value;">
+                                    @{
+                                        var defaultSelected = string.IsNullOrEmpty(Model.SortOrder) ? "selected" : "";
+                                        var nameAscSelected = Model.SortOrder == "name_asc" ? "selected" : "";
+                                        var nameDescSelected = Model.SortOrder == "name_desc" ? "selected" : "";
+                                        var priceAscSelected = Model.SortOrder == "price_asc" ? "selected" : "";
+                                        var priceDescSelected = Model.SortOrder == "price_desc" ? "selected" : "";
+                                    }
+                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" defaultSelected>Стандартно</option>
+                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "name_asc", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" nameAscSelected>Имя (а-я)</option>
+                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "name_desc", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" nameDescSelected>Имя (я-а)</option>
+                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "price_asc", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" priceAscSelected>Цена (меньшего > большему)</option>
+                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "price_desc", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" priceDescSelected>Цена (большего > меньшему)</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="col-sm-6">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Показывать:</span>
+                                @{
+                                    var pageSize9 = Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber, pageSize = 9 });
+                                    var pageSize15 = Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber, pageSize = 15 });
+                                    var pageSize30 = Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber, pageSize = 30 });
+                                    var pageSize45 = Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber, pageSize = 45 });
 
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <div class="offer-hit">Hit</div>
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/2.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">Product 2</a>
-                            </h4>
-                            <p class="product-excerpt">Lorem ipsum dolor</p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    $65
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <!-- <div class="offer-hit">Hit</div>
-                            <div class="offer-new">New</div> -->
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/3.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">Product 3 Lorem ipsum</a>
-                            </h4>
-                            <p class="product-excerpt">Lorem ipsum</p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    $100
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <div class="offer-hit">Hit</div>
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/4.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">Product 4</a>
-                            </h4>
-                            <p class="product-excerpt">Lorem ipsum dolor</p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    <small>$70</small>
-                                    $65
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <div class="offer-hit">Hit</div>
-                            <div class="offer-new">New</div>
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/5.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">
-                                    Product 5 Lorem ipsum dolor, sit amet consectetur
-                                    adipisicing.
-                                </a>
-                            </h4>
-                            <p class="product-excerpt">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing
-                                elit.
-                                Placeat, aperiam!
-                            </p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    <small>$70</small>
-                                    $65
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <div class="offer-hit">Hit</div>
-                            <div class="offer-new">New</div>
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/6.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">Product 6</a>
-                            </h4>
-                            <p class="product-excerpt"></p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    <small>$70</small>
-                                    $65
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <div class="offer-hit">Hit</div>
-                            <div class="offer-new">New</div>
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/7.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">Product 7</a>
-                            </h4>
-                            <p class="product-excerpt">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing
-                                elit.
-                                Placeat, aperiam!
-                            </p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    <small>$70</small>
-                                    $65
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <div class="offer-hit">Hit</div>
-                            <div class="offer-new">New</div>
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/8.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">Product 8 Lorem</a>
-                            </h4>
-                            <p class="product-excerpt">Lorem ipsum dolor</p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    <small>$70</small>
-                                    $65
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 mb-3">
-                    <div class="product-card">
-                        <div class="product-card-offer">
-                            <div class="offer-hit">Hit</div>
-                            <div class="offer-new">New</div>
-                        </div>
-                        <div class="product-thumb">
-                            <a href="product.html"><img src="~/img/products/9.jpg" alt=""></a>
-                        </div>
-                        <div class="product-details">
-                            <h4>
-                                <a href="product.html">
-                                    Product 1 Lorem ipsum dolor, sit amet consectetur
-                                    adipisicing.
-                                </a>
-                            </h4>
-                            <p class="product-excerpt">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing
-                                elit.
-                                Placeat, aperiam!
-                            </p>
-                            <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price">
-                                    <small>$70</small>
-                                    $65
-                                </div>
-                                <div class="product-links">
-                                    <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </div>
+                                    var pageSize9Selected = Model.PageSize == 9 ? "selected" : "";
+                                    var pageSize15Selected = Model.PageSize == 15 ? "selected" : "";
+                                    var pageSize30Selected = Model.PageSize == 30 ? "selected" : "";
+                                    var pageSize45Selected = Model.PageSize == 45 ? "selected" : "";
+                                }
+                                <select class="form-select" aria-label="Show:" onchange="location = this.value;">
+                                    <option value="@pageSize9" pageSize9Selected>9</option>
+                                    <option value="@pageSize15" pageSize15Selected>15</option>
+                                    <option value="@pageSize30" pageSize30Selected>30</option>
+                                    <option value="@pageSize45" pageSize45Selected>45</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -495,24 +150,67 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-lg-4 col-sm-6 mb-3">
+                        <div class="product-card">
+                            <div class="product-card-offer">
+                                <div class="offer-hit">Hit</div>
+                                <div class="offer-new">New</div>
+
+                            </div>
+                            <div class="product-thumb">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"><img src="@product.MainImageUrl" alt=""></a>
+                            </div>
+                            <div class="product-details">
+                                <h4>
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                                        @product.Name
+                                    </a>
+                                </h4>
+                                <p class="product-excerpt">
+                                    @product.Description
+                                </p>
+                                <div class="product-bottom-details d-flex justify-content-between">
+                                    <div class="product-price">
+                                        <small>@(product.Price + 400)</small>
+                                        @product.Price
+                                    </div>
+                                    <div class="product-links">
+                                        <a href="#" class="btn btn-outline-secondary add-to-cart">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="d-flex justify-content-between flex-column flex-lg-row">
+                <div class="pagination mb-2 mb-lg-0">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active" aria-current="page">
-                                <a class="page-link"
-                                   href="#">2</a>
+                            <li class="page-item @(Model.PageNumber <= 1 ? "disabled" : "")">
+                                <a class="page-link" href="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize })" tabindex="-1" aria-disabled="@(Model.PageNumber <= 1)">Назад</a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = i, pageSize = Model.PageSize })">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")">
+                                <a class="page-link" href="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize })" aria-disabled="@(Model.PageNumber >= Model.TotalPages)">Вперёд</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
+                <div class="total-products">
+                    Показано @((Model.PageNumber - 1) * Model.PageSize + 1) по @(Model.PageNumber * Model.PageSize > Model.Products.Count() ? Model.Products.Count() : Model.PageNumber * Model.PageSize) из @Model.Products.Count() (@Math.Ceiling((double)Model.Products.Count() / Model.PageSize) Страниц)
+                </div>
             </div>
-
         </div>
     </div>
 </div>
