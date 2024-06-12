@@ -1,0 +1,44 @@
+﻿@using MercerStore.Models.ViewModels
+@model CreateProductViewModel
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+<div class="container mt-3 mb-4">
+    <div class="card p-4 shadow-sm">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2>Создание продукта</h2>
+
+                <form asp-action="CreateProduct" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Price"></label>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="MainImage"></label>
+                        <input type="file" asp-for="MainImage" class="form-control" />
+                        <span asp-validation-for="MainImage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label asp-for="CategoryId"></label>
+                        <select asp-for="CategoryId" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))" class="form-control" id="categorySelect"></select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-outline-warning mt-1">Создать</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

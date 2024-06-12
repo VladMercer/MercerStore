@@ -1,0 +1,12 @@
+﻿using MercerStore.Models;
+
+public class CategoryPageViewModel
+{
+	public Category Category { get; set; }
+	public IEnumerable<Product> Products { get; set; }
+	public int SelectedCategoryId { get; set; }
+	public string SortOrder { get; set; }
+	public int PageNumber { get; set; }
+    public int TotalPages { get; set; }
+    public int PageSize { get; set; }
+}

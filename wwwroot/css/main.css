@@ -226,7 +226,7 @@ ul.social-icons {
 .header-logo {
     text-decoration: none;
     text-transform: uppercase;
-    color: var(--accent-color);
+    color: var(--accent-color) !important;
     transition: all .3s;
 }
 
@@ -269,6 +269,10 @@ i.fa-regular.fa-circle-xmark {
     font-size: 1.50rem;
     color: var(--accent-color);
 
+}
+i.fa-regular.fa-circle-xmark :hover {
+    font-size: 1.50rem;
+    color: #fff;
 }
 i.fa-regular.fa-circle-xmark:hover {
     color:#fff;
@@ -879,3 +883,6 @@ footer ul.list-unstyled {
     #userIcon{
         color:var(--accent-color)
     }
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+    color:#000;
+}

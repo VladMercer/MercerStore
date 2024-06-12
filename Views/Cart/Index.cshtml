@@ -1,0 +1,117 @@
+﻿@model CartViewModel
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav class="breadcrumbs">
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><span>Корзина</span></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-lg-8 mb-3">
+            <div class="cart-content p-3 h-100 bg-white">
+
+                <div class="table-responsive">
+                    <table class="table align-middle table-hover">
+                        <thead class="table-grey">
+                            <tr>
+                                <th>Картинка</th>
+                                <th>Продукт</th>
+                                <th>Стоимость</th>
+                                <th>Кол-во</th>
+                                <th><i class="fa-regular fa-trash-can"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td class="product-img-td">
+                                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId">
+                                            <img src="@item.ImageUrl" alt="@item.Name">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="cart-content-title">@item.Name</a>
+                                    </td>
+                                    <td>@item.Price.ToString("C")</td>
+                                    <td>
+                                        <input type="number" value="@item.Quantity" class="form-control cart-qty">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-warning">
+                                            <i class="fa-regular fa-circle-xmark"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="text-end">
+                                    <button class="btn btn-outline-warning">Продолжить покупки</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+
+            <div class="cart-summary p-3 sidebar">
+                <h5">
+                    <span>Корзина</span></h5>
+
+                    <div class="d-flex justify-content-between my-3">
+                        <h6>Общая стоимость</h6>
+                        <h6>@Model.TotalPrice.ToString("C")</h6>
+                    </div>
+
+                    <div class="d-flex justify-content-between my-3">
+                        <h6>Купон</h6>
+                        <h6>@Model.Discount.ToString("C")</h6>
+                    </div>
+
+                    <div class="d-flex justify-content-between my-3 border-bottom">
+                        <h6>Доставка</h6>
+                        <h6>@Model.ShippingCost.ToString("C")</h6>
+                    </div>
+
+                    <button class="btn btn-link px-0 btn-coupon" data-bs-toggle="collapse"
+                            data-bs-target="#collapseCoupon">
+                        Есть купон?
+                    </button>
+
+                    <div class="input-group collapse" id="collapseCoupon">
+                        <input type="text" class="form-control" placeholder="Coupon Code">
+                        <button class="btn btn-outline-warning">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </button>
+                    </div>
+
+                    <div class="d-flex justify-content-between my-3">
+                        <h3>Итого</h3>
+                        <h3>@Model.GrandTotal.ToString("C")</h3>
+                    </div>
+
+                    <div class="d-grid">
+                        <a asp-controller="Checkout"   asp-action="Index" class="btn btn-outline-warning">Оплатить</a>
+                    </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
