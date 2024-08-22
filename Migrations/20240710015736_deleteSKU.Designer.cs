@@ -3,6 +3,7 @@ using System;
 using MercerStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MercerStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240710015736_deleteSKU")]
+    partial class deleteSKU
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,8 +169,7 @@ namespace MercerStore.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("CartProducts");
                 });
@@ -1351,9 +1353,6 @@ namespace MercerStore.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("SKU")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
@@ -1595,8 +1594,8 @@ namespace MercerStore.Migrations
                         .IsRequired();
 
                     b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("cartProduct")
-                        .HasForeignKey("MercerStore.Models.CartProduct", "ProductId")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1833,8 +1832,6 @@ namespace MercerStore.Migrations
                     b.Navigation("Storage");
 
                     b.Navigation("VideoCard");
-
-                    b.Navigation("cartProduct");
 
                     b.Navigation("coolingSystem");
                 });

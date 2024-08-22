@@ -9,6 +9,7 @@ namespace MercerStore.Interfaces
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(int categoryId);
         Task<Product> GetProductByIdAsync(int productId);
         Task<IEnumerable<Product>> GetLastProductsAsync(int count);
+        Task<int?> GetCategoryByProductId(int productId);
         bool AddProduct(Product product);
         bool UpdateProduct(Product product);
         bool DeleteProduct(int productId);

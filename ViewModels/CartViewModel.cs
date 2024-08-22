@@ -1,8 +1,7 @@
 ﻿public class CartViewModel
 {
-	public List<CartItemViewModel> Items { get; set; } = new List<CartItemViewModel>();
-	public decimal TotalPrice { get; set; }
-	public decimal Discount { get; set; }
-	public decimal ShippingCost { get; set; }
-	public decimal GrandTotal => TotalPrice - Discount + ShippingCost;
+    public int? CategoryId { get; set; }
+    public IEnumerable<CartProductViewModel> CartItems { get; set; }
+	public int CartItemCount { get; set; }
+	public decimal CartTotalPrice { get; set; }
 }

@@ -7,6 +7,9 @@ namespace MercerStore.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+        public bool? IsNew { get; set; }
+        public bool? IsHit { get; set; }
+        public string? SKU { get; set; }
         public string Description { get; set; }
         public string MainImageUrl { get; set; }
         public ICollection<ProductImage>? Images { get; set; }
@@ -14,6 +17,7 @@ namespace MercerStore.Models
         public Category Category { get; set; }
         public int? BrandId { get; set; }
         public Brand? Brand { get; set; }
+        public CartProduct? cartProduct { get; set; }
         //Описание
         public VideoCardDetail? VideoCard { get; set; }
         public ProcessorDetail? Processor { get; set; }

@@ -1,4 +1,5 @@
-﻿@model CartViewModel
+﻿@using MercerStore.ViewModels
+@model CartViewModel
 
 <div class="container-fluid">
     <div class="row">
@@ -64,23 +65,23 @@
             <div class="col-lg-4 mb-3">
 
                 <div class="cart-summary p-3 sidebar h-100">
-                    <h5><span>Order Summary</span></h5>
+                    <h5><span>Заказ</span></h5>
 
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th class="text-end">Total</th>
+                                    <th>Продукт</th>
+                                    <th class="text-end">Стоимость</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.Items)
+                               @foreach (var item in Model.CartItems)
                                 {
                                     <tr>
                                         <td>
                                             @item.Name
-                                            <small>(@item.Price) x @item.Quantity</small>
+                                            <small>@item.Price</small>
                                         </td>
                                         <td class="text-end">@((item.Price * item.Quantity))</td>
                                     </tr>
@@ -88,7 +89,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="2" class="text-end">@Model.GrandTotal.ToString("C")</td>
+                                    <td colspan="2" class="text-end"><div class="product-price">@Model.CartTotalPrice.ToString("C0")</div></td>
                                 </tr>
                             </tfoot>
                         </table>

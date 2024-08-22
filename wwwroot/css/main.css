@@ -56,7 +56,7 @@ body {
 }
 
 a {
-    color: var(--text-color);
+    color: rgb(0,0,0);
     text-decoration: underline;
 }
 
@@ -66,6 +66,7 @@ textarea {
 
 a:hover {
     text-decoration: none;
+    color:var(--accent-color);
 }
 
 img {
@@ -75,11 +76,9 @@ img {
 ul .dropdown-item:active{
     background-color:var(--accent-color);
 }
-.btn,
-.dropdown-menu,
-.form-control,
-.form-select {
-    
+button:focus{
+    border:none!important;
+    box-shadow:none!important;
 }
 
     .form-control:focus,
@@ -196,28 +195,30 @@ ul.social-icons {
     list-style: none;
     margin-bottom: 0;
     padding: 0;
+    display: flex;
 }
 
-    ul.social-icons li {
-        margin-right: 10px;
-    }
+ul.social-icons li {
+    margin-right: 10px;
+}
 
-    ul.social-icons a {
-        background-color: var(--accent-color);
-        color: var(--contrast-color);
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        border-radius: 50%;
-        float: left;
-        text-align: center;
-        transition: all .3s;
-    }
+ul.social-icons a {
+    background-color: var(--accent-color);
+    color: var(--contrast-color);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .3s;
+    text-decoration: none; /* Убирает подчеркивание текста */
+}
 
-        ul.social-icons a:hover {
-            background-color: var(--contrast-color);
-            color: var(--accent-color);
-        }
+ul.social-icons a:hover {
+    background-color: var(--contrast-color);
+    color: var(--accent-color);
+}
 
 .header-top .btn {
     background-color: #fff;
@@ -233,7 +234,10 @@ ul.social-icons {
     .header-logo:hover {
         color: var(--contrast-color);
     }
+.p-cart-total-price{
+    margin-bottom:0px;
 
+}
 .cart-buttons .btn {
     color: var(--contrast-color);
     transition: all .3s;
@@ -242,7 +246,23 @@ ul.social-icons {
     .cart-buttons .btn:hover {
         border: 1px solid var(--contrast-color);
     }
-
+.cart-a-hover :hover{
+    color:var(--accent-color)!important;
+}
+.cart-grand-total-price {
+    color: var(--accent-color) !important;
+}
+.product-cart-name-td {
+    font-size: 14px;
+    text-align: left;
+    vertical-align: top;
+}
+.cart-tr-middle-text{
+    text-align:center;
+}
+#offcanvasNavbarLabel{
+    color:var(--accent-color);
+}
 .offcanvasCart-table .product-img-td {
     width: 70px;
     text-align: center;
@@ -265,9 +285,20 @@ ul.social-icons {
     vertical-align:text-bottom;
     
 }
-i.fa-regular.fa-circle-xmark {
-    font-size: 1.50rem;
+.remove-from-cart-button {
+    background: none;
+    border: none;
+    font-size: 1.20rem;
+    cursor: pointer;
+    padding-left: 8px;
     color: var(--accent-color);
+}
+.offcanvasCart-table .product-price-td, 
+.offcanvasCart-table .product-quantity-td, 
+.offcanvasCart-table .total-price-td 
+    {
+    white-space: nowrap;
+    text-align: right;
 
 }
 i.fa-regular.fa-circle-xmark :hover {
@@ -465,7 +496,7 @@ i.fa-regular.fa-circle-xmark:hover {
 
 .product-price {
     font-size: 18px;
-    color: var(--red-color);
+    color: var(--accent-color);
     font-weight: 600;
 }
 

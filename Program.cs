@@ -8,6 +8,7 @@ using MercerStore.Repository;
 using MercerStore.Helpers;
 using MercerStore.Services;
 using MercerStore.Repositories;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -17,6 +18,9 @@ builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(
 builder.Services.AddScoped<HttpContextAccessor>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ISKUUpdater, SKUUpdater>();
+builder.Services.AddScoped<ISKUService, SKUService>();
+builder.Services.AddScoped<ICartProductRepository, CartProductRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

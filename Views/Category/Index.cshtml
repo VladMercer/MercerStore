@@ -1,5 +1,5 @@
-﻿@model CategoryPageViewModel
-@using MercerStore.Models.ViewModels
+﻿@using MercerStore.Models.ViewModels
+@model CategoryPageViewModel
 @{
     ViewData["Title"] = Model.Category.Name;
 }
@@ -16,7 +16,6 @@
         </div>
     </div>
 </div>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-3 col-md-4">
@@ -32,7 +31,7 @@
                         <form action="">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="NVIDIA" id="nvidia">
-                                <label class="form-check-label" for="nvidia">NVIDIA</label>
+                                <label class="form-check-label" for="nvidia">Intel</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="AMD" id="amd">
@@ -46,25 +45,25 @@
                         <form action="">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="4" id="4gb">
-                                <label class="form-check-label" for="4gb">4 GB</label>
+                                <label class="form-check-label" for="4gb">4 ядра</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="8" id="8gb">
-                                <label class="form-check-label" for="8gb">8 GB</label>
+                                <label class="form-check-label" for="8gb">6 ядер</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="12" id="12gb">
-                                <label class="form-check-label" for="12gb">12 GB</label>
+                                <label class="form-check-label" for="12gb">8 ядер</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="16" id="16gb">
-                                <label class="form-check-label" for="16gb">16 GB</label>
+                                <label class="form-check-label" for="16gb">12 ядер</label>
                             </div>
                         </form>
                     </div>
                     <hr class="my-4">
                     <div class="filter-block">
-                        <span>Вендор</span>
+                        <!--<span>Вендор</span>
                         <form action="">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="MSI" id="msi">
@@ -78,12 +77,11 @@
                                 <input class="form-check-input" type="checkbox" value="Gigabyte" id="gigabyte">
                                 <label class="form-check-label" for="gigabyte">Gigabyte</label>
                             </div>
-                        </form>
+                        </form>-->
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="col-lg-9 col-md-8">
             <div class="row mb-3">
                 <div class="col-12">
@@ -166,6 +164,7 @@
                                 <h4>
                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
                                         @product.Name
+
                                     </a>
                                 </h4>
                                 <p class="product-excerpt">
@@ -174,13 +173,22 @@
                                 <div class="product-bottom-details d-flex justify-content-between">
                                     <div class="product-price">
                                         <small>@(product.Price + 400)</small>
-                                        @product.Price
+                                        @product.Price.ToString("C0")
+
                                     </div>
-                                    <div class="product-links">
-                                        <a href="#" class="btn btn-outline-secondary add-to-cart">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </a>
-                                    </div>
+
+                                    <form asp-controller="Cart" asp-action="AddToCart">
+                                        <div class="product-add2cart">
+                                            <div>
+                                                <input asp-for="@product.Id" type="hidden" name="productId" value="@product.Id" />
+                                                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                                                <input asp-for="@product.cartProduct.Quantity" name="quantity" type="hidden" class="form-control" value="1" />
+                                                <button type="submit" class="btn btn-outline-warning add-to-cart-button">
+                                                    <i class="fas fa-shopping-cart"></i> Купить
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

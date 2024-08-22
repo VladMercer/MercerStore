@@ -9,17 +9,21 @@ namespace MercerStore.Controllers
 {
 	[Authorize]
 	public class ProductController : Controller
-	{
-		private readonly IProductRepository _productRepository;
+    {
+        private readonly ISKUUpdater _skuUpdater;
+        private readonly IProductRepository _productRepository;
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly IPhotoService _photoService;
-
-		public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IPhotoService photoService)
-		{
-			_productRepository = productRepository;
-			_categoryRepository = categoryRepository;
-			_photoService = photoService;
-		}
+		private readonly ISKUService _skuService;
+        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository,
+			IPhotoService photoService, ISKUService skuService, ISKUUpdater skuUpdater)
+        {
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+            _photoService = photoService;
+            _skuService = skuService;
+            _skuUpdater = skuUpdater;
+        }
         public async Task<IActionResult> Details(int id)
         {
             var product = await _productRepository.GetProductByIdAsync(id);
@@ -39,6 +43,7 @@ namespace MercerStore.Controllers
 			product.Description = viewModel.Description;
 			product.MainImageUrl = photoResult.Url.ToString();
 			product.CategoryId = viewModel.CategoryId;
+			//product.SKU = _skuService.GenerateSKU(product);
 		}
 		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> CreateProduct()
@@ -68,7 +73,6 @@ namespace MercerStore.Controllers
 			}
 			else
 			{
-
 				MapProductDetails(product, viewModel, null);
 			}
 
@@ -76,6 +80,12 @@ namespace MercerStore.Controllers
 			_productRepository.Save();
 
 			return RedirectToAction("CreateProduct");
+		}
+		[Authorize(Roles = "Admin")]
+		public IActionResult UpdateSKUs()
+		{
+			_skuUpdater.UpdateSKUs();
+			return Ok("SKUs updated successfully");
 		}
 	}
 }

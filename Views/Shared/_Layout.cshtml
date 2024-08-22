@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,6 +12,7 @@
 	<link rel="stylesheet" href="~/owlcarousel/owl.carousel.min.css">
 	<link rel="stylesheet" href="~/owlcarousel/owl.theme.default.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 	@RenderSection("Styles", required: false)
 </head>
 
@@ -150,9 +150,7 @@
 								<li class="nav-item">
 									<a class="nav-link " asp-controller="AboutUs" asp-action="Index">О нас</a>
 								</li>
-								<li class="nav-item">
-									<a class="nav-link " asp-controller="Checkout" asp-action="Payment">Оплата</a>
-								</li>
+
 								<li class="nav-item">
 									<a class="nav-link " asp-controller="Info" asp-action="Index">Доставка</a>
 								</li>
@@ -168,15 +166,16 @@
 						</div>
 					</div>
 					<div>
-						<a href="#" class="btn p-1">
+					@* 	<a href="#" class="btn p-1">
 							<i class="fa-solid fa-heart"></i>
 							<span class="header-badge badge text-bg-warning cart-badge bg-warning ">3</span>
-						</a>
+						</a> *@
 
 						<button class="btn p-1" id="cart-open" type="button" data-bs-toggle="offcanvas2"
 								data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
 							<i class="fa-solid fa-cart-shopping"></i>
-							<span class="header-badge badge text-bg-warning cart-badge bg-warning ">5</span>
+							@await Component.InvokeAsync("CartItemCount")
+							<p class="p-cart-total-price">@await Component.InvokeAsync("CartTotalPrice")</p>	
 						</button>
 					</div>
 
@@ -184,65 +183,17 @@
 			</nav>
 		</div>
 		<!-- ./header-bottom -->
-
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
 			<div class="offcanvas-header">
 				<h5 class="offcanvas-title" id="offcanvasCartLabel">Корзина</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 			</div>
 			<div class="offcanvas-body">
-				<div class="table-responsive">
-					<table class="table offcanvasCart-table">
-						<tbody>
-							<tr>
-								<td class="product-img-td">
-									<a href="#"><img src="~/img/products/1.jpg" alt=""></a>
-								</td>
-								<td><a href="#">Product 1 Lorem ipsum dolor, sit amet consectetur adipisicing.</a></td>
-								<td>$65</td>
-								<td>&times;1</td>
-								<td>
-									<button class="btn btn-outline-warning"><i class="fa-regular fa-circle-xmark"></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="product-img-td">
-									<a href="#"><img src="~/img/products/2.jpg" alt=""></a>
-								</td>
-								<td><a href="#">Product 2</a></td>
-								<td>$80</td>
-								<td>&times;2</td>
-								<td>
-									<button class="btn btn-outline-warning"><i class="fa-regular fa-circle-xmark"></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="product-img-td">
-									<a href="#"><img src="~/img/products/3.jpg" alt=""></a>
-								</td>
-								<td><a href="#">Product 3</a></td>
-								<td>$100</td>
-								<td>&times;1</td>
-								<td>
-									<button class="btn btn-outline-warning"><i class="fa-regular fa-circle-xmark"></i></button>
-								</td>
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="4" class="text-end">Total:</td>
-								<td>$325</td>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
-
-				<div class="text-end mt-3">
-					<a asp-controller="Cart" asp-action="Index" class="btn btn-outline-warning" id="button-ofcanvas-cart">В корзину</a>
-					<a asp-controller="Checkout" asp-action="Payment" class="btn btn-outline-secondary" id="button-ofcanvas-checkout">Оплатить</a>
-				</div>
+				@await Component.InvokeAsync("ProductCart")
 			</div>
 		</div>
+	
+
 		<main role="main" class="main">
 
 			@RenderBody();
@@ -260,7 +211,7 @@
 									</h4>
 									<ul class="list-unstyled">
 										<li><a asp-controller="Index" asp-action="Index">Главная</a></li>
-										<li><a asp-controller="Info" asp-action="Index">Оплата</a></li>
+
 										<li><a asp-controller="AboutUs" asp-action="Index">Доставка</a></li>
 									</ul>
 								</div>
@@ -328,10 +279,7 @@
 	<script src="~/lib/bootstrap/js/bootstrap.bundle.js" asp-append-version="true"></script>
 	<script src="~/owlcarousel/owl.carousel.min.js" asp-append-version="true"></script>
 	<script src="~/js/main.js" asp-append-version="true"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" asp-append-version="true"></script>
 	@RenderSection("Scripts", required: false)
-
-
 </body>
-
-</html>
 
