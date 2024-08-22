@@ -3,7 +3,6 @@ using MercerStore.Models;
 using MercerStore.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing.Text;
 
 namespace MercerStore.Controllers
 {
@@ -56,9 +55,8 @@ namespace MercerStore.Controllers
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
             var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
-
-            // Фильтрация и сортировка товаров (фейковая пока)
-            switch (sortOrder)
+		
+			switch (sortOrder)
             {
                 case "name_asc":
                     products = products.OrderBy(p => p.Name);
@@ -77,7 +75,7 @@ namespace MercerStore.Controllers
                     break;
             }
             int totalItems = products.Count();
-            // Пагинация
+
             var pagedProducts = products.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
             var viewModel = new CategoryPageViewModel

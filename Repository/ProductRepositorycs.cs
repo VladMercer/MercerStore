@@ -15,7 +15,7 @@ namespace MercerStore.Data
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            return await _context.Products.Include(p => p.Category) 
+            return await _context.Products.Include(p => p.Category)
                                     .ToListAsync();
         }
 
@@ -25,7 +25,13 @@ namespace MercerStore.Data
                                     .Include(p => p.Category)
                                     .ToListAsync();
         }
-
+        public async Task<int?> GetCategoryByProductId(int productId)
+        {
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.Id == productId);
+            return product?.CategoryId;
+        }
         public async Task<Product> GetProductByIdAsync(int productId)
         {
             return await _context.Products.Include(p => p.Category)

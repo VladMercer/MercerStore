@@ -10,12 +10,12 @@ namespace MercerStore.Controllers
     public class UserController : Controller
     {
         private readonly HttpContextAccessor _httpContextAccessor;
-        private readonly IUserProfileRepository _repository;
+        private readonly IUserProfileRepository _profileRepository;
         private readonly AppDbContext _context;
         private readonly IPhotoService _photoService;
         public UserController(IUserProfileRepository repository, AppDbContext context, HttpContextAccessor httpContextAccessor, IPhotoService photoService)
         {
-            _repository = repository;
+            _profileRepository = repository;
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _photoService = photoService;
@@ -32,7 +32,7 @@ namespace MercerStore.Controllers
         public async Task<IActionResult> UserProfile()
         {
             var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var user = await _repository.GetUserByIdAsync(curUserId);
+            var user = await _profileRepository.GetUserByIdAsync(curUserId);
             var userProfileViewModel = new UserProfileViewModel()
             {
                 Id = curUserId,
@@ -48,7 +48,7 @@ namespace MercerStore.Controllers
         public async Task<IActionResult> EditUserProfile()
         {
             var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var user = await _repository.GetUserByIdAsync(curUserId);
+            var user = await _profileRepository.GetUserByIdAsync(curUserId);
             var userProfileViewModel = new UserProfileViewModel()
             {
                 Id = curUserId,
@@ -69,13 +69,13 @@ namespace MercerStore.Controllers
                 return View("EditUserProfile", userProfileViewModel);
 
             }
-            var user = await _repository.GetUserByIdAsyncNoTracking(userProfileViewModel.Id);
+            var user = await _profileRepository.GetUserByIdAsyncNoTracking(userProfileViewModel.Id);
 
             if (user.UserImgUrl == "" || user.UserImgUrl == null)
             {
                 var photoResult = await _photoService.AddPhotoAsync(userProfileViewModel.UserImage);
                 MapUserProfileEdit(user, userProfileViewModel, photoResult);
-                _repository.Update(user);
+                _profileRepository.Update(user);
                 return RedirectToAction("UserProfile");
             }
             else
@@ -91,10 +91,9 @@ namespace MercerStore.Controllers
                 }
                 var photoResult = await _photoService.AddPhotoAsync(userProfileViewModel.UserImage);
                 MapUserProfileEdit(user, userProfileViewModel, photoResult);
-                _repository.Update(user);
+                _profileRepository.Update(user);
                 return RedirectToAction("UserProfile");
             }
-
         }
     }
 }

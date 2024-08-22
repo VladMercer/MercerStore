@@ -1,42 +1,22 @@
-﻿using MercerStore.Interfaces;
+﻿using MercerStore;
+using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-
-
 public class CheckoutController : Controller
 {
-    private readonly IProductRepository _productRepository;
+    private readonly ICartProductRepository _cartProductRepository;
 
-    public CheckoutController(IProductRepository productRepository)
+    public CheckoutController(ICartProductRepository cartProductRepository)
     {
-        _productRepository = productRepository;
+        _cartProductRepository = cartProductRepository;
     }
 
-    public async Task<IActionResult> Payment()
+    public async Task<IActionResult> Index()
     {
-        var recentProducts = await _productRepository.GetAllProductsAsync();
-        var recentItems = recentProducts.OrderByDescending(p => p.Id).Take(3).ToList();
 
-        var cartItems = recentItems.Select(p => new CartItemViewModel
-        {
-            ProductId = p.Id,
-            Name = p.Name,
-            ImageUrl = p.MainImageUrl,
-            Price = p.Price,
-            Quantity = 1 
-        }).ToList();
-
-        var totalPrice = cartItems.Sum(item => item.Price * item.Quantity);
-
-        var cartViewModel = new CartViewModel
-        {
-            Items = cartItems,
-            TotalPrice = totalPrice,
-            Discount = 0, 
-            ShippingCost = 0 
-        };
-
+        var userId = User.GetUserId();
+        var cartViewModel = await _cartProductRepository.GetCartViewModel(userId);
         return View(cartViewModel);
     }
 }

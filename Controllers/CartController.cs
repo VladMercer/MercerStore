@@ -1,37 +1,64 @@
-﻿using MercerStore.Interfaces;
+﻿using MercerStore;
+
+using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 public class CartController : Controller
 {
-	private readonly IProductRepository _productRepository;
+    private readonly ICartProductRepository _cartProductRepository;
+    private readonly IProductRepository _productRepository;
+    public CartController(ICartProductRepository cartProductRepository, IProductRepository productRepository)
+    {
+        _productRepository = productRepository;
+        _cartProductRepository = cartProductRepository;
+    }
 
-	public CartController(IProductRepository productRepository)
-	{
-		_productRepository = productRepository;
-	}
+    public async Task<IActionResult> Index()
+    {
+        var userId = User.GetUserId();
+        var cartViewModel = await _cartProductRepository.GetCartViewModel(userId);
+        return View(cartViewModel);
+    }
+    public async Task<IActionResult> GetCartItemCount()
+    {
+        var userId = User.GetUserId();
+        var itemCount = await _cartProductRepository.GetCartItemCount(userId);
+        return Json(itemCount);
+    }
+    [HttpPost]
+    public async Task<IActionResult> AddToCart(int quantity, int productId, string returnUrl)
+    {
+        var userId = User.GetUserId();
+        await _cartProductRepository.AddToCartProduct(productId, userId, quantity);
 
-	public async Task<IActionResult> Index()
-	{
-		
-		var products = await _productRepository.GetLastProductsAsync(3);
+        if (!string.IsNullOrEmpty(returnUrl))
+        {
+            return Redirect(returnUrl);
+        }
+        return RedirectToAction("Index", "Home");
+    }
+    [HttpPost]
+    public async Task<IActionResult> RemoveFromCart(int productId, string returnUrl)
+    {
+        var userId = User.GetUserId();
+        await _cartProductRepository.RemoveFromCartProduct(productId, userId);
 
-		
-		var cartViewModel = new CartViewModel
-		{
-			Items = products.Select(p => new CartItemViewModel
-			{
-				ProductId = p.Id,
-				Name = p.Name,
-				ImageUrl = p.MainImageUrl,
-				Price = p.Price,
-				Quantity = 1
-			}).ToList(),
-			ShippingCost = 250, 
-			Discount = 300 
-		};
+        if (!string.IsNullOrEmpty(returnUrl) && returnUrl.Contains("Category"))
+        {
 
-		cartViewModel.TotalPrice = cartViewModel.Items.Sum(i => i.Price * i.Quantity);
+            var categoryId = await _productRepository.GetCategoryByProductId(productId);
 
-		return View(cartViewModel);
-	}
+            if (categoryId.HasValue)
+            {
+
+                return RedirectToAction("Index", "Category", new { categoryId = categoryId.Value });
+            }
+        }
+        if (!string.IsNullOrEmpty(returnUrl))
+        {
+            return Redirect(returnUrl);
+        }
+
+        return RedirectToAction("Index", "Home");
+    }
 }
