@@ -1,4 +1,5 @@
-﻿using MercerStore.Interfaces;
+﻿using MercerStore.Extentions;
+using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.ViewComponents

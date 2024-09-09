@@ -1,5 +1,4 @@
-﻿using MercerStore;
-
+﻿using MercerStore.Extentions;
 using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,17 +6,22 @@ public class CartController : Controller
 {
     private readonly ICartProductRepository _cartProductRepository;
     private readonly IProductRepository _productRepository;
-    public CartController(ICartProductRepository cartProductRepository, IProductRepository productRepository)
+    private readonly ILogger<CartController> _logger;
+    public CartController(ICartProductRepository cartProductRepository, IProductRepository productRepository,ILogger<CartController> logger)
     {
         _productRepository = productRepository;
         _cartProductRepository = cartProductRepository;
+        _logger = logger;
+        
     }
 
     public async Task<IActionResult> Index()
     {
+        _logger.LogInformation("ВОТ ТАКИЕ ПИРОГИ");
         var userId = User.GetUserId();
         var cartViewModel = await _cartProductRepository.GetCartViewModel(userId);
         return View(cartViewModel);
+        
     }
     public async Task<IActionResult> GetCartItemCount()
     {
@@ -43,17 +47,6 @@ public class CartController : Controller
         var userId = User.GetUserId();
         await _cartProductRepository.RemoveFromCartProduct(productId, userId);
 
-        if (!string.IsNullOrEmpty(returnUrl) && returnUrl.Contains("Category"))
-        {
-
-            var categoryId = await _productRepository.GetCategoryByProductId(productId);
-
-            if (categoryId.HasValue)
-            {
-
-                return RedirectToAction("Index", "Category", new { categoryId = categoryId.Value });
-            }
-        }
         if (!string.IsNullOrEmpty(returnUrl))
         {
             return Redirect(returnUrl);

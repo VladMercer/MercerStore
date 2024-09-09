@@ -1,11 +1,11 @@
-﻿using MercerStore;
+﻿using MercerStore.Extentions;
 using MercerStore.Interfaces;
 using MercerStore.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.ViewComponents
 {
-	public class ProductCartViewComponent : ViewComponent 
+    public class ProductCartViewComponent : ViewComponent 
 	{
 		private readonly ICartProductRepository _cartProductRepository;
 

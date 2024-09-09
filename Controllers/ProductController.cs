@@ -9,33 +9,35 @@ namespace MercerStore.Controllers
 {
 	[Authorize]
 	public class ProductController : Controller
-    {
-        private readonly ISKUUpdater _skuUpdater;
-        private readonly IProductRepository _productRepository;
+	{
+		private readonly ISKUUpdater _skuUpdater;
+		private readonly IProductRepository _productRepository;
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly IPhotoService _photoService;
 		private readonly ISKUService _skuService;
-        public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository,
-			IPhotoService photoService, ISKUService skuService, ISKUUpdater skuUpdater)
-        {
-            _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
-            _photoService = photoService;
-            _skuService = skuService;
-            _skuUpdater = skuUpdater;
-        }
-        public async Task<IActionResult> Details(int id)
-        {
-            var product = await _productRepository.GetProductByIdAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            product.Category = await _categoryRepository.GetCategoryByIdAsync(product.CategoryId);
-            return View(product);
-        }
+		private readonly IElasticSearchService _elasticsearchService;
+		public ProductController(IProductRepository productRepository, ICategoryRepository categoryRepository,
+			IPhotoService photoService, ISKUService skuService, ISKUUpdater skuUpdater, IElasticSearchService elasticsearchService)
+		{
+			_productRepository = productRepository;
+			_categoryRepository = categoryRepository;
+			_photoService = photoService;
+			_skuService = skuService;
+			_skuUpdater = skuUpdater;
+			_elasticsearchService = elasticsearchService;
+		}
+		public async Task<IActionResult> Details(int id)
+		{
+			var product = await _productRepository.GetProductByIdAsync(id);
+			if (product == null)
+			{
+				return NotFound();
+			}
+			product.Category = await _categoryRepository.GetCategoryByIdAsync(product.CategoryId);
+			return View(product);
+		}
 
-        private void MapProductDetails(Product product, CreateProductViewModel viewModel, ImageUploadResult photoResult)
+		private void MapProductDetails(Product product, CreateProductViewModel viewModel, ImageUploadResult photoResult)
 		{
 			product.Id = viewModel.Id;
 			product.Name = viewModel.Name;
@@ -77,6 +79,7 @@ namespace MercerStore.Controllers
 			}
 
 			_productRepository.AddProduct(product);
+			_elasticsearchService.IndexProductAsync(product);
 			_productRepository.Save();
 
 			return RedirectToAction("CreateProduct");
@@ -86,6 +89,14 @@ namespace MercerStore.Controllers
 		{
 			_skuUpdater.UpdateSKUs();
 			return Ok("SKUs updated successfully");
+		}
+		[Authorize(Roles = "Admin")]
+		[HttpGet]
+		public async Task<IActionResult> IndexAllProducts()
+		{
+			var products = await _productRepository.GetAllProductsAsync();
+			await _elasticsearchService.IndexProductsAsync(products);
+			return Ok("All products have been indexed successfully.");
 		}
 	}
 }
