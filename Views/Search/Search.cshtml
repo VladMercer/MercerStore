@@ -1,0 +1,24 @@
+﻿@using MercerStore.ViewModels
+@model IEnumerable<SearchProductVIewModel>
+
+<h2>Результаты поиска</h2>
+
+@if (!Model.Any())
+{
+    <p>Ничего не найдено.</p>
+}
+else
+{
+    <div class="product-list">
+        @foreach (var product in Model)
+        {
+            <div class="product-card">
+                <img src="@product.ImageUrl" alt="@product.Name" />
+                <h3>@product.Name</h3>
+                <p>@product.Description</p>
+                <p>Цена: @product.Price</p>
+                <a href="/Product/Details/@product.Id">Подробнее</a>
+            </div>
+        }
+    </div>
+}

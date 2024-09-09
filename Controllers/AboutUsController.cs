@@ -1,10 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nest;
 
 namespace MercerStore.Controllers
 {
     public class AboutUsController : Controller
     {
-        public IActionResult Index()
+        private readonly IElasticClient _elasticClient;
+
+		public AboutUsController(IElasticClient elasticClient)
+		{
+			_elasticClient = elasticClient;
+		}
+
+		public async Task<IActionResult> Index()
         {
             return View();
         }
