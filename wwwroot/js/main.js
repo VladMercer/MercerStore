@@ -9,7 +9,7 @@ const SearchComponent = () => {
     useEffect(() => {
         if (query.length < 2) {
             setResults([]);
-            setDropdownVisible(false); // Скрываем выпадающий список, если запрос короткий
+            setDropdownVisible(false); 
             return;
         }
 
@@ -18,7 +18,7 @@ const SearchComponent = () => {
                 const response = await fetch(`/Search/Search?query=${encodeURIComponent(query)}`);
                 const data = await response.json();
                 setResults(data);
-                setDropdownVisible(true); // Показываем выпадающий список при наличии результатов
+                setDropdownVisible(true); 
             } catch (error) {
                 console.error('Ошибка при получении данных:', error);
             }
@@ -29,7 +29,7 @@ const SearchComponent = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        window.location.href = `/Search/Search?query=${encodeURIComponent(query)}`; // Перенаправляем на страницу с результатами
+        window.location.href = `/Search/Search?query=${encodeURIComponent(query)}`; 
     };
 
 
@@ -44,7 +44,7 @@ const SearchComponent = () => {
                     placeholder="Поиск"
                     aria-label="Search"
                     aria-describedby="button-search"
-                    onFocus={() => setDropdownVisible(true)} // Показываем список при фокусе
+                    onFocus={() => setDropdownVisible(true)} 
                    
                 />
                 <button className="btn btn-outline-warning" type="submit" id="button-search">
@@ -62,10 +62,10 @@ const SearchComponent = () => {
                         >
                             <img src={product.imageUrl} alt={product.name} />
                             <div>
-                                {/* Используем dangerouslySetInnerHTML для подсветки */}
+                                
                                 <h5 dangerouslySetInnerHTML={{ __html: product.name }}></h5>
                                 <p>{product.description}</p>
-                                {/* <p className="text-muted">Цена: {product.price} ₽</p> */}
+                               
                             </div>
                         </div>
                     ))}
