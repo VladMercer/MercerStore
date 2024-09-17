@@ -917,3 +917,63 @@ footer ul.list-unstyled {
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
     color:#000;
 }
+.search-dropdown {
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1050; 
+    top: 100%; 
+    left: 0;
+    right: 0;
+}
+
+/* Стили для элемента поиска */
+.search-result-item {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s;
+    font-size: 14px; 
+}
+
+    .search-result-item:hover {
+        background-color: #f8f9fa; 
+    }
+
+    .search-result-item img {
+        border-radius: 4px;
+        max-width: 80px; 
+        max-height: 80px; 
+        margin-right: 10px;
+    }
+
+    .search-result-item h5 {
+        font-size: 16px; 
+        margin: 0;
+    }
+
+    .search-result-item p {
+        font-size: 12px;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis; 
+        max-height: 3.6em; 
+        line-height: 1.8em; 
+    }
+    .search-result-item .text-muted {
+        font-size: 16px; 
+        font-weight: bold;
+        color: var(--accent-color);
+    }
+.d-flex.input-group {
+    margin-bottom: 0;
+}
+
+.search-result-item {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s;
+}
+.highlighted {
+    color: var(--accent-color);
+    font-weight: bold;
+}

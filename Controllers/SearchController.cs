@@ -22,8 +22,9 @@ namespace MercerStore.Controllers
 		{
 			if (string.IsNullOrWhiteSpace(query))
 			{
-				return View(new List<SearchProductVIewModel>()); 
+				return Json(new List<SearchProductVIewModel>());
 			}
+
 			var products = await _elasticSearchService.SearchProductsAsync(query);
 
 			var productViewModels = products.Select(p => new SearchProductVIewModel
@@ -36,7 +37,7 @@ namespace MercerStore.Controllers
 				CategoryId = p.CategoryId
 			}).ToList();
 
-			return View(productViewModels);
+			return Json(productViewModels); 
 		}
 	}
 }
