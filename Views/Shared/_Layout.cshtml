@@ -106,15 +106,7 @@
 							</div>
 
 							<div class="col-sm-6 mt-2 mt-md-0">
-								<form asp-controller="Search" asp-action="Search" method="get">
-									<div class="input-group">
-										<input type="text" class="form-control" name="query" placeholder="Searching..."
-											   aria-label="Searching..." aria-describedby="button-search">
-										<button class="btn btn-outline-warning" type="submit" id="button-search">
-											<i class="fa-solid fa-magnifying-glass"></i>
-										</button>
-									</div>
-								</form>
+								<div id="search-root"></div>
 							</div>
 
 						</div>
@@ -166,16 +158,16 @@
 						</div>
 					</div>
 					<div>
-					@* 	<a href="#" class="btn p-1">
-							<i class="fa-solid fa-heart"></i>
-							<span class="header-badge badge text-bg-warning cart-badge bg-warning ">3</span>
+						@* 	<a href="#" class="btn p-1">
+						<i class="fa-solid fa-heart"></i>
+						<span class="header-badge badge text-bg-warning cart-badge bg-warning ">3</span>
 						</a> *@
 
 						<button class="btn p-1" id="cart-open" type="button" data-bs-toggle="offcanvas2"
 								data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
 							<i class="fa-solid fa-cart-shopping"></i>
 							@await Component.InvokeAsync("CartItemCount")
-							<p class="p-cart-total-price">@await Component.InvokeAsync("CartTotalPrice")</p>	
+							<p class="p-cart-total-price">@await Component.InvokeAsync("CartTotalPrice")</p>
 						</button>
 					</div>
 
@@ -192,7 +184,7 @@
 				@await Component.InvokeAsync("ProductCart")
 			</div>
 		</div>
-	
+
 
 		<main role="main" class="main">
 
@@ -276,10 +268,12 @@
 		<i class="fa-solid fa-angles-up"></i>
 	</button>
 	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-	<script src="~/lib/bootstrap/js/bootstrap.bundle.js" asp-append-version="true"></script>
-	<script src="~/owlcarousel/owl.carousel.min.js" asp-append-version="true"></script>
-	<script src="~/js/main.js" asp-append-version="true"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" asp-append-version="true"></script>
+<script src="~/lib/bootstrap/js/bootstrap.bundle.js" asp-append-version="true"></script>
+<script src="~/owlcarousel/owl.carousel.min.js" asp-append-version="true"></script>
+<script type="module" src="/js/main.js" asp-append-version="true"></script>
+<script src="/dist/bundle.js" asp-append-version="true"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" asp-append-version="true"></script>
+
 	@RenderSection("Scripts", required: false)
 </body>
 

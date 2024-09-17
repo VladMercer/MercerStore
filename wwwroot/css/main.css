@@ -917,3 +917,65 @@ footer ul.list-unstyled {
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
     color:#000;
 }
+/* Стили для выпадающего списка поиска */
+/* Стили для выпадающего списка поиска */
+.search-dropdown {
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1050; /* Убедитесь, что выпадающий список отображается поверх других элементов */
+    top: 100%; /* Позиционирование относительно родительского элемента */
+    left: 0;
+    right: 0;
+}
+
+/* Стили для элемента поиска */
+.search-result-item {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s;
+    font-size: 14px; /* Уменьшаем размер текста для описания */
+}
+
+    .search-result-item:hover {
+        background-color: #f8f9fa; /* Подсветка элемента при наведении */
+    }
+
+    .search-result-item img {
+        border-radius: 4px;
+        max-width: 80px; /* Увеличиваем максимальную ширину */
+        max-height: 80px; /* Увеличиваем максимальную высоту */
+        margin-right: 10px;
+    }
+
+    .search-result-item h5 {
+        font-size: 16px; /* Уменьшаем размер заголовка */
+        margin: 0;
+    }
+
+    .search-result-item p {
+        font-size: 12px;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Ограничиваем описание двумя строками */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis; /* Добавляем многоточие для длинных текстов */
+        max-height: 3.6em; /* Высота для двух строк текста */
+        line-height: 1.8em; /* Интерлиньяж для описания */
+    }
+    .search-result-item .text-muted {
+        font-size: 16px; /* Увеличиваем размер шрифта для цены */
+        font-weight: bold; /* Добавляем жирность */
+        color: var(--accent-color); /* Можно сделать цену более контрастной */
+    }
+.d-flex.input-group {
+    margin-bottom: 0;
+}
+
+.search-result-item {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s;
+}
+.highlighted {
+    color: var(--accent-color); /* Например, красный цвет для выделения */
+    font-weight: bold; /* Выделяем текст жирным, если нужно */
+}
