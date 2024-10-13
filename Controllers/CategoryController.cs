@@ -51,42 +51,14 @@ namespace MercerStore.Controllers
             return RedirectToAction("CreateCategory");
 
         }
-        public async Task<IActionResult> Index(int categoryId, string sortOrder, int pageNumber = 1, int pageSize = 9)
+        public async Task<IActionResult> Index(int categoryId)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
-            var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
-		
-			switch (sortOrder)
-            {
-                case "name_asc":
-                    products = products.OrderBy(p => p.Name);
-                    break;
-                case "name_desc":
-                    products = products.OrderByDescending(p => p.Name);
-                    break;
-                case "price_asc":
-                    products = products.OrderBy(p => p.Price);
-                    break;
-                case "price_desc":
-                    products = products.OrderByDescending(p => p.Price);
-                    break;
-                default:
-                    products = products.OrderBy(p => p.Id);
-                    break;
-            }
-            int totalItems = products.Count();
-
-            var pagedProducts = products.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
             var viewModel = new CategoryPageViewModel
             {
                 Category = category,
-                Products = pagedProducts,
                 SelectedCategoryId = categoryId,
-                SortOrder = sortOrder,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalPages = (int)Math.Ceiling((double)totalItems / pageSize),
             };
 
             return View(viewModel);

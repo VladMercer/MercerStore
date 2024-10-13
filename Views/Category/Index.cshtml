@@ -11,6 +11,7 @@
                 <ul>
                     <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
                     <li><span>@Model.Category.Name</span></li>
+                 
                 </ul>
             </nav>
         </div>
@@ -19,68 +20,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-3 col-md-4">
-            <div class="sidebar">
-                <button class="btn btn-outline-warning w-100 text-start collapse-filters-btn mb-3" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false"
-                        aria-controls="collapseExample">
-                    <i class="fa-solid fa-filter"></i> Фильтры
-                </button>
-                <div class="collapse collapse-filters" id="collapseFilters">
-                    <div class="filter-block">
-                        <span>Производитель</span>
-                        <form action="">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="NVIDIA" id="nvidia">
-                                <label class="form-check-label" for="nvidia">Intel</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="AMD" id="amd">
-                                <label class="form-check-label" for="amd">AMD</label>
-                            </div>
-                        </form>
-                    </div>
-                    <hr class="my-4">
-                    <div class="filter-block">
-                        <span>Память</span>
-                        <form action="">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="4" id="4gb">
-                                <label class="form-check-label" for="4gb">4 ядра</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="8" id="8gb">
-                                <label class="form-check-label" for="8gb">6 ядер</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="12" id="12gb">
-                                <label class="form-check-label" for="12gb">8 ядер</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="16" id="16gb">
-                                <label class="form-check-label" for="16gb">12 ядер</label>
-                            </div>
-                        </form>
-                    </div>
-                    <hr class="my-4">
-                    <div class="filter-block">
-                        <!--<span>Вендор</span>
-                        <form action="">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="MSI" id="msi">
-                                <label class="form-check-label" for="msi">MSI</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="ASUS" id="asus">
-                                <label class="form-check-label" for="asus">ASUS</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Gigabyte" id="gigabyte">
-                                <label class="form-check-label" for="gigabyte">Gigabyte</label>
-                            </div>
-                        </form>-->
-                    </div>
-                </div>
-            </div>
+           <div id="filter-root"></div>
         </div>
         <div class="col-lg-9 col-md-8">
             <div class="row mb-3">
@@ -100,125 +40,24 @@
             <hr class="my-4">
 
             <div class="row">
-                <div class="row">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">Сортировать:</span>
-                                <select class="form-select" aria-label="Sort by:" onchange="location = this.value;">
-                                    @{
-                                        var defaultSelected = string.IsNullOrEmpty(Model.SortOrder) ? "selected" : "";
-                                        var nameAscSelected = Model.SortOrder == "name_asc" ? "selected" : "";
-                                        var nameDescSelected = Model.SortOrder == "name_desc" ? "selected" : "";
-                                        var priceAscSelected = Model.SortOrder == "price_asc" ? "selected" : "";
-                                        var priceDescSelected = Model.SortOrder == "price_desc" ? "selected" : "";
-                                    }
-                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" defaultSelected>Стандартно</option>
-                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "name_asc", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" nameAscSelected>Имя (а-я)</option>
-                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "name_desc", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" nameDescSelected>Имя (я-а)</option>
-                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "price_asc", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" priceAscSelected>Цена (меньшего > большему)</option>
-                                    <option value="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = "price_desc", pageNumber = Model.PageNumber, pageSize = Model.PageSize })" priceDescSelected>Цена (большего > меньшему)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">Показывать:</span>
-                                @{
-                                    var pageSize9 = Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber, pageSize = 9 });
-                                    var pageSize15 = Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber, pageSize = 15 });
-                                    var pageSize30 = Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber, pageSize = 30 });
-                                    var pageSize45 = Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber, pageSize = 45 });
-
-                                    var pageSize9Selected = Model.PageSize == 9 ? "selected" : "";
-                                    var pageSize15Selected = Model.PageSize == 15 ? "selected" : "";
-                                    var pageSize30Selected = Model.PageSize == 30 ? "selected" : "";
-                                    var pageSize45Selected = Model.PageSize == 45 ? "selected" : "";
-                                }
-                                <select class="form-select" aria-label="Show:" onchange="location = this.value;">
-                                    <option value="@pageSize9" pageSize9Selected>9</option>
-                                    <option value="@pageSize15" pageSize15Selected>15</option>
-                                    <option value="@pageSize30" pageSize30Selected>30</option>
-                                    <option value="@pageSize45" pageSize45Selected>45</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-sm-6">
+                    <div id="category-sort-root"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="category-page-size-root"></div>
                 </div>
             </div>
 
-            <div class="row">
-                @foreach (var product in Model.Products)
-                {
-                    <div class="col-lg-4 col-sm-6 mb-3">
-                        <div class="product-card">
-                            <div class="product-card-offer">
-                                <div class="offer-hit">Hit</div>
-                                <div class="offer-new">New</div>
-
-                            </div>
-                            <div class="product-thumb">
-                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id"><img src="@product.MainImageUrl" alt=""></a>
-                            </div>
-                            <div class="product-details">
-                                <h4>
-                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
-                                        @product.Name
-
-                                    </a>
-                                </h4>
-                                <p class="product-excerpt">
-                                    @product.Description
-                                </p>
-                                <div class="product-bottom-details d-flex justify-content-between">
-                                    <div class="product-price">
-                                        <small>@(product.Price + 400)</small>
-                                        @product.Price.ToString("C0")
-
-                                    </div>
-
-                                    <form asp-controller="Cart" asp-action="AddToCart">
-                                        <div class="product-add2cart">
-                                            <div>
-                                                <input asp-for="@product.Id" type="hidden" name="productId" value="@product.Id" />
-                                                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
-                                                <input asp-for="@product.cartProduct.Quantity" name="quantity" type="hidden" class="form-control" value="1" />
-                                                <button type="submit" class="btn btn-outline-warning add-to-cart-button">
-                                                    <i class="fas fa-shopping-cart"></i> Купить
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
+            <div id="category-product-list-root"></div>
 
             <div class="d-flex justify-content-between flex-column flex-lg-row">
                 <div class="pagination mb-2 mb-lg-0">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item @(Model.PageNumber <= 1 ? "disabled" : "")">
-                                <a class="page-link" href="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber - 1, pageSize = Model.PageSize })" tabindex="-1" aria-disabled="@(Model.PageNumber <= 1)">Назад</a>
-                            </li>
-                            @for (int i = 1; i <= Model.TotalPages; i++)
-                            {
-                                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
-                                    <a class="page-link" href="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = i, pageSize = Model.PageSize })">@i</a>
-                                </li>
-                            }
-                            <li class="page-item @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")">
-                                <a class="page-link" href="@Url.Action("Index", new { categoryId = Model.SelectedCategoryId, sortOrder = Model.SortOrder, pageNumber = Model.PageNumber + 1, pageSize = Model.PageSize })" aria-disabled="@(Model.PageNumber >= Model.TotalPages)">Вперёд</a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <div id="category-pagination-root"></div>
                 </div>
-                <div class="total-products">
-                    Показано @((Model.PageNumber - 1) * Model.PageSize + 1) по @(Model.PageNumber * Model.PageSize > Model.Products.Count() ? Model.Products.Count() : Model.PageNumber * Model.PageSize) из @Model.Products.Count() (@Math.Ceiling((double)Model.Products.Count() / Model.PageSize) Страниц)
-                </div>
+                <div id="total-products-info-root"></div>
             </div>
         </div>
     </div>
-</div>
+</div> 
+
+                   

@@ -88,7 +88,7 @@ namespace MercerStore.Controllers
 		public IActionResult UpdateSKUs()
 		{
 			_skuUpdater.UpdateSKUs();
-			return Ok("SKUs updated successfully");
+			return Ok("SKUs обновление успешно");
 		}
 		[Authorize(Roles = "Admin")]
 		[HttpGet]
@@ -96,7 +96,7 @@ namespace MercerStore.Controllers
 		{
 			var products = await _productRepository.GetAllProductsAsync();
 			await _elasticsearchService.IndexProductsAsync(products);
-			return Ok("All products have been indexed successfully.");
+			return Ok("Все продукты были проиндексированны.");
 		}
 	}
 }

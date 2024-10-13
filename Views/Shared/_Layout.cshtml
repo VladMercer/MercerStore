@@ -94,7 +94,7 @@
 						</div>
 					</div>
 				</div>
-
+				<div id="root"></div>
 				<!-- ./header-top -->
 
 				<div class="header-middle bg-white py-4">
@@ -106,7 +106,7 @@
 							</div>
 
 							<div class="col-sm-6 mt-2 mt-md-0">
-								<div id="search-root"></div>
+								<div id="search-bar-root"></div>
 							</div>
 
 						</div>
@@ -163,28 +163,15 @@
 						<span class="header-badge badge text-bg-warning cart-badge bg-warning ">3</span>
 						</a> *@
 
-						<button class="btn p-1" id="cart-open" type="button" data-bs-toggle="offcanvas2"
-								data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-							<i class="fa-solid fa-cart-shopping"></i>
-							@await Component.InvokeAsync("CartItemCount")
-							<p class="p-cart-total-price">@await Component.InvokeAsync("CartTotalPrice")</p>
-						</button>
+						<div id="cart-header-root"></div>
 					</div>
 
 				</div>
 			</nav>
 		</div>
 		<!-- ./header-bottom -->
-		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
-			<div class="offcanvas-header">
-				<h5 class="offcanvas-title" id="offcanvasCartLabel">Корзина</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-			</div>
-			<div class="offcanvas-body">
-				@await Component.InvokeAsync("ProductCart")
-			</div>
-		</div>
-
+		<div id="cart-offcanvas-root"></div>
+		
 
 		<main role="main" class="main">
 
@@ -267,11 +254,13 @@
 	<button id="top">
 		<i class="fa-solid fa-angles-up"></i>
 	</button>
-	<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+	
+<script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
 <script src="~/lib/bootstrap/js/bootstrap.bundle.js" asp-append-version="true"></script>
 <script src="~/owlcarousel/owl.carousel.min.js" asp-append-version="true"></script>
-<script type="module" src="/js/main.js" asp-append-version="true"></script>
-<script src="/dist/bundle.js" asp-append-version="true"></script>
+<script src="~/dist/searchBar.bundle.js" asp-append-version="true"></script>
+<script src="~/dist/mainApp.bundle.js" asp-append-version="true"></script>
+<script src="~/js/main.js" asp-append-version="true"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" asp-append-version="true"></script>
 
 	@RenderSection("Scripts", required: false)

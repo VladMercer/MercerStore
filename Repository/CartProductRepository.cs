@@ -106,10 +106,21 @@ namespace MercerStore.Repository
             {
                 return;
             }
+
             var cartItem = await _context.CartProducts.SingleOrDefaultAsync(ci => ci.CartId == cart.Id && ci.ProductId == productId);
             if (cartItem != null)
             {
-                _context.CartProducts.Remove(cartItem);
+                if (cartItem.Quantity > 1)
+                {
+                   
+                    cartItem.Quantity -= 1;
+                }
+                else
+                {
+                  
+                    _context.CartProducts.Remove(cartItem);
+                }
+
                 await _context.SaveChangesAsync();
             }
         }

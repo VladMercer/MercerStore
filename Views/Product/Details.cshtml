@@ -39,20 +39,10 @@
                     <small>@(Model.Price + 400)</small>
                     @Model.Price.ToString("C0")
                 </div>
-                <form asp-controller="Cart" asp-action="AddToCart">
-                    <div class="product-add2cart">
-                        <div>
-                            <input asp-for="cartProduct.ProductId" type="hidden" name="productId" value="@Model.Id" />
-                            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
-                            <input asp-for="cartProduct.Quantity" name="quantity" type="hidden" class="form-control" value="1" />
-                            <button type="submit" class="btn btn-outline-warning add-to-cart-button">
-                                <i class="fas fa-shopping-cart"></i> Добавить в корзину
-                            </button>
-                        </div>
-                    </div>
-                </form>
 
-
+                <div>
+                    <div id="add-to-cart-root-@Model.Id" data-product-id="@Model.Id"></div>
+                </div>
 
                 <div class="row mt-3">
                     <div class="col-lg-4 mb-2">

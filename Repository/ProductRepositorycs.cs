@@ -47,7 +47,27 @@ namespace MercerStore.Data
 
 			return Save();
 		}
+		public async Task<IEnumerable<Product>> GetRandomProductsAsync(int count)
+		{
+			
+			var productIds = await _context.Products
+				.Select(p => p.Id)
+				.ToListAsync();
 
+			if (productIds.Count <= count)
+			{
+				return await _context.Products.ToListAsync();
+			}
+			var random = new Random();
+			var randomProductIds = productIds
+				.OrderBy(x => random.Next())  
+				.Take(count)                  
+				.ToList();
+
+			return await _context.Products
+				.Where(p => randomProductIds.Contains(p.Id))
+				.ToListAsync();
+		}
 		public bool UpdateProduct(Product product)
 		{
 			_context.Entry(product).State = EntityState.Modified;
@@ -70,6 +90,6 @@ namespace MercerStore.Data
 			return saved > 0 ? true : false;
 		}
 
-
+		
 	}
 }

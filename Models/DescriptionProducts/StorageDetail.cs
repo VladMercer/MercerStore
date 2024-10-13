@@ -38,6 +38,7 @@
         public string? Width { get; set; }
         public string? Thickness { get; set; }
         public int? WeightGrams { get; set; }
+
         public int ProductId { get; set; }
         public Product Product { get; set; }
     }

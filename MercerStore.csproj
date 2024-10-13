@@ -54,6 +54,7 @@
     <Folder Include="Data\Enum\" />
     <Folder Include="wwwroot\favicon\" />
     <Folder Include="wwwroot\owlcarousel\" />
+    <Folder Include="wwwroot\dist\" />
   </ItemGroup>
 
 </Project>

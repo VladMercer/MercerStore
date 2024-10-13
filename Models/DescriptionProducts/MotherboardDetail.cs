@@ -92,6 +92,7 @@
         public string? BoxWidth { get; set; }
         public string? BoxHeight { get; set; }
         public string? BoxWeight { get; set; }
+
         public int ProductId { get; set; }
         public Product Product { get; set; }
     }
