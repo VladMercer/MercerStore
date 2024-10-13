@@ -62,7 +62,7 @@
         public bool? HasBIOSSwitch { get; set; }
         public string? DimensionsBracket { get; set; }
 
-        // Внешний ключ для связи с Product
+      
         public int ProductId { get; set; }
         public Product Product { get; set; }
     }

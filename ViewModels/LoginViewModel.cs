@@ -5,7 +5,7 @@ namespace MercerStore.ViewModels
     public class LoginViewModel
     {
         [Display(Name = "Почта")]
-        [Required(ErrorMessage = "Email address is required")]
+        [Required(ErrorMessage = "Email обязателен")]
         public string EmailAddress { get; set; }
         [Required]
         [Display(Name = "Пароль")]

@@ -18,26 +18,5 @@ namespace MercerStore.Controllers
 		{
 			return View();
 		}
-		public async Task<IActionResult> Search(string query)
-		{
-			if (string.IsNullOrWhiteSpace(query))
-			{
-				return Json(new List<SearchProductVIewModel>());
-			}
-
-			var products = await _elasticSearchService.SearchProductsAsync(query);
-
-			var productViewModels = products.Select(p => new SearchProductVIewModel
-			{
-				Id = p.Id,
-				Name = p.Name,
-				Description = p.Description,
-				Price = p.Price,
-				ImageUrl = p.MainImageUrl,
-				CategoryId = p.CategoryId
-			}).ToList();
-
-			return Json(productViewModels); 
-		}
 	}
 }

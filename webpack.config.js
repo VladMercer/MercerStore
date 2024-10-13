@@ -1,24 +1,28 @@
 ﻿const path = require('path');
 
 module.exports = {
-    entry: './wwwroot/js/main.js',
+    entry: {
+        mainApp: './wwwroot/components/mainApp.jsx',
+        searchBar: './wwwroot/components/logic/searchBar/index.js',
+    },
     output: {
-        path: path.resolve(__dirname, 'wwwroot/dist'), 
-        filename: 'bundle.js', 
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'wwwroot/dist'),
     },
     module: {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                exclude: /node_modules/, 
-                use: {
-                    loader: 'babel-loader', 
-                },
+                exclude: /node_modules/,
+                use: 'babel-loader',
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
             },
         ],
     },
     resolve: {
         extensions: ['.js', '.jsx'],
     },
- 
 };

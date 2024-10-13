@@ -45,6 +45,7 @@
         public string? Width { get; set; }
         public string? Length { get; set; }
         public double? Weight { get; set; }
+
         public int ProductId { get; set; }
         public Product Product { get; set; }
     }

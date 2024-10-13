@@ -42,6 +42,7 @@
         // Шина и контроллеры
         public string? PCIeController { get; set; }
         public int? PCIeLanes { get; set; }
+
         public int ProductId { get; set; }
         public Product Product { get; set; }
     }

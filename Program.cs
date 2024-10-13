@@ -15,6 +15,7 @@ using System.Runtime.CompilerServices;
 using Serilog.Sinks.Elasticsearch;
 using System.Reflection;
 using MercerStore.Extentions;
+using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
@@ -29,6 +30,10 @@ builder.Services.AddScoped<ICartProductRepository, CartProductRepository>();
 builder.Services.AddScoped<IElasticSearchService, ElasticSearchService>();
 builder.Services.AddElasticSearch(builder.Configuration);
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+});
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -50,7 +55,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
        .AddCookie();
-configureLogging();
+ÑonfigureLogging();
 builder.Host.UseSerilog();
 
 var app = builder.Build();
@@ -62,22 +67,28 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-	app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage();
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    c.RoutePrefix = "swagger";
+});
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-void configureLogging() 
+void ÑonfigureLogging() 
 {
     var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     var configuration = new ConfigurationBuilder()

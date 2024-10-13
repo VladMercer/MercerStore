@@ -71,7 +71,7 @@ namespace RunGroopWebApp.Controllers
             var user = await _userManager.FindByEmailAsync(registerViewModel.Email);
             if (user != null)
             {
-                TempData["Error"] = "This email address is already in use";
+                TempData["Error"] = "Этот email уже используется";
                 return View(registerViewModel);
             }
 

@@ -18,17 +18,17 @@ public class SKUUpdater : ISKUUpdater
         var products = _context.Products.Where(p => p.SKU == null).ToList();
         if (products.Count == 0)
         {
-            Console.WriteLine("No products with null SKUs found.");
+            Console.WriteLine("Продуктов с null SKUs не найдено");
         }
         else
         {
             foreach (var product in products)
             {
                 product.SKU = _skuService.GenerateSKU(product);
-                Console.WriteLine($"Product {product.Id} updated with SKU {product.SKU}");
+                Console.WriteLine($"Product {product.Id} обновлено с SKU {product.SKU}");
             }
             _context.SaveChanges();
-            Console.WriteLine("SKUs updated successfully.");
+            Console.WriteLine("SKUs обновление успешно.");
         }
     }
 }
