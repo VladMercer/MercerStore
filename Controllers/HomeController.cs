@@ -23,7 +23,7 @@ namespace MercerStore.Controllers
 
 			var homePageViewModel = new HomePageViewModel
 			{
-				Products = products.Select(p => new ProductViewModel
+				Products = products.Select(p => new RandomProductViewModel
 				{
 					Id = p.Id,
 					Name = p.Name,
@@ -31,7 +31,7 @@ namespace MercerStore.Controllers
 					Descripton = p.Description,
 					Price = p.Price
 				}).ToList(),
-				RandomProducts = randomProducts.Select(r => new ProductViewModel
+				RandomProducts = randomProducts.Select(r => new RandomProductViewModel
 				{
 					Id = r.Id,
 					Name = r.Name,

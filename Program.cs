@@ -28,6 +28,7 @@ builder.Services.AddScoped<ISKUUpdater, SKUUpdater>();
 builder.Services.AddScoped<ISKUService, SKUService>();
 builder.Services.AddScoped<ICartProductRepository, CartProductRepository>();
 builder.Services.AddScoped<IElasticSearchService, ElasticSearchService>();
+builder.Services.AddScoped<IReviewProductRepository, ReviewProductRepostitory>();
 builder.Services.AddElasticSearch(builder.Configuration);
 
 builder.Services.AddSwaggerGen(c =>

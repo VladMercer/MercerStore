@@ -78,17 +78,19 @@ ul .dropdown-item:active{
     background-color:var(--accent-color);
 }
 
-
-    .form-control:focus,
-    .form-select:focus {
-        color: var(--text-color);
-        border-color: var(--accent-color);
-        box-shadow: none;
-        
-    }
+.modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+}
+.form-control:focus,
+.form-select:focus {
+    color: var(--text-color);
+    border-color: var(--accent-color);
+    box-shadow: none;
+}
 option:hover {
     background-color: var(--accent-color);
-    color: white; /* или другой цвет текста */
+    color: white;
 }
     .form-control::placeholder {
         color: var(--gray-color);
@@ -119,12 +121,24 @@ option:hover {
         background-color: var(--accent-color) !important;
     }
 
-
+.update-review-button  {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--accent-color);
+    padding-right: 4px;
 }
-.btn-danger{
-    background-color:#fff;
-    border-color:#fff;
+.remove-review-button {
+    background: none;
+    border: none;
     
+    cursor: pointer;
+    padding-left: 8px;
+    color: var(--accent-color);
+}
+.btn-danger {
+    background-color: #fff;
+    border-color: #fff;
 }
 .btn-danger:hover {
     background-color: #fff;
@@ -136,7 +150,7 @@ option:hover {
     background-color: #fff!important;
     border-color: #fff!important;
 }
-}
+
 /* ============================= General rules ============================ */
 .wrapper {
     min-height: 100%;
@@ -214,7 +228,7 @@ ul.social-icons a {
     align-items: center;
     justify-content: center;
     transition: all .3s;
-    text-decoration: none; /* Убирает подчеркивание текста */
+    text-decoration: none; 
 }
 
 ul.social-icons a:hover {
@@ -665,7 +679,13 @@ i.fa-regular.fa-circle-xmark:hover {
     display: flex;
     justify-content: space-between;
 }
-
+.review-buttons{
+    color:var(--accent-color);
+}
+.product-review-subheader {
+    display: flex;
+    justify-content: space-between;
+}
     .product-review-header .review-date {
         color: var(--gray-color);
     }
@@ -854,8 +874,7 @@ footer ul.list-unstyled {
 .product-content .input-group {
     width: 250px;
 }
-
-.product-content .card i {
+.card-title {
     color: var(--accent-color);
 }
 
@@ -1198,4 +1217,41 @@ h4 {
 .Toastify__close-button {
     color: var(--accent-color) !important;
     opacity: 1;
+}
+.product-content-details .modal{
+    z-index:1100;
+}
+
+.rating__group {
+    display: inline-block;
+    position: relative;
+    direction: rtl; 
+}
+
+.rating__star {
+    cursor: pointer;
+    font-size: 2em;
+    color: #ccc;
+    transition: color 0.2s ease-in-out;
+    z-index: 1; 
+}
+
+.rating__star-input {
+    display: none;
+}
+
+    .rating__star-input:checked ~ label i {
+        color: var(--accent-color);
+    }
+
+.rating__group:hover label i {
+    color: #ccc;
+}
+
+.rating__star-input:hover ~ .rating__star i,
+.rating__star-input:hover ~ .rating__star-input:checked ~ label i {
+    color: var(--accent-color);
+}
+.review-count-text{
+   color:var(--accent-color);
 }

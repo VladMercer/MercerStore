@@ -8,6 +8,8 @@ import CartAppWithPortals from './cart';
 import CategoryAppWithPortals from './logic/categoryPage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ReviewProvider } from './Review/ReviewContext';
+import ReviewAppWithPortals from './Review';
 
 
 const MainApp = () => (
@@ -15,10 +17,13 @@ const MainApp = () => (
     <CartProvider>
         <ProductProvider>
             <SearchProvider>
-                <CartAppWithPortals />
-                <CategoryAppWithPortals />
-                <SearchAppWithPortals />
-                <ToastContainer />
+                <ReviewProvider>
+                    <ReviewAppWithPortals />
+                    <CartAppWithPortals />
+                    <CategoryAppWithPortals />
+                    <SearchAppWithPortals />
+                    <ToastContainer />
+                </ReviewProvider>
             </SearchProvider>
         </ProductProvider>
     </CartProvider>
