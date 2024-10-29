@@ -29,7 +29,7 @@ namespace MercerStore.Models
         public CoolingSystemDetail? coolingSystem { get; set; }
         //Описание
         public List<ProductVariant>? ProductVariants { get; set; }
-        public List<Rating>? Ratings { get; set; }
+        public List<Review>? Reviews { get; set; }
 
     }
 }

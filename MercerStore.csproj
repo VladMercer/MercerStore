@@ -10,14 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Product\Index1.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\Product\Index1.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Yandex" Version="8.0.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />

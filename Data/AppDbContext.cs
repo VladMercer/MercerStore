@@ -12,13 +12,14 @@ namespace MercerStore.Data
         {
 
         }
-        public DbSet<AppUser> AppUsers { get; set; }
-        public DbSet<Brand> Brands { get; set; }
-        public DbSet<Cart> Carts { get; set; }
-        public DbSet<CartProduct> CartProducts { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }
+        public virtual DbSet<AppUser> AppUsers { get; set; }
+        public virtual DbSet<Brand> Brands { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<CartProduct> CartProducts { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductImage> ProductImages { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
         
     }
 }

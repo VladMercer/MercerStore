@@ -35,21 +35,23 @@ namespace MercerStore.Data
 		public async Task<Product> GetProductByIdAsync(int productId)
 		{
 			return await _context.Products.Include(p => p.Category)
-									.FirstOrDefaultAsync(p => p.Id == productId);
+			.Include(p => p.Reviews)
+			.ThenInclude(r => r.User)
+            .FirstOrDefaultAsync(p => p.Id == productId);
 		}
 		public async Task<IEnumerable<Product>> GetLastProductsAsync(int count)
 		{
 			return await _context.Products.OrderByDescending(p => p.Id).Take(count).ToListAsync();
 		}
-		public bool AddProduct(Product product)
+		public async Task<bool> AddProduct(Product product)
 		{
-			_context.Products.Add(product);
+			await _context.Products.AddAsync(product);
 
 			return Save();
 		}
 		public async Task<IEnumerable<Product>> GetRandomProductsAsync(int count)
 		{
-			
+
 			var productIds = await _context.Products
 				.Select(p => p.Id)
 				.ToListAsync();
@@ -60,8 +62,8 @@ namespace MercerStore.Data
 			}
 			var random = new Random();
 			var randomProductIds = productIds
-				.OrderBy(x => random.Next())  
-				.Take(count)                  
+				.OrderBy(x => random.Next())
+				.Take(count)
 				.ToList();
 
 			return await _context.Products
@@ -90,6 +92,21 @@ namespace MercerStore.Data
 			return saved > 0 ? true : false;
 		}
 
-		
+		public async Task<IEnumerable<Review>> GetAllReview(int productId)
+		{
+			return await _context.Reviews.Where(p => p.ProductId == productId).Include(r => r.User).ToListAsync();
+
+		}
+
+		public Task<IEnumerable<Review>> GetAllReviewByUser(string userId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<bool> AddReview(Review review)
+		{
+			await _context.Reviews.AddAsync(review);
+			return Save();
+		}
 	}
 }
