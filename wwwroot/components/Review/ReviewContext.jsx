@@ -6,7 +6,21 @@ function getProductIdFromPath() {
     const pathParts = window.location.pathname.split('/');
     return pathParts[pathParts.length - 1];
 }
-
+const notify = (message) => {
+    toast.success(message, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        theme: "colored",
+        transition: Slide,
+        className: 'my-custom-toast',
+        bodyClassName: 'my-custom-body',
+        progressClassName: 'my-custom-progress-bar'
+    });
+};
 export const ReviewProvider = ({ children }) => {
 
     const [currentUserId, setCurrentUserId] = useState('');
@@ -16,8 +30,8 @@ export const ReviewProvider = ({ children }) => {
     const [avgReviewRate, setAvgReviewRate] = useState(0);
     const [review, setReview] = useState([]);
 
-    const fetchAllData = async(productId) => {
-        
+    const fetchAllData = async (productId) => {
+
         fetchProductReviews(productId);
         fetchReviewsCount(productId);
         fetchAvgProductRate(productId);
@@ -26,129 +40,70 @@ export const ReviewProvider = ({ children }) => {
     }
 
     const fecthCurrentUserId = async () => {
-        try {
-            const response = await axios.get(`/ReviewApi/GetCurrentUserId`);
-            console.log('Текущий пользователь ID:', response.data);
-            setCurrentUserId(response.data);
-        } catch (error) {
-            console.error('Ошибка при получении ID пользователя:', error);
-        }
+
+        const response = await axios.get(`/ReviewApi/GetCurrentUserId`);
+        setCurrentUserId(response.data);
+
     };
 
     const fetchProductReviews = async (productId) => {
-        try {
-            console.log(`Запрашиваем отзывы для продукта с ID: ${productId}`);
-            const response = await axios.get(`/ReviewApi/GetProductReviews?productId=${productId}`);
-            console.log('Отзывы продукта:', response.data);
-            const newProductReviews = response.data.map(item => ({ ...item }));
-            setProductReviews([...newProductReviews]);
-        } catch (error) {
-            console.error('Ошибка при получении отзывов:', error);
-        }
+
+
+        const response = await axios.get(`/ReviewApi/GetProductReviews?productId=${productId}`);
+
+        const newProductReviews = response.data.map(item => ({ ...item }));
+        setProductReviews([...newProductReviews]);
+
     };
 
     const fetchReviewsCount = async (productId) => {
-        try {
-            console.log(`Запрашиваем количество отзывов для продукта с ID: ${productId}`);
-            const response = await axios.get(`/ReviewApi/GetCountProductReviews?productId=${productId}`);
-            console.log('Количество отзывов:', response.data);
-            setCountReviews(response.data);
-        } catch (error) {
-            console.error('Ошибка при получении количества отзывов:', error);
-        }
+
+
+        const response = await axios.get(`/ReviewApi/GetCountProductReviews?productId=${productId}`);
+
+        setCountReviews(response.data);
+
     };
 
     const fetchAvgProductRate = async (productId) => {
-        try {
-            console.log(`Запрашиваем среднюю оценку для продукта с ID: ${productId}`);
-            const response = await axios.get(`/ReviewApi/GetAvgRateProduct?productId=${productId}`);
-            console.log('Средняя оценка продукта:', response.data);
-            setAvgReviewRate(response.data);
-        } catch (error) {
-            console.error('Ошибка при получении средней оценки товара:', error);
-        }
+
+
+        const response = await axios.get(`/ReviewApi/GetAvgRateProduct?productId=${productId}`);
+
+        setAvgReviewRate(response.data);
+
     };
 
     const fetchCurrentReview = async (productId) => {
-        try {
-            const response = await axios.get(`/ReviewApi/GetReview?productId=${productId}`);
-            return response.data;
-        } catch (error) {
-            console.error('Ошибка при получении отзыва пользователя', error);
-        }
+
+        const response = await axios.get(`/ReviewApi/GetReview?productId=${productId}`);
+        return response.data;
+
     };
     const AddReview = async (reviewDto) => {
-        try {
-            console.log("ПОЛУЧЕННАЯ ДТОШКА", reviewDto)
-            await axios.post('/ReviewApi/AddReview', reviewDto);
-            toast.success('Отзыв оставлен!', {
-                position: "bottom-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Slide,
-                className: 'my-custom-toast',
-                bodyClassName: 'my-custom-body',
-                progressClassName: 'my-custom-progress-bar'
-            });
-            fetchAllData(productId);
-        }
-        catch (error) {
-            console.error('Ошибка при добавлении отзыва', error);
 
-        }
+
+        await axios.post('/ReviewApi/AddReview', reviewDto);
+        notify('Отзыв оставлен!');
+        fetchAllData(productId);
+
     };
 
     const UpdateReview = async (reviewDto) => {
-        try {
- 
-            await axios.put('/ReviewApi/UpdateReview', reviewDto);
-            toast.success('Отзыв успешно отредактирован!', {
-                position: "bottom-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Slide,
-                className: 'my-custom-toast',
-                bodyClassName: 'my-custom-body',
-                progressClassName: 'my-custom-progress-bar'
-            });
-            fetchAllData(productId);
-        } catch (error) {
-            console.error('Ошибка при обновлении отзыва:', error);
-        }
+
+        await axios.put('/ReviewApi/UpdateReview', reviewDto);
+        notify('Отзыв успешно изменён');
+        fetchAllData(productId);
+
     };
 
     const RemoveReview = async (productId) => {
-        try {
 
-            await axios.delete(`/ReviewApi/RemoveReview/${productId}`);
-            toast.success('Отзыв успешно удален!', {
-                position: "bottom-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Slide,
-                className: 'my-custom-toast',
-                bodyClassName: 'my-custom-body',
-                progressClassName: 'my-custom-progress-bar'
-            });
-            fetchAllData(productId);
-        } catch (error) {
-            console.error('Ошибка при удалении отзыва:', error);
-        }
+
+        await axios.delete(`/ReviewApi/RemoveReview/${productId}`);
+        notify('Отзыв успешно удален!');
+        fetchAllData(productId);
+
     };
     useEffect(() => {
         fetchAllData(productId);

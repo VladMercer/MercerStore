@@ -2,13 +2,7 @@
 //    document.getElementById('header-nav').classList.toggle('headernav-scroll', window.scrollY > 133);
 //});
 
-const offcanvasCartEl = document.getElementById('offcanvasCart');
-const offcanvasCart = new bootstrap.Offcanvas(offcanvasCartEl);
 
-document.getElementById('cart-open').addEventListener('click', (e) => {
-    e.preventDefault();
-    offcanvasCart.toggle();
-});
 
 $(document).ready(function () {
     $(".event-carousel").owlCarousel({

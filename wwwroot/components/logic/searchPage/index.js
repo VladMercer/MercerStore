@@ -1,21 +1,34 @@
-﻿import ReactDOM from 'react-dom';
+﻿import React, { useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import ProductListApp from './ProductListApp';
 import PaginationApp from './PaginationApp';
 import PageSizeSelectorApp from './PageSizeSelectorApp';
 import SortApp from './SortApp';
-import { createPortal } from 'react-dom';
+import { SearchProvider } from './SearchContext';
+import { CartProvider } from '../../cart/CartContext';
 
-const pageSizeRoot = document.getElementById('search-page-size-root');
-const paginationRoot = document.getElementById('search-pagination-root');
-const productListRoot = document.getElementById('search-product-list-root');
-const sortRoot = document.getElementById('search-sort-root');
 
-const SearchAppWithPortals = () => (
-            <>
-                {sortRoot && createPortal(<SortApp />, sortRoot)}
-                {pageSizeRoot && createPortal(<PageSizeSelectorApp />, pageSizeRoot)}
-                {paginationRoot && createPortal(<PaginationApp />, paginationRoot)}
-                {productListRoot && createPortal(<ProductListApp />, productListRoot)}
-            </>
-);
-export default SearchAppWithPortals;
+const renderInRoot = (elementId, Component, withCartProvider = false) => {
+    const rootElement = document.getElementById(elementId);
+    if (rootElement) {
+        const root = createRoot(rootElement);
+        root.render(
+            <SearchProvider>
+                {withCartProvider ? (
+                    <CartProvider>
+                        <Component />
+                    </CartProvider>
+                ) : (
+                    <Component />
+                )}
+            </SearchProvider>
+        );
+    }
+};
+
+renderInRoot('search-sort-root', SortApp);
+renderInRoot('search-page-size-root', PageSizeSelectorApp);
+renderInRoot('search-pagination-root', PaginationApp);
+renderInRoot('search-product-list-root', ProductListApp, true);
+
+

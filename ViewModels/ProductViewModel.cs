@@ -13,6 +13,6 @@ namespace MercerStore.ViewModels
         public string Description { get; set; }
         public Category Category { get; set; }
         public int CategoryId { get; set; }
-        public IEnumerable<Review> Reviews { get; set; }
+       
     }
 }

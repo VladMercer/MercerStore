@@ -2,8 +2,9 @@
 const webpack = require('webpack'); 
 
 module.exports = {
-    entry: {
-        mainApp: './wwwroot/components/mainApp.jsx',
+    entry: { 
+        cart: './wwwroot/features/cart/index.js',
+        category: './wwwroot/features/categoryPage/index.js',
         searchBar: './wwwroot/components/logic/searchBar/index.js',
     },
     output: {

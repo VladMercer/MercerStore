@@ -1,7 +1,7 @@
-﻿@model MercerStore.ViewModels.ProductDetailsViewModel
+﻿@model MercerStore.ViewModels.ProductViewModel
 
 @{
-    ViewData["Title"] = Model.productViewModel.Name;
+    ViewData["Title"] = Model.Name;
 }
 
 <div class="container">
@@ -10,8 +10,8 @@
             <nav class="breadcrumbs">
                 <ul>
                     <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
-                    <li><a asp-controller="Category" asp-action="Index" asp-route-categoryId="@Model.productViewModel.CategoryId">@Model.productViewModel.Category.Name</a></li>
-                    <li><span>@Model.productViewModel.Name</span></li>
+                    <li><a asp-controller="Category" asp-action="Index" asp-route-categoryId="@Model.CategoryId">@Model.Category.Name</a></li>
+                    <li><span>@Model.Name</span></li>
                 </ul>
             </nav>
         </div>
@@ -25,7 +25,7 @@
                 <div id="carouselExampleFade" class="carousel carousel-dark slide carousel-fade">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="@Model.productViewModel.MainImageUrl" class="d-block w-100" alt="@Model.productViewModel.Name">
+                            <img src="@Model.MainImageUrl" class="d-block w-100" alt="@Model.Name">
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                
         <div class="col-md-7 col-lg-8 mb-3">
             <div class="bg-white product-content p-3 h-100">
-                <h1><span>@Model.productViewModel.Name</span></h1>
+                <h1><span>@Model.Name</span></h1>
                 <div class="product-rating">
 
                     <div class="review-count-text">
@@ -48,12 +48,12 @@
                    
                 </div>
                 <div class="product-price">
-                    <small>@(Model.productViewModel.Price + 400)</small>
-                    @Model.productViewModel.Price.ToString("C0")
+                    <small>@(Model.Price + 400)</small>
+                    @Model.Price.ToString("C0")
                 </div>
 
                 <div>
-                    <div id="add-to-cart-root-@Model.productViewModel.ProductId" data-product-id="@Model.productViewModel.ProductId"></div>
+                    <div id="add-to-cart-root-@Model.ProductId" data-product-id="@Model.ProductId"></div>
                 </div>
 
                 <div class="row mt-3">
@@ -118,7 +118,7 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="description-tab-pane" role="tabpanel"
                              aria-labelledby="description-tab" tabindex="0">
-                            <p>@Model.productViewModel.Description</p>
+                            <p>@Model.Description</p>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel"
@@ -146,3 +146,4 @@
         </div>
     </div>
 </div>
+<div id="review-app-root"></div>

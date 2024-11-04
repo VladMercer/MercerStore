@@ -45,6 +45,12 @@
   <ItemGroup>
     <Folder Include="Data\Enum\" />
     <Folder Include="wwwroot\favicon\" />
+    <Folder Include="wwwroot\features\reviews\components\" />
+    <Folder Include="wwwroot\features\reviews\hooks\" />
+    <Folder Include="wwwroot\features\reviews\redux\" />
+    <Folder Include="wwwroot\features\searchPage\components\" />
+    <Folder Include="wwwroot\features\searchPage\hooks\" />
+    <Folder Include="wwwroot\features\searchPage\redux\" />
     <Folder Include="wwwroot\owlcarousel\" />
     <Folder Include="wwwroot\dist\" />
   </ItemGroup>

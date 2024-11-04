@@ -1,30 +1,28 @@
-﻿import React from 'react';
-import { createPortal } from 'react-dom';
+﻿import React, { useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import ProductReviewsApp from './ProductReviewsApp';
 import ReviewsCountApp from './ReviewsCountApp';
 import ReviewsAvgRateApp from './ReviewsAvgRateApp';
 import AddReviewApp from './AddReviewApp';
 import UpdateReviewApp from './UpdateReviewApp';
 import RemoveReviewApp from './RemoveReviewApp';
+import { ReviewProvider } from './ReviewContext';
 
+const renderInRoot = (elementId, Component) => {
+    const rootElement = document.getElementById(elementId);
+    if (rootElement) {
+        const root = createRoot(rootElement);
+        root.render(
+            <ReviewProvider>
+                <Component />
+            </ReviewProvider>
+        );
+    }
+};
 
-const productReviewsRoot = document.getElementById('product-reviews-root');
-const reviewsCountRoot = document.getElementById('reviews-count-root');
-const reviewsAvgRateRoot = document.getElementById('reviews-avg-rate-root');
-const addReviewRoot = document.getElementById('add-review-root');
-const updateReviewRoot = document.getElementById('update-review-root');
-const removeReviewwRoot = document.getElementById('remove-review-root');
-
-
-const ReviewAppWithPortals = () => (
-    <>
-        {productReviewsRoot && createPortal(<ProductReviewsApp />, productReviewsRoot)}
-        {reviewsCountRoot && createPortal(<ReviewsCountApp />, reviewsCountRoot)}
-        {reviewsAvgRateRoot && createPortal(<ReviewsAvgRateApp />, reviewsAvgRateRoot)}
-        {addReviewRoot && createPortal(<AddReviewApp />, addReviewRoot)}
-        {updateReviewRoot && createPortal(<UpdateReviewApp />, updateReviewRoot)}
-        {removeReviewwRoot && createPortal(<RemoveReviewApp />, removeReviewwRoot)}
-        
-    </>
-);
-export default ReviewAppWithPortals;
+renderInRoot('product-reviews-root', ProductReviewsApp);
+renderInRoot('reviews-count-root', ReviewsCountApp);
+renderInRoot('reviews-avg-rate-root', ReviewsAvgRateApp);
+renderInRoot('add-review-root', AddReviewApp);
+renderInRoot('update-review-root', UpdateReviewApp);
+renderInRoot('remove-review-root', RemoveReviewApp);

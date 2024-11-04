@@ -1,6 +1,13 @@
-﻿import ReactDOM from 'react-dom';
+﻿import { createRoot } from 'react-dom/client';
 import SearchBarApp from './SearchBarApp';
 
 const searhBarRoot = document.getElementById('search-bar-root');
 
-ReactDOM.render(<SearchBarApp />, searhBarRoot);
+if (searhBarRoot) {
+    const root = createRoot(searhBarRoot);
+    root.render(
+
+        <SearchBarApp />
+
+    );
+}

@@ -52,48 +52,16 @@ namespace MercerStore.Controllers
                 MainImageUrl = product.MainImageUrl,
                 Description = product.Description,
                 Category = product.Category,
-                CategoryId = product.CategoryId,
-                Reviews = reviews
+                CategoryId = product.CategoryId
             };
 
-            var createReviewViewModel = new CreateReviewViewModel
-            {
-                productId = product.Id
-            };
+         
 
-            var productDetailsViewModel = new ProductDetailsViewModel
-            {
-                productViewModel = productViewModel,
-                createReviewViewModel = createReviewViewModel
-            };
+          
 
-            return View(productDetailsViewModel);
+            return View(productViewModel);
         }
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Details(ProductDetailsViewModel  productDetailsViewModel)
-        {
-            var userId = HttpContext.User.GetUserId();
-            
-            var review = new Review
-            {
-                ProductId = productDetailsViewModel.createReviewViewModel.productId,
-                UserId = userId,
-                Value = productDetailsViewModel.createReviewViewModel.Value,
-                ReviewText = productDetailsViewModel.createReviewViewModel.ReviewText,
-                Date = DateTime.UtcNow,
-            };
-            _productRepository.AddReview(review);
-            var product = await _productRepository.GetProductByIdAsync(productDetailsViewModel.createReviewViewModel.productId);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return RedirectToAction("Details", new { id = product.Id });
-
-
-        }
+    
         private void MapProductDetails(Product product, CreateProductViewModel viewModel, ImageUploadResult photoResult)
         {
             product.Id = viewModel.Id;
