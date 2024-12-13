@@ -2,12 +2,14 @@
 const webpack = require('webpack'); 
 
 module.exports = {
-    entry: {
-        mainApp: './wwwroot/components/mainApp.jsx',
-        searchBar: './wwwroot/components/logic/searchBar/index.js',
+    entry: { 
+        mainApp: './wwwroot/mainApp.js',
+     
+        searchBar: './wwwroot/features/searchBar/index.js',
     },
     output: {
         filename: '[name].bundle.js',
+        chunkFilename: '[name].[contenthash].chunk.js',
         path: path.resolve(__dirname, 'wwwroot/dist'),
     },
     module: {

@@ -33,3 +33,4 @@ networks:
 
 volumes:
   elasticsearch-data:
+    name: elasticsearch-data

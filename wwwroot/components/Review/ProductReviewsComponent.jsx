@@ -4,7 +4,6 @@ import UpdateReviewApp from './UpdateReviewApp';
 import AddReviewApp from './AddReviewApp';
 
 const ProductReviewsComponent = ({ currentUserId, productReviews, review }) => {
-    console.log('Переданный review:', review);
     return (
         <div>
            

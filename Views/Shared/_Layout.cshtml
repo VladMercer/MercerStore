@@ -94,7 +94,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="root"></div>
+				
 				<!-- ./header-top -->
 
 				<div class="header-middle bg-white py-4">
@@ -172,7 +172,7 @@
 		<!-- ./header-bottom -->
 		<div id="cart-offcanvas-root"></div>
 		
-
+		<div id="main-app"></div>
 		<main role="main" class="main">
 
 			@RenderBody();
@@ -256,11 +256,12 @@
 	</button>
 	
 <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+
 <script src="~/lib/bootstrap/js/bootstrap.bundle.js" asp-append-version="true"></script>
 <script src="~/owlcarousel/owl.carousel.min.js" asp-append-version="true"></script>
-<script src="~/dist/searchBar.bundle.js" asp-append-version="true"></script>
-<script src="~/dist/mainApp.bundle.js" asp-append-version="true"></script>
 <script src="~/js/main.js" asp-append-version="true"></script>
+<script src="~/dist/searchBar.bundle.js" asp-append-version="true"></script>
+	<script src="~/dist/mainApp.bundle.js" asp-append-version="true"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" asp-append-version="true"></script>
 
 	@RenderSection("Scripts", required: false)
