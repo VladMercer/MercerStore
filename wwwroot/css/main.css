@@ -1222,36 +1222,69 @@ h4 {
     z-index:1100;
 }
 
-.rating__group {
+.update-review .rating__group {
     display: inline-block;
     position: relative;
     direction: rtl; 
 }
 
-.rating__star {
+.update-review .rating__star {
     cursor: pointer;
     font-size: 2em;
     color: #ccc;
     transition: color 0.2s ease-in-out;
-    z-index: 1; 
+    z-index: 1;
 }
 
-.rating__star-input {
+.update-review .rating__star-input {
     display: none;
 }
 
-    .rating__star-input:checked ~ label i {
+    .update-review .rating__star-input:checked ~ label i {
         color: var(--accent-color);
     }
 
-.rating__group:hover label i {
+.update-review .rating__group:hover label i {
     color: #ccc;
 }
 
-.rating__star-input:hover ~ .rating__star i,
-.rating__star-input:hover ~ .rating__star-input:checked ~ label i {
+.update-review .rating__star-input:hover ~ .rating__star i,
+.update-review .rating__star-input:hover ~ .rating__star-input:checked ~ label i {
     color: var(--accent-color);
 }
+
+.add-review .rating__group {
+    display: inline-block;
+    position: relative;
+    direction: rtl;
+}
+
+.add-review .rating__star {
+    cursor: pointer;
+    font-size: 2em;
+    color: #ccc;
+    transition: color 0.2s ease-in-out;
+    z-index: 1;
+}
+
+.add-review .rating__star-input {
+    display: none;
+}
+
+    .add-review .rating__star-input:checked ~ label i {
+        color: var(--accent-color);
+    }
+
+.add-review .rating__group:hover label i {
+    color: #ccc;
+}
+
+.add-review .rating__star-input:hover ~ .rating__star i,
+.add-review .rating__star-input:hover ~ .rating__star-input:checked ~ label i {
+    color: var(--accent-color);
+}
+
+
 .review-count-text{
    color:var(--accent-color);
 }

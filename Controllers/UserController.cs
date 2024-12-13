@@ -12,12 +12,11 @@ namespace MercerStore.Controllers
     {
         private readonly HttpContextAccessor _httpContextAccessor;
         private readonly IUserProfileRepository _profileRepository;
-        private readonly AppDbContext _context;
         private readonly IPhotoService _photoService;
-        public UserController(IUserProfileRepository repository, AppDbContext context, HttpContextAccessor httpContextAccessor, IPhotoService photoService)
+        public UserController(IUserProfileRepository repository, HttpContextAccessor httpContextAccessor, IPhotoService photoService)
         {
             _profileRepository = repository;
-            _context = context;
+           
             _httpContextAccessor = httpContextAccessor;
             _photoService = photoService;
         }

@@ -1,5 +1,5 @@
 ﻿import { toast, Slide } from 'react-toastify';
-const notifySuccess = (message) => {
+export const notifySuccess = (message) => {
     toast.success(message, {
         position: "bottom-right",
         autoClose: 3000,
@@ -14,5 +14,3 @@ const notifySuccess = (message) => {
         progressClassName: 'my-custom-progress-bar'
     });
 };
-
-export default notifySuccess;

@@ -1,18 +1,23 @@
 ﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { API_CATEGORIES_URL } from '../../../apiConfig';
 
 export const fetchPriceRange = createAsyncThunk(
     'category/fetchPriceRange',
     async (categoryId) => {
-        const response = await fetch(`/CategoryApi/price-range?categoryId=${categoryId}`);
-        return response.json();
+        const response = await axios.get(`${API_CATEGORIES_URL}/price-range/${categoryId}`);
+        return response.data;
+     
     }
 );
 
 export const fetchProducts = createAsyncThunk(
     'category/fetchProducts',
     async ({ categoryId, pageNumber, pageSize, sortOrder, minPrice, maxPrice }) => {
-        const response = await fetch(`/CategoryApi/products?categoryId=${categoryId}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&minPrice=${minPrice}&maxPrice=${maxPrice}`);
-        return response.json();
+        const page = pageNumber || 1;
+        const size = pageSize || 9;
+        const response = await axios.get(`${API_CATEGORIES_URL}/products/${categoryId}/${page}/${size}?sortOrder=${sortOrder}&minPrice=${minPrice}&maxPrice=${maxPrice}`);
+        return response.data;
     }
 );
 
@@ -30,13 +35,20 @@ const initialState = {
     selectedMaxPrice: 1000000,
     status: 'idle',
     error: null,
+    isLoaded: false,
+    isPriceRangeLoaded: false,
+    isPageReset: false
 };
 
 const categorySlice = createSlice({
     name: 'category',
     initialState,
     reducers: {
-        setPageNumber(state, action) {
+        setCategoryId(state, action) {
+            state.categoryId = action.payload;
+        },
+        setPageNumber: (state, action) => {
+
             state.pageNumber = action.payload;
         },
         setPageSize(state, action) {
@@ -51,6 +63,11 @@ const categorySlice = createSlice({
         setSelectedMaxPrice(state, action) {
             state.selectedMaxPrice = action.payload;
         },
+        setIsPageReset(state, action) {
+            state.isPageReset = action.payload;
+        },
+        
+      
     },
     extraReducers: (builder) => {
         builder
@@ -60,15 +77,26 @@ const categorySlice = createSlice({
                 state.maxPrice = maxPrice;
                 state.selectedMinPrice = minPrice;
                 state.selectedMaxPrice = maxPrice;
+                state.isPriceRangeLoaded = true;
             })
             .addCase(fetchProducts.fulfilled, (state, action) => {
                 const { products, totalItems, totalPages } = action.payload;
                 state.products = products;
                 state.totalProducts = totalItems;
                 state.totalPages = totalPages;
+                state.isLoaded = true;
             });
     },
 });
 
-export const { setPageNumber, setPageSize, setSortOrder, setSelectedMinPrice, setSelectedMaxPrice } = categorySlice.actions;
+export const {
+    setCategoryId,
+    setPageNumber,
+    setPageSize,
+    setSortOrder,
+    setSelectedMinPrice,
+    setSelectedMaxPrice,
+    setIsPageReset
+} = categorySlice.actions;
+
 export default categorySlice.reducer;

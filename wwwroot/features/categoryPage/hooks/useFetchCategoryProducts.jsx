@@ -1,20 +1,58 @@
-﻿import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchProducts } from '../redux/categorySlice';
+﻿import { useDispatch } from 'react-redux';
+import { useEffect, useRef } from 'react';
+import { fetchProducts, setPageNumber, setIsPageReset } from '../redux/categorySlice';
+import { useCategoryProducts } from './useCategoryProducts';
+import { useCategoryPriceRange } from './useCategoryPriceRange';
 
-export const useFetchCategoryProducts = () => {
+const useFetchCategoryProducts = () => {
     const dispatch = useDispatch();
-    const products = useSelector((state) => state.category.products);
-    const isLoaded = useSelector((state) => state.category.isLoaded);
-    const pageNumber = useSelector((state) => state.category.pageNumber);
-    const pageSize = useSelector((state) => state.category.pageSize);
-    const sortOrder = useSelector((state) => state.category.sortOrder);
+    const { selectedMinPrice, selectedMaxPrice, isPriceRangeLoaded } = useCategoryPriceRange();
+    const { categoryId, pageNumber, pageSize, sortOrder, isLoaded, isPageReset } = useCategoryProducts();
+
+    const prevSortOrder = useRef(sortOrder);
+    const prevMinPrice = useRef(selectedMinPrice);
+    const prevMaxPrice = useRef(selectedMaxPrice);
+
+    const dispatchFecthProducts = () => {
+        dispatch(fetchProducts({
+            categoryId,
+            pageNumber,
+            pageSize,
+            sortOrder,
+            minPrice: selectedMinPrice,
+            maxPrice: selectedMaxPrice,
+        }));
+    }
 
     useEffect(() => {
-        if (!isLoaded) {
-            dispatch(fetchProducts({ pageNumber, pageSize, sortOrder }));
-        }
-    }, [isLoaded, dispatch, pageNumber, pageSize, sortOrder]);
+        if (categoryId && isPriceRangeLoaded) {
 
-    return products;
+            if (!isLoaded) {
+                dispatchFecthProducts();
+            }
+
+            else if (pageNumber > 1 && (sortOrder !== prevSortOrder.current ||
+                selectedMinPrice !== prevMinPrice.current ||
+                selectedMaxPrice !== prevMaxPrice.current) && !isPageReset) {
+                dispatch(setPageNumber(1));
+                dispatch(setIsPageReset(true));
+
+            }
+
+            else if (!isPageReset || (isPageReset && pageNumber === 1)) {
+
+                dispatchFecthProducts();
+
+                if (isPageReset && pageNumber === 1) {
+                    dispatch(setIsPageReset(false));
+                }
+            }
+
+            prevSortOrder.current = sortOrder;
+            prevMinPrice.current = selectedMinPrice;
+            prevMaxPrice.current = selectedMaxPrice;
+        }
+    }, [isPriceRangeLoaded, pageNumber, pageSize, sortOrder, selectedMinPrice, selectedMaxPrice]);
 };
+
+export default useFetchCategoryProducts;

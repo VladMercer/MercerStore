@@ -51,6 +51,7 @@ namespace MercerStore.Controllers
             return RedirectToAction("CreateCategory");
 
         }
+        [HttpGet("category/{categoryId}")]
         public async Task<IActionResult> Index(int categoryId)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
