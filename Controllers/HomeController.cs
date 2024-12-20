@@ -1,11 +1,12 @@
 using MercerStore.Interfaces;
 using MercerStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Controllers
 {
-
-	public class HomeController : Controller
+    
+    public class HomeController : Controller
 	{
 
 		private readonly IProductRepository _productRepository;

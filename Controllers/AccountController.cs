@@ -1,4 +1,4 @@
-﻿using MercerStore.Data;
+﻿using MercerStore.Interfaces;
 using MercerStore.Models;
 using MercerStore.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -10,14 +10,27 @@ namespace RunGroopWebApp.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
-       
+        private readonly IJwtProvider _jwtProvider;
+        private readonly double _expiresDays;
 
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, IJwtProvider jwtProvider, IConfiguration configuration)
         {
-            _signInManager = signInManager;
+
             _userManager = userManager;
+            _jwtProvider = jwtProvider;
+            _expiresDays = double.Parse(configuration["JwtOptions:ExpiresDays"]);
+        }
+
+        private void AppendJwtTokenToResponse(string token)
+        {
+            Response.Cookies.Append("OohhCookies", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(_expiresDays)
+            });
         }
 
         [HttpGet]
@@ -34,6 +47,7 @@ namespace RunGroopWebApp.Controllers
 
             var user = await _userManager.FindByEmailAsync(loginViewModel.EmailAddress);
 
+
             if (user != null)
             {
 
@@ -41,11 +55,12 @@ namespace RunGroopWebApp.Controllers
                 if (passwordCheck)
                 {
 
-                    var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+
+                    var roles = new List<string> { "User" };
+                    var token = _jwtProvider.GenerateJwtToken(user.Id, roles);
+                    AppendJwtTokenToResponse(token);
+
+                    return RedirectToAction("Index", "Home");
                 }
 
                 TempData["Error"] = "Wrong credentials. Please try again";
@@ -84,10 +99,15 @@ namespace RunGroopWebApp.Controllers
 
             if (newUserResponse.Succeeded)
             {
-                await _userManager.AddToRoleAsync(newUser, "User");
+                var role = "User";
 
-                await _signInManager.SignInAsync(newUser, isPersistent: false);
+                await _userManager.AddToRoleAsync(newUser, role);
 
+				var roles = new List<string> { role };
+
+				var token = _jwtProvider.GenerateJwtToken(user.Id, roles);
+
+                AppendJwtTokenToResponse(token);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -102,8 +122,11 @@ namespace RunGroopWebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            Response.Cookies.Delete("OohhCookies");
             return RedirectToAction("Index", "Home");
+
         }
     }
+
 }
+

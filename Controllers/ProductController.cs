@@ -1,5 +1,4 @@
 ﻿using CloudinaryDotNet.Actions;
-using MercerStore.Extentions;
 using MercerStore.Interfaces;
 using MercerStore.Models;
 using MercerStore.Models.ViewModels;

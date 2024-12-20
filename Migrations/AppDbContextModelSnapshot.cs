@@ -34,7 +34,7 @@ namespace MercerStore.Migrations
 
                     b.HasIndex("CategoriesId");
 
-                    b.ToTable("BrandCategory");
+                    b.ToTable("BrandCategory", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.AppUser", b =>
@@ -125,7 +125,7 @@ namespace MercerStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.Cart", b =>
@@ -142,7 +142,7 @@ namespace MercerStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.CartProduct", b =>
@@ -169,7 +169,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("CartProducts");
+                    b.ToTable("CartProducts", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.Category", b =>
@@ -192,7 +192,7 @@ namespace MercerStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.DescriptionProducts.CaseDetail", b =>
@@ -370,7 +370,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("CaseDetail");
+                    b.ToTable("CaseDetail", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.DescriptionProducts.CoolingSystemDetail", b =>
@@ -495,7 +495,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("CoolingSystemDetail");
+                    b.ToTable("CoolingSystemDetail", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.DescriptionProducts.MotherboardDetail", b =>
@@ -717,7 +717,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("MotherboardDetail");
+                    b.ToTable("MotherboardDetail", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.DescriptionProducts.PowerSupplyDetail", b =>
@@ -883,7 +883,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("PowerSupplyDetail");
+                    b.ToTable("PowerSupplyDetail", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.DescriptionProducts.ProcessorDetail", b =>
@@ -989,7 +989,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProcessorDetail");
+                    b.ToTable("ProcessorDetail", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.DescriptionProducts.RamDetail", b =>
@@ -1078,7 +1078,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("RamDetail");
+                    b.ToTable("RamDetail", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.DescriptionProducts.StorageDetail", b =>
@@ -1170,7 +1170,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("StorageDetail");
+                    b.ToTable("StorageDetail", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.DescriptionProducts.VideoCardDetail", b =>
@@ -1313,7 +1313,7 @@ namespace MercerStore.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("VideoCardDetail");
+                    b.ToTable("VideoCardDetail", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.Product", b =>
@@ -1360,7 +1360,7 @@ namespace MercerStore.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.ProductImage", b =>
@@ -1382,7 +1382,7 @@ namespace MercerStore.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.ProductVariant", b =>
@@ -1406,7 +1406,7 @@ namespace MercerStore.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductVariant");
+                    b.ToTable("ProductVariant", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Models.Review", b =>
@@ -1439,7 +1439,7 @@ namespace MercerStore.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
