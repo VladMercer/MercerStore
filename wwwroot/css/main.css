@@ -34,20 +34,31 @@ body {
     border: 1px solid #888;
     width: 80%;
 }
-
+.btn-close:focus{
+    box-shadow: none !important;
+}
 .close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
+#cart-open:active {
+    border-color:var(--contrast-color);
+}
+#cart-open:disabled {
+    border: none;
+}
 
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+.navbar-toggler:focus{
+    box-shadow:none!important;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 /* ============================= Modals ============================ */
 body {
     min-width: 320px;

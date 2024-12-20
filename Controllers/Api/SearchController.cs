@@ -1,10 +1,12 @@
 ﻿using MercerStore.Interfaces;
 using MercerStore.Models;
 using MercerStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Controllers.Api
 {
+    [Authorize]
     [Route("api/search")]
     [ApiController]
     public class SearchController : ControllerBase

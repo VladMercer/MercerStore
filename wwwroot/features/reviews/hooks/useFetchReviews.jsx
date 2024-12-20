@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useReviews } from './useReviews';
 
 import {
-    fetchProductReviews, fetchCurrentReview, fetchReviewsCount, fetchAvgProductRate, setProductId, fetchCurrentUserId
+    fetchProductReviews, fetchCurrentReview, fetchReviewsCount, fetchAvgProductRate, setProductId, fetchCurrentUserId, fetchCurrentUserRoles
 } from '../redux/reviewSlice';
 
 const useFetchReviews = () => {
@@ -17,19 +17,17 @@ const useFetchReviews = () => {
      
     }
 
-   
-
     useEffect(() => {
         if (!isLoaded) {
             getProductIdFromPath();
         }
         if (isLoaded) {
-        
             dispatch(fetchProductReviews(productId));
             dispatch(fetchCurrentReview(productId));
             dispatch(fetchReviewsCount(productId));
             dispatch(fetchAvgProductRate(productId));
             dispatch(fetchCurrentUserId());
+            dispatch(fetchCurrentUserRoles());
         }
     }, [isLoaded]);
 };

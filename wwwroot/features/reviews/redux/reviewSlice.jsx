@@ -2,11 +2,11 @@
 import axios from 'axios';
 import { notifySuccess } from '../../notify';
 import { API_REVIEWS_URL } from '../../../apiConfig';
+import { API_USERS_URL } from '../../../apiConfig';
 
 export const fethAllReviewsInfo = createAsyncThunk(
     'reviews/fethAllReviewsInfo',
     async (productId, { dispatch }) => {
-        console.log("Отработал ФЕТЧ ВСЕГО");
         await dispatch(fetchProductReviews(productId));
         await dispatch(fetchCurrentReview(productId));
         await dispatch(fetchAvgProductRate(productId));
@@ -34,11 +34,17 @@ export const fetchCurrentReview = createAsyncThunk(
 export const fetchCurrentUserId = createAsyncThunk(
     'reviews/fetchCurrentUserId',
     async () => {
-        const response = await axios.get(`${API_REVIEWS_URL}/userId`);
+        const response = await axios.get(`${API_USERS_URL}/userId`);
         return response.data;
     }
 );
-
+export const fetchCurrentUserRoles = createAsyncThunk(
+    'reviews/fetchCurrentUserRoles',
+    async () => {
+        const response = await axios.get(`${API_USERS_URL}/roles`);
+        return response.data;
+    }
+);
 
 export const fetchReviewsCount = createAsyncThunk(
     'reviews/fetchReviewsCount',
@@ -92,6 +98,7 @@ const reviewSlice = createSlice({
         productReviews: [],
         avgReviewRate: 0,
         currentUserId: '',
+        userRoles:'',
         review: null,
         isLoaded: false,
     },
@@ -111,6 +118,9 @@ const reviewSlice = createSlice({
             })
             .addCase(fetchCurrentUserId.fulfilled, (state, action) => {
                 state.currentUserId = action.payload;
+            })
+            .addCase(fetchCurrentUserRoles.fulfilled, (state, action) => {
+                state.userRoles = action.payload;
             })
             .addCase(fetchReviewsCount.fulfilled, (state, action) => {
                 state.countReviews = action.payload;

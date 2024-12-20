@@ -1,4 +1,4 @@
-﻿using MercerStore.Extentions;
+﻿using MercerStore.Infrastructure.Extentions;
 using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;

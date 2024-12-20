@@ -1,14 +1,16 @@
 ﻿using CloudinaryDotNet.Actions;
 using MercerStore.Data;
-using MercerStore.Extentions;
+using MercerStore.Infrastructure.Extentions;
 using MercerStore.Interfaces;
 using MercerStore.Models;
 using MercerStore.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Controllers
 {
-    public class UserController : Controller
+	[Authorize(Policy = "BlacklistRolesPolicy")]
+	public class UserController : Controller
     {
         private readonly HttpContextAccessor _httpContextAccessor;
         private readonly IUserProfileRepository _profileRepository;

@@ -69,7 +69,7 @@ namespace MercerStore.Repository
                 .Include(c => c.CartProducts)
                 .ThenInclude(cp => cp.Product)
                 .SingleOrDefaultAsync(c => c.AppUserId == userId);
-
+            
             if (cart != null)
             {
                 var cartItems = cart.CartProducts.Select(cp => new CartProductViewModel

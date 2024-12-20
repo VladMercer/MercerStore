@@ -68,7 +68,7 @@
 												Личный кабинет
 											</button>
 											<ul class="dropdown-menu">
-												@if (User.Identity.IsAuthenticated)
+												@if (User.Identity.IsAuthenticated && (!User.IsInRole("Guest")))
 												{
 													<li>
 														<a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a>
@@ -76,7 +76,6 @@
 													<li>
 														<a class="dropdown-item" asp-controller="User" asp-action="UserProfile">Профиль</a>
 													</li>
-
 												}
 												else
 												{
@@ -84,7 +83,6 @@
 														<a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a>
 													</li>
 												}
-
 											</ul>
 										</div>
 									</div>

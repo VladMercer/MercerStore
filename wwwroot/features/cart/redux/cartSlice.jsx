@@ -1,8 +1,18 @@
 ﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { notifySuccess } from '../../notify';
 import { API_CARTS_URL } from '../../../apiConfig';
+import { API_AUTH_URL } from '../../../apiConfig';
 
+export const generateToken = createAsyncThunk('cart/generateToken', async () => {
+    const existingToken = Cookies.get("OhCookies");
+    if (existingToken) {
+        return;
+    }
+
+    const response = await axios.post(`${API_AUTH_URL}/generate-token`);
+});
 
 export const fetchCartData = createAsyncThunk('cart/fetchCartData', async () => {
     const response = await axios.get(`${API_CARTS_URL}/products`);
@@ -42,7 +52,7 @@ const cartSlice = createSlice({
                 state.itemCount = action.payload.cartItemCount;
                 state.isLoaded = true;
             })
-        
+
     },
 });
 

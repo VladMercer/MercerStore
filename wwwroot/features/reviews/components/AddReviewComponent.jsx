@@ -2,18 +2,24 @@
 import { useDispatch } from 'react-redux';
 import { useReviews } from '../hooks/useReviews';
 import { addReview } from '../redux/reviewSlice';
+import { notifySuccess } from '../../notify';
 
 const AddReviewComponent = () => {
     const dispatch = useDispatch();
-    const { productId, review } = useReviews();
-
+    const { productId, review, userRoles } = useReviews();
     const [showModal, setShowModal] = useState(false);
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState(1);
     const modalRef = useRef(null);
     const modalInstance = useRef(null);
 
-    const handleShow = () => setShowModal(true);
+    const handleShow = () => {
+        if (userRoles === 'Guest') {
+            notifySuccess('Для оставления отзыва необходимо авторизоваться.');
+            return;
+        }
+        setShowModal(true);
+    };
 
     const handleClose = () => {
         if (modalInstance.current) modalInstance.current.hide();

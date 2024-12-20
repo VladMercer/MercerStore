@@ -1,20 +1,23 @@
 ﻿using MercerStore.DTOs;
-using MercerStore.Extentions;
+using MercerStore.Infrastructure.Extentions;
 using MercerStore.Interfaces;
 using MercerStore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Controllers.Api
 {
+    [Authorize]
     [Route("api/reviews")]
     [ApiController]
     public class ReviewsController : ControllerBase
     {
         private readonly IReviewProductRepository _reviewProductRepository;
-
-        public ReviewsController(IReviewProductRepository reviewProductRepository)
+        private readonly IUserIdentifierService _userIdentifierService;
+        public ReviewsController(IReviewProductRepository reviewProductRepository, IUserIdentifierService userIdentifierService = null)
         {
             _reviewProductRepository = reviewProductRepository;
+            _userIdentifierService = userIdentifierService;
         }
         [HttpGet("reviews/{productId}")]
         public async Task<IActionResult> GetProductReviews(int productId)
@@ -29,7 +32,7 @@ namespace MercerStore.Controllers.Api
             {
                 ProductId = r.ProductId,
                 UserId = r.UserId,
-                UserName = r.User.UserName,
+                UserName = r.User?.UserName ?? "Гость",
                 Value = r.Value,
                 ReviewText = r.ReviewText,
                 Date = r.Date
@@ -50,21 +53,12 @@ namespace MercerStore.Controllers.Api
             return Ok(result);
         }
 
-        [HttpGet("userId")]
-        public IActionResult GetCurrentUserId()
-        {
-            var currentUser = HttpContext.User.GetUserId();
-            if (currentUser == null)
-            {
-                return BadRequest();
-            }
-            return Ok(currentUser);
-        }
+        
 
         [HttpGet("user-review/{productId}")]
         public async Task<IActionResult> GetReview(int productId)
         {
-            var userId = HttpContext.User.GetUserId();
+            var userId = _userIdentifierService.GetCurrentIdentifier();
             var reviewId = await _reviewProductRepository.GetReviewId(userId, productId);
             var review = await _reviewProductRepository.GetReviewById(reviewId);
             return Ok(review);
@@ -72,16 +66,17 @@ namespace MercerStore.Controllers.Api
         [HttpPost("review")]
         public async Task<IActionResult> AddReview(CreateReviewDto reviewDto)
         {
-            var userId = HttpContext.User.GetUserId();
-            var existingReview = await _reviewProductRepository.GetReviewId(userId, reviewDto.ProductId);
+            var userId = _userIdentifierService.GetCurrentIdentifier();
+
+			var existingReview = await _reviewProductRepository.GetReviewId(userId, reviewDto.ProductId);
             if (existingReview != 0)
             {
                 return BadRequest("Пользователь уже оставил отзыв для этого товара.");
             }
             var review = new Review
             {
-                UserId = userId,
-                ReviewText = reviewDto.ReviewText,
+				UserId = userId,
+				ReviewText = reviewDto.ReviewText,
                 ProductId = reviewDto.ProductId,
                 Value = reviewDto.Value,
                 Date = DateTime.UtcNow
@@ -97,7 +92,7 @@ namespace MercerStore.Controllers.Api
         [HttpDelete("review/{productId}")]
         public async Task<IActionResult> RemoveReview(int productId)
         {
-            var userId = HttpContext.User.GetUserId();
+            var userId = _userIdentifierService.GetCurrentIdentifier();
             var reviewId = await _reviewProductRepository.GetReviewId(userId, productId);
             await _reviewProductRepository.DeleteReview(reviewId);
             return Ok();
@@ -106,7 +101,7 @@ namespace MercerStore.Controllers.Api
         [HttpPut("review")]
         public async Task<IActionResult> UpdateReview([FromBody]CreateReviewDto reviewDto)
         {
-            var userId = HttpContext.User.GetUserId();
+            var userId = _userIdentifierService.GetCurrentIdentifier();
             var reviewId = await _reviewProductRepository.GetReviewId(userId, reviewDto.ProductId);
             var review = await _reviewProductRepository.GetReviewById(reviewId);
 
