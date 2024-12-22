@@ -8,5 +8,6 @@ namespace MercerStore.Models
         public string AppUserId { get; set; }
 
         public List<CartProduct> CartProducts { get; set; }
+
     }
 }

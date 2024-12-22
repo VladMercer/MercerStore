@@ -170,5 +170,29 @@
         <member name="M:MercerStore.Migrations.AddDateTimeToReview.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:MercerStore.Migrations.AddOrders">
+            <inheritdoc />
+        </member>
+        <member name="M:MercerStore.Migrations.AddOrders.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MercerStore.Migrations.AddOrders.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MercerStore.Migrations.AddOrders.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:MercerStore.Migrations.OrderProductList">
+            <inheritdoc />
+        </member>
+        <member name="M:MercerStore.Migrations.OrderProductList.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MercerStore.Migrations.OrderProductList.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MercerStore.Migrations.OrderProductList.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

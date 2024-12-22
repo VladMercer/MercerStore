@@ -61,7 +61,7 @@ const CartOffcanvasComponent = () => {
                         </div>
                         <div className="text-end mt-3 d-flex justify-content-between fixed-bottom-buttons">
                             <a href="/cart" className="btn btn-outline-warning" id="button-offcanvas-cart">Перейти в корзину</a>
-                            <a href="/checkout" className="btn btn-outline-warning" id="button-offcanvas-checkout">Оформить заказ</a>
+                            <a href="/order" className="btn btn-outline-warning" id="button-offcanvas-checkout">Оформить заказ</a>
                         </div>
                     </>
                 ) : (

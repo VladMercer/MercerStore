@@ -3,6 +3,7 @@ using System;
 using MercerStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MercerStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241220180557_AddOrders")]
+    partial class AddOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace MercerStore.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Adress")
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -1324,9 +1327,12 @@ namespace MercerStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderId"));
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Adress")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
@@ -1337,9 +1343,6 @@ namespace MercerStore.Migrations
                     b.Property<string>("GuestId")
                         .HasColumnType("text");
 
-                    b.Property<int>("OrderProductListId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
@@ -1349,52 +1352,9 @@ namespace MercerStore.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("OrderProductListId");
+                    b.HasIndex("CartId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.OrderProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OrderProductListId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderProductListId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderProducts");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.OrderProductList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrderProductLists");
                 });
 
             modelBuilder.Entity("MercerStore.Models.Product", b =>
@@ -1779,32 +1739,13 @@ namespace MercerStore.Migrations
 
             modelBuilder.Entity("MercerStore.Models.Order", b =>
                 {
-                    b.HasOne("MercerStore.Models.OrderProductList", "OrderProductList")
+                    b.HasOne("MercerStore.Models.Cart", "Cart")
                         .WithMany()
-                        .HasForeignKey("OrderProductListId")
+                        .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("OrderProductList");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.OrderProduct", b =>
-                {
-                    b.HasOne("MercerStore.Models.OrderProductList", "OrderProductList")
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("OrderProductListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderProductList");
-
-                    b.Navigation("Product");
+                    b.Navigation("Cart");
                 });
 
             modelBuilder.Entity("MercerStore.Models.Product", b =>
@@ -1924,11 +1865,6 @@ namespace MercerStore.Migrations
             modelBuilder.Entity("MercerStore.Models.Cart", b =>
                 {
                     b.Navigation("CartProducts");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.OrderProductList", b =>
-                {
-                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("MercerStore.Models.Product", b =>

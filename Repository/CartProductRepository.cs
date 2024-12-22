@@ -133,5 +133,10 @@ namespace MercerStore.Repository
             }
             return 0;
         }
-    }
+
+		public async Task<Cart> GetCartForUserId(string userId)
+		{
+            return await _context.Carts.FirstAsync(u => u.AppUserId == userId);
+		}
+	}
 }
