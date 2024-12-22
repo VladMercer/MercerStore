@@ -103,7 +103,7 @@ const CartPageComponent = () => {
                         </div>
 
                         <div className="d-grid">
-                            <a href="/Checkout" className="btn btn-outline-warning">Оформить заказ</a>
+                            <a href="/Order" className="btn btn-outline-warning">Оформить заказ</a>
                         </div>
                     </div>
                 </div>

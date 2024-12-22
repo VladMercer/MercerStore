@@ -8,5 +8,6 @@ namespace MercerStore.Interfaces
         Task RemoveFromCartProduct(int productId, string userId);
         Task<CartViewModel> GetCartViewModel(string userId);
         Task<int> GetCartItemCount(string userId);
+        Task<Cart> GetCartForUserId(string userId);
     }
 }

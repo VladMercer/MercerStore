@@ -29,7 +29,7 @@ namespace MercerStore.Controllers
             user.Email = userProfileViewModel.EmailAddress;
             user.PhoneNumber = userProfileViewModel.PhoneNumber;
             user.UserImgUrl = photoResult.Url.ToString();
-            user.Adress = userProfileViewModel.Address;
+            user.Address = userProfileViewModel.Address;
         }
         public async Task<IActionResult> UserProfile()
         {
@@ -42,7 +42,7 @@ namespace MercerStore.Controllers
                 EmailAddress = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 UserImgUrl = user.UserImgUrl,
-                Address = user.Adress
+                Address = user.Address
             };
             return View(userProfileViewModel);
         }
@@ -58,7 +58,7 @@ namespace MercerStore.Controllers
                 EmailAddress = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 UserImgUrl = user.UserImgUrl,
-                Address = user.Adress
+                Address = user.Address
             };
             return View(userProfileViewModel);
         }

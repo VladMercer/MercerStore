@@ -34,6 +34,7 @@ builder.Services.AddScoped<IReviewProductRepository, ReviewProductRepostitory>()
 builder.Services.AddElasticSearch(builder.Configuration);
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IUserIdentifierService, UserIdentifierService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 builder.Services.AddSwaggerGen(options =>
 {
