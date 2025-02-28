@@ -1,4 +1,4 @@
-﻿using MercerStore.Models;
+﻿using MercerStore.Models.Carts;
 
 namespace MercerStore.Interfaces
 {

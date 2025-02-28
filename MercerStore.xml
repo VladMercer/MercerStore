@@ -16,12 +16,23 @@
             <param name="minPrice">Минимальная цена</param>
             <returns>Список продуктов</returns>
         </member>
+        <member name="M:MercerStore.Controllers.Api.ProductsController.GetAllProducts(System.Nullable{System.Int32},System.Int32,System.Int32,System.Nullable{MercerStore.Data.Enum.Product.AdminProductSortOrder},System.Nullable{MercerStore.Data.Enum.Product.AdminProductFilter})">
+            <summary>
+            Получить фильтрованные продукты.
+            </summary>
+            <param name="categoryId">ID категории</param>
+            <param name="sortOrder">Сортировки</param>
+            <param name="pageNumber">Номер страницы</param>
+            <param name="pageSize">Количество продуктов на странице</param>
+            <param name="filter">фильтры</param>
+            <returns>Список продуктов</returns>
+        </member>
         <member name="M:MercerStore.Controllers.Api.SearchController.Search(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             Найти и отфильтровать продукты.
             </summary>
             <param name="query">запрос</param>
-            <param name="sortOrder">Сортировка: "name_desc", "price_asc", "price_desc"</param>
+            <param name="sortOrder">Сортировка: "name_asc", "name_desc", "price_asc", "price_desc"</param>
             <param name="pageNumber">Номер страницы</param>
             <param name="pageSize">Количество продуктов на странице</param>
             <returns>Список найденных продуктов</returns>
@@ -38,160 +49,100 @@
         <member name="M:MercerStore.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:MercerStore.Migrations.fix1">
+        <member name="T:MercerStore.Migrations.updateProductPricing">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.fix1.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.updateProductPricing.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.fix1.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.updateProductPricing.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.fix1.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:MercerStore.Migrations.updateProductPricing.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:MercerStore.Migrations.addingAddress">
+        <member name="T:MercerStore.Migrations.AddUserDataCreated">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addingAddress.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserDataCreated.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addingAddress.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserDataCreated.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addingAddress.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserDataCreated.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:MercerStore.Migrations.categoryImg">
+        <member name="T:MercerStore.Migrations.AddLastActivity">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.categoryImg.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddLastActivity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.categoryImg.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddLastActivity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.categoryImg.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:MercerStore.Migrations.AddLastActivity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:MercerStore.Migrations.deleteContent">
+        <member name="T:MercerStore.Migrations.AddUserRolesRelations">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.deleteContent.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserRolesRelations.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.deleteContent.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserRolesRelations.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.deleteContent.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserRolesRelations.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:MercerStore.Migrations.addSKU">
+        <member name="T:MercerStore.Migrations.AddUserNavigationToOrder">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKU.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserNavigationToOrder.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKU.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserNavigationToOrder.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKU.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:MercerStore.Migrations.AddUserNavigationToOrder.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:MercerStore.Migrations.addSKUnull">
+        <member name="T:MercerStore.Migrations.AddOfflineSales">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKUnull.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddOfflineSales.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKUnull.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddOfflineSales.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKUnull.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:MercerStore.Migrations.AddOfflineSales.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:MercerStore.Migrations.deleteSKU">
+        <member name="T:MercerStore.Migrations.AddSuppliersAndInvoices">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.deleteSKU.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddSuppliersAndInvoices.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.deleteSKU.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddSuppliersAndInvoices.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.deleteSKU.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:MercerStore.Migrations.AddSuppliersAndInvoices.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
-        <member name="T:MercerStore.Migrations.addSKUnull1">
+        <member name="T:MercerStore.Migrations.AddInvoiceEditDate">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKUnull1.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddInvoiceEditDate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKUnull1.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:MercerStore.Migrations.AddInvoiceEditDate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:MercerStore.Migrations.addSKUnull1.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:MercerStore.Migrations.abc12">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.abc12.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.abc12.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.abc12.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:MercerStore.Migrations.AddReviewModel">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddReviewModel.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddReviewModel.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddReviewModel.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:MercerStore.Migrations.AddDateTimeToReview">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddDateTimeToReview.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddDateTimeToReview.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddDateTimeToReview.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:MercerStore.Migrations.AddOrders">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddOrders.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddOrders.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.AddOrders.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:MercerStore.Migrations.OrderProductList">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.OrderProductList.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.OrderProductList.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:MercerStore.Migrations.OrderProductList.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:MercerStore.Migrations.AddInvoiceEditDate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

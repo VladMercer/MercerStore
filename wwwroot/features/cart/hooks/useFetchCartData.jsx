@@ -1,6 +1,6 @@
 ﻿import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchCartData, generateToken } from '../redux/cartSlice';
+import { fetchCartData, generateToken, sendHeartbeat } from '../redux/cartSlice';
 
 const useFetchCartData = () => {
     const dispatch = useDispatch();
@@ -13,6 +13,14 @@ const useFetchCartData = () => {
 
         }
     }, [isLoaded, dispatch]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            dispatch(sendHeartbeat());
+        }, 60000); 
+
+        return () => clearInterval(interval);
+    }, [dispatch]);
 
     return items;
 };

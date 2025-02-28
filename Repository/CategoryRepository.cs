@@ -1,9 +1,7 @@
 ﻿using MercerStore.Data;
 using MercerStore.Interfaces;
-using MercerStore.Models;
+using MercerStore.Models.Products;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MercerStore.Repositories
 {
@@ -26,28 +24,25 @@ namespace MercerStore.Repositories
             return await _context.Categories.FindAsync(id);
         }
 
-        public bool AddCategory(Category category)
+        public async Task<Category> AddCategory(Category category)
         {
             _context.Categories.Add(category);
-            return Save();
+            await _context.SaveChangesAsync();
+            return category;
         }
 
-        public bool UpdateCategory(Category category)
+        public async Task UpdateCategory(Category category)
         {
             _context.Categories.Update(category);
-            return Save();
+            await _context.SaveChangesAsync();
         }
 
-        public bool DeleteCategory(Category category)
+        public async Task DeleteCategory(int categoryId)
         {
-            _context.Categories.Remove(category);
-            return Save();
+            await _context.Categories.FindAsync(categoryId);
+            await _context.SaveChangesAsync();
         }
 
-        public bool Save()
-        {
-            var saved = _context.SaveChanges();
-            return saved > 0 ? true : false;
-        }
+
     }
 }

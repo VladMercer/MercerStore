@@ -1,5 +1,6 @@
 ﻿using MercerStore.Data;
 using MercerStore.Interfaces;
+using Nest;
 using System.Globalization;
 
 public class SKUUpdater : ISKUUpdater

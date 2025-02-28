@@ -5,7 +5,7 @@ import useFetchCategoryProducts from '../hooks/useFetchCategoryProducts';
 const ProductListComponent = () => {
     useFetchCategoryProducts();
     const { products } = useCategoryProducts();
-   
+
     return (
         <div className="row">
             {products && products.length > 0 ? (
@@ -25,8 +25,21 @@ const ProductListComponent = () => {
                                     ></a>
                                 </h4>
                                 <p className="product-excerpt">{product.description}</p>
-                                <div className="product-bottom-details d-flex justify-content-between">
-                                    <div className="product-price">{product.price}₽</div>
+                                <div className="product-bottom-details d-flex justify-content-between align-items-center">
+                                    {product.discountedPrice ? (
+                                        <div className="price-container">
+                                            <small className="old-price-card">
+                                                {product.price.toLocaleString()}₽
+                                            </small>
+                                            <div className="product-price">
+                                                {product.discountedPrice.toLocaleString()}₽
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="product-price">
+                                            {product.price.toLocaleString()}₽
+                                        </div>
+                                    )}
                                     <AddToCartButton productId={product.id} />
                                 </div>
                             </div>

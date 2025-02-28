@@ -20,117 +20,140 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-5 col-lg-4 mb-3">
-            <div class="bg-white h-100">
-                <div id="carouselExampleFade" class="carousel carousel-dark slide carousel-fade">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="@Model.MainImageUrl" class="d-block w-100" alt="@Model.Name">
+        <div class="col-12 mb-3">
+            <div class="bg-white p-3 h-100 rounded-3">
+              
+                <div class="row">
+                    <div class="col-md-5 col-lg-4">
+                        <div id="carouselExampleFade" class="carousel carousel-dark slide carousel-fade">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="@Model.MainImageUrl" class="d-block w-100 rounded-3" alt="@Model.Name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-lg-8">
+                        <h1><span>@Model.Name</span></h1>
+                        <div class="product-rating">
+                            <div class="review-count-text p-2">
+                                <div id="reviews-avg-rate-root"></div>
+                                <div id="reviews-count-root"></div>
+                            </div>
+                        </div>
+                        <div class="p-1">
+                            <h6>
+                                <span class="product-SKU">Код товара: @Model.SKU</span>
+                            </h6>
+                        </div>
+                        <div class="p-1">
+                            <h6>
+                                <span class="product-status">Доступность: @Model.Status</span>
+                            </h6>
+                        </div>
+                        <div class="product-price p-1">
+                            @if (Model.DiscountPrice.HasValue)
+                            {
+                                <h2>
+                                    @Model.DiscountPrice?.ToString("C0")
+                                    <small class="old-price">
+                                        @Model.Price.ToString("C0")
+                                    </small>
+                                </h2>
+                            }
+                            else
+                            {
+                                <h2>
+                                    @Model.Price.ToString("C0")
+                                </h2>
+                            }
+                        </div>
+
+                        <div class="add-to-cart-botton p-2">
+                            <div id="add-to-cart-root-@Model.ProductId" data-product-id="@Model.ProductId"></div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-lg-4 mb-2">
+                                <div class="card h-100 rounded-3">
+                                  
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="fa-solid fa-shield-halved"></i> Гарантия
+                                        </h5>
+                                        <ul class="list-unstyled">
+                                            <li>Гарантия 1 год</li>
+                                            <li>Возвращение товара в течение 14 дней</li>
+                                            <li>Гарантия качества</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-2">
+                                <div class="card h-100 rounded-3">
+                                   
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fa-solid fa-truck-fast"></i> Доставка</h5>
+                                        <ul class="list-unstyled">
+                                            <li>Доставка по всей стране</li>
+                                            <li>Доставка почтой</li>
+                                            <li>Самовывоз</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-2">
+                                <div class="card h-100 rounded-3">
+                                  
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="fa-regular fa-credit-card"></i> Оплата</h5>
+                                        <ul class="list-unstyled">
+                                            <li>Наличный расчет</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
- 
 
-               
-        <div class="col-md-7 col-lg-8 mb-3">
-            <div class="bg-white product-content p-3 h-100">
-                <h1><span>@Model.Name</span></h1>
-                <div class="product-rating">
+        <div class="col-12">
+            <div class="bg-white p-4 h-100 product-content-details rounded-3">
+             
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                                data-bs-target="#description-tab-pane" type="button" role="tab"
+                                aria-controls="description-tab-pane" aria-selected="true">
+                            Описание товара
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab"
+                                data-bs-target="#reviews-tab-pane" type="button" role="tab"
+                                aria-controls="reviews-tab-pane" aria-selected="false">
+                            Отзывы
+                        </button>
+                    </li>
+                </ul>
 
-                    <div class="review-count-text">
-                        <div id="reviews-avg-rate-root"></div>
-                        <div id="reviews-count-root"></div>
-                    </div>
-                       
-                   
-                   
-                </div>
-                <div class="product-price">
-                    <small>@(Model.Price + 400)</small>
-                    @Model.Price.ToString("C0")
-                </div>
-
-                <div>
-                    <div id="add-to-cart-root-@Model.ProductId" data-product-id="@Model.ProductId"></div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-lg-4 mb-2">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="fa-solid fa-shield-halved"></i> Гарантия
-                                </h5>
-                                <ul class="list-unstyled">
-                                    <li>Гарантия 1 год</li>
-                                    <li>Возвращение товара в течение 14 дней</li>
-                                    <li>Гарантия качества</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 mb-2">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fa-solid fa-truck-fast"></i> Доставка</h5>
-                                <ul class="list-unstyled">
-                                    <li>Доставка по всей стране</li>
-                                    <li>Доставка почтой</li>
-                                    <li>Самовывоз</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 mb-2">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title"><i class="fa-regular fa-credit-card"></i> Оплата</h5>
-                                <ul class="list-unstyled">
-                                    <li>Наличный расчет</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-content-details bg-white p-4 mt-3">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
-                                    data-bs-target="#description-tab-pane" type="button" role="tab"
-                                    aria-controls="description-tab-pane" aria-selected="true">
-                                Описание товара
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="reviews-tab" data-bs-toggle="tab"
-                                    data-bs-target="#reviews-tab-pane" type="button" role="tab"
-                                    aria-controls="reviews-tab-pane" aria-selected="false">
-                                Отзывы
-                            </button>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="description-tab-pane" role="tabpanel"
-                             aria-labelledby="description-tab" tabindex="0">
-                            <p>@Model.Description</p>
-                        </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="description-tab-pane" role="tabpanel"
+                         aria-labelledby="description-tab" tabindex="0">
+                        <p>@Model.Description</p>
                     </div>
                     <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel"
                          aria-labelledby="reviews-tab" tabindex="0">
-
                         <div id="add-review-root"></div>
                         <div id="product-reviews-root"></div>
 
                         <div class="modal fade" id="reviewModal" tabindex="-1"
                              aria-labelledby="reviewModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg">
-                                <div class="modal-content">
+                                <div class="modal-content rounded-3">
+                                  
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-4" id="reviewModalLabel">Оставьте отзыв</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -141,7 +164,6 @@
                         </div>
                     </div>
                 </div>
-            
             </div>
         </div>
     </div>
