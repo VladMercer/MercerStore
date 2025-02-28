@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MercerStore.Helpers;
+using MercerStore.Models.Orders;
+using MercerStore.Models.Products;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace MercerStore.ViewModels
 {
@@ -17,8 +21,17 @@ namespace MercerStore.ViewModels
         [Display(Name = "Фото")]
         public IFormFile? UserImage { get; set; }
         public string? UserImgUrl { get; set; }
-        public string DefaultUserImgUrl { get; set; } = "/img/Default/ppHwy5fH-lg.jpg";
         [Display(Name = "Адрес")]
         public string? Address { get; set; }
+        public List<Order?> Orders { get; set; } = [];
+
+        public List<Review?> Reviews { get; set; } = [];
+        [Display(Name = "Дата создания")]
+        [ModelBinder(BinderType = typeof(DateTimeModelBinder))]
+        public DateTime? CreateDate { get; set; }
+        [Display(Name = "Количество отзывов")]
+        public int? CountReviews { get; set; }
+        [Display(Name = "Количество заказов")]
+        public int? CountOrders { get; set; }
     }
 }

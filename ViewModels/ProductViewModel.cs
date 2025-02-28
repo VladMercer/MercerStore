@@ -1,5 +1,5 @@
-﻿using MercerStore.Models;
-using Microsoft.Build.Evaluation;
+﻿using MercerStore.Models.Products;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MercerStore.ViewModels
 {
@@ -13,6 +13,8 @@ namespace MercerStore.ViewModels
         public string Description { get; set; }
         public Category Category { get; set; }
         public int CategoryId { get; set; }
-       
+        public string Status { get; set; }
+        public decimal? DiscountPrice { get; set; }
+
     }
 }

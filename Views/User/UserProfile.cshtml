@@ -1,8 +1,10 @@
 ﻿@using MercerStore.ViewModels
 @model UserProfileViewModel
+
 @{
     ViewData["Title"] = "Профиль";
 }
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -14,26 +16,149 @@
             </nav>
         </div>
     </div>
-<div class="container mt-3">
-    <div class="profile-card">
-        <div class="row">
-            <div class="col-md-4 text-center">
-                <img class="profile-image" src="@(string.IsNullOrEmpty(Model.UserImgUrl) ? Model.DefaultUserImgUrl : Model.UserImgUrl)" alt="User Image">
+
+    <div class="container-fluid mt-3">
+        <div class="bg-white p-4 shadow-sm rounded">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img class="profile-image img-thumbnail" src="@Model.UserImgUrl" alt="User Image">
+                </div>
+                <div class="col-12 col-md-8 profile-info">
+                    <h5><i class="fas fa-user" id="userIcon"></i> @Model.UserName</h5>
+                    <p>
+                        <i class="fas fa-envelope" id="userIcon"></i><strong> Email: </strong>@Model.EmailAddress
+                    </p>
+                    <p>
+                        <i class="fas fa-phone" id="userIcon"></i><strong> Phone: </strong>
+                        @(string.IsNullOrEmpty(Model.PhoneNumber) ? "Добавьте номер телефона" : Model.PhoneNumber)
+                    </p>
+                    <p>
+                        <i class="fas fa-home" id="userIcon"></i><strong> Address: </strong>
+                        @(string.IsNullOrEmpty(Model.Address) ? "Добавьте адрес" : Model.Address)
+                    </p>
+                    <p>
+                        <i class="fas fa-calendar-alt" id="userIcon"></i><strong> Дата регистрации: </strong>@Model.CreateDate.Value.ToShortDateString()
+                    </p>
+                    <a asp-controller="User" asp-action="EditUserProfile" class="btn btn-outline-warning mt-2 w-100">Редактировать</a>
+                </div>
             </div>
-            <div class="col-md-8 profile-info">
-                <h5><i class="fas fa-user" id="userIcon"></i> @Model.UserName</h5>
-                <p>
-                    <i class="fas fa-envelope" id="userIcon"></i><strong> Email: </strong>@Model.EmailAddress
-                </p>
-                <p>
-                    <i class="fas fa-phone" id="userIcon"></i><strong> Phone: </strong>
-                    @(string.IsNullOrEmpty(Model.PhoneNumber) ? "Добавьте номер телефона" : Model.PhoneNumber)
-                </p>
-                <p>
-                    <i class="fas fa-home" id="userIcon"></i><strong> Address: </strong>
-                    @(string.IsNullOrEmpty(Model.Address) ? "Добавьте адрес" : Model.Address)
-                </p>
-                <a asp-controller="User" asp-action="EditUserProfile" class="btn btn-outline-warning mt-2">Редактировать</a>
+
+        </div>
+    </div>
+
+    <div class="col-12 mt-4">
+        <div class="bg-white p-4 shadow-sm rounded">
+            <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="orders-tab" data-bs-toggle="tab"
+                            data-bs-target="#orders-tab-pane" type="button" role="tab"
+                            aria-controls="orders-tab-pane" aria-selected="true">
+                        Заказы (@Model.CountOrders)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab"
+                            data-bs-target="#reviews-tab-pane" type="button" role="tab"
+                            aria-controls="reviews-tab-pane" aria-selected="false">
+                        Отзывы (@Model.CountReviews)
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-3" id="profileTabContent">
+
+                <div class="tab-pane fade show active" id="orders-tab-pane" role="tabpanel" aria-labelledby="orders-tab">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Дата</th>
+                                <th>Статус</th>
+                                <th>Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Orders != null && Model.Orders.Any())
+                            {
+                                foreach (var order in Model.Orders)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
+                                               class="text-dark text-decoration-none">@order.Id</a>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
+                                               class="text-dark text-decoration-none">@order.СreateDate.ToShortDateString()</a>
+                                        </td>
+                                        <td>@order.Status</td>
+                                        <td>
+                                            <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
+                                               class="text-dark text-decoration-none">@order.TotalOrderPrice ₽</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="4" class="text-center">Заказов пока нет</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Товар</th>
+                                <th>Название</th>
+                                <th>Оценка</th>
+                                <th>Дата</th>
+                                <th>Текст</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Reviews != null && Model.Reviews.Any())
+                            {
+                                foreach (var review in Model.Reviews)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id">
+                                                <img class="img-thumbnail"
+                                                     src="@review.Product.MainImageUrl"
+                                                     alt="Product Image"
+                                                     style="max-width: 50px;">
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
+                                               class="text-dark text-decoration-none">@review.Product?.Name</a>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
+                                               class="text-dark text-decoration-none">@review.Value / 5</a>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
+                                               class="text-dark text-decoration-none">@review.Date.ToShortDateString()</a>
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
+                                               class="text-dark text-decoration-none">@review.ReviewText</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="5" class="text-center">Отзывов пока нет</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>

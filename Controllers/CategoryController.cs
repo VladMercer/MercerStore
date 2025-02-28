@@ -1,5 +1,7 @@
-﻿using MercerStore.Interfaces;
+﻿using MercerStore.Infrastructure.Extentions;
+using MercerStore.Interfaces;
 using MercerStore.Models;
+using MercerStore.Models.Products;
 using MercerStore.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +14,18 @@ namespace MercerStore.Controllers
         private readonly ICategoryRepository _categoryRepository;
         private readonly IPhotoService _photoService;
         private readonly IProductRepository _productRepository;
-        public CategoryController(ICategoryRepository categoryRepository, IPhotoService photoService, IProductRepository productRepository)
+        private readonly IRequestContextService _requestContextService;
+        public CategoryController(ICategoryRepository categoryRepository,
+            IPhotoService photoService,
+            IProductRepository productRepository,
+            IRequestContextService requestContextService)
         {
             _categoryRepository = categoryRepository;
             _photoService = photoService;
             _productRepository = productRepository;
+            _requestContextService = requestContextService;
         }
+        [HttpGet("category/create")]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateCategory()
         {
@@ -25,7 +33,8 @@ namespace MercerStore.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("category/create")]
+        [LogUserAction("Admin created category", "category")]
         public async Task<IActionResult> CreateCategory(CreateCategoryViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -45,13 +54,19 @@ namespace MercerStore.Controllers
                 category.CategoryImgUrl = photoResult.Url.ToString();
             }
 
-            _categoryRepository.AddCategory(category);
-            _categoryRepository.Save();
+            var logDetails = new
+            {
+                category.Name,
+                category.Description,
+            };
 
-            return RedirectToAction("CreateCategory");
+            _requestContextService.SetLogDetails(logDetails);
+            _categoryRepository.AddCategory(category);
+
+            return RedirectToAction("CreateCategory", new { id = category.Id });
 
         }
-        
+
         [HttpGet("category/{categoryId}")]
         public async Task<IActionResult> Index(int categoryId)
         {
