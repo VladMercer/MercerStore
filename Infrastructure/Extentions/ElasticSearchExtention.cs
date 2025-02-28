@@ -1,4 +1,6 @@
-﻿using MercerStore.Models;
+﻿using MercerStore.Dtos.ProductDto;
+using MercerStore.Models.Products;
+using MercerStore.Models.Products;
 using Nest;
 
 namespace MercerStore.Infrastructure.Extentions
@@ -22,18 +24,14 @@ namespace MercerStore.Infrastructure.Extentions
         }
         public static void AddDefaultMappings(ConnectionSettings settings)
         {
-            settings.DefaultMappingFor<Product>(p =>
+            settings.DefaultMappingFor<ProductIndexDto>(p =>
             p.PropertyName(p => p.Id, "id")
             .PropertyName(p => p.Name, "name")
-            .PropertyName(p => p.Price, "price")
-            .PropertyName(p => p.Description, "description")
-            .PropertyName(p => p.MainImageUrl, "mainImageUrl")
-            .PropertyName(p => p.CategoryId, "categoryId")
-            .PropertyName(p => p.Category, "category"));
+            .PropertyName(p => p.SKU, "sku"));
         }
         private static void CreateIndex(IElasticClient client, string indexName)
         {
-            client.Indices.Create(indexName, i => i.Map<Product>(x => x.AutoMap()));
+            client.Indices.Create(indexName, i => i.Map<ProductIndexDto>(x => x.AutoMap()));
         }
     }
 }

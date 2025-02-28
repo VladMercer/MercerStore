@@ -12,14 +12,20 @@ const ReviewsCountComponent = () => {
     return (
         <div className="count-reviews-text">
             {countReviews !== 0 ? (
-                <span className="count-reviews">
-                    {countReviews} {getReviewText(countReviews)}
-                </span>
-            ) : (
-                <span className="no-reviews">Оценок ещё нет</span>
+                <h5>
+                    <span className="count-reviews">
+                        {countReviews} {getReviewText(countReviews)}
+                    </span>
+                    </h5>
+
+                    ) : (
+                    <h5>
+                        <span className="no-reviews">Нет оценок</span>
+                        </h5>
+               
             )}
-        </div>
-    );
+                    </div>
+                    );
 }
 
-export default ReviewsCountComponent;
+                    export default ReviewsCountComponent;

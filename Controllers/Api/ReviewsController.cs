@@ -1,9 +1,16 @@
-﻿using MercerStore.DTOs;
+﻿using MercerStore.Data.Enum.User;
+using MercerStore.Data.Enum;
+using MercerStore.Dtos.ReviewDto;
+using MercerStore.DTOs;
 using MercerStore.Infrastructure.Extentions;
 using MercerStore.Interfaces;
-using MercerStore.Models;
+using MercerStore.Models.Products;
+using MercerStore.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using MercerStore.Data.Enum.Review;
+using Elasticsearch.Net;
 
 namespace MercerStore.Controllers.Api
 {
@@ -14,11 +21,16 @@ namespace MercerStore.Controllers.Api
     {
         private readonly IReviewProductRepository _reviewProductRepository;
         private readonly IUserIdentifierService _userIdentifierService;
-        public ReviewsController(IReviewProductRepository reviewProductRepository, IUserIdentifierService userIdentifierService = null)
+        private readonly IRequestContextService _requestContextService;
+        public ReviewsController(IReviewProductRepository reviewProductRepository,
+            IUserIdentifierService userIdentifierService,
+            IRequestContextService requestContextService)
         {
             _reviewProductRepository = reviewProductRepository;
             _userIdentifierService = userIdentifierService;
+            _requestContextService = requestContextService;
         }
+
         [HttpGet("reviews/{productId}")]
         public async Task<IActionResult> GetProductReviews(int productId)
         {
@@ -28,7 +40,7 @@ namespace MercerStore.Controllers.Api
                 return BadRequest();
             }
 
-            var reviewDto = reviews.Select( r => new ReviewDto
+            var reviewDto = reviews.Select(r => new ReviewDto
             {
                 ProductId = r.ProductId,
                 UserId = r.UserId,
@@ -40,20 +52,20 @@ namespace MercerStore.Controllers.Api
 
             return Ok(reviewDto);
         }
+
         [HttpGet("avg-rate/{productId}")]
         public async Task<IActionResult> GetAvgRateProduct(int productId)
         {
             var result = await _reviewProductRepository.GetAvgRateProduct(productId);
             return Ok(result);
         }
+
         [HttpGet("count-reviews/{productId}")]
         public async Task<IActionResult> GetCountProductReviews(int productId)
         {
             var result = await _reviewProductRepository.GetCountProductReviews(productId);
             return Ok(result);
         }
-
-        
 
         [HttpGet("user-review/{productId}")]
         public async Task<IActionResult> GetReview(int productId)
@@ -63,43 +75,85 @@ namespace MercerStore.Controllers.Api
             var review = await _reviewProductRepository.GetReviewById(reviewId);
             return Ok(review);
         }
+
         [HttpPost("review")]
+        [LogUserAction("User left a review", "review")]
         public async Task<IActionResult> AddReview(CreateReviewDto reviewDto)
         {
             var userId = _userIdentifierService.GetCurrentIdentifier();
+            var existingReview = await _reviewProductRepository.GetReviewId(userId, reviewDto.ProductId);
 
-			var existingReview = await _reviewProductRepository.GetReviewId(userId, reviewDto.ProductId);
-            if (existingReview != 0)
+            if (existingReview != null)
             {
                 return BadRequest("Пользователь уже оставил отзыв для этого товара.");
             }
+
             var review = new Review
             {
-				UserId = userId,
-				ReviewText = reviewDto.ReviewText,
+                UserId = userId,
+                ReviewText = reviewDto.ReviewText,
                 ProductId = reviewDto.ProductId,
                 Value = reviewDto.Value,
-                Date = DateTime.UtcNow
+                Date = DateTime.UtcNow,
+                EditDateTime = DateTime.UtcNow
             };
+
             var result = _reviewProductRepository.AddReview(review);
+            var logDetails = new
+            {
+                review.ProductId,
+                review.Value,
+                review.ReviewText
+            };
+
+            _requestContextService.SetLogDetails(logDetails);
+
             if (result == null)
             {
                 return BadRequest();
             }
-            return Ok();
+
+            return Ok(review.Id);
         }
 
         [HttpDelete("review/{productId}")]
+        [LogUserAction("User remove review", "review")]
         public async Task<IActionResult> RemoveReview(int productId)
         {
             var userId = _userIdentifierService.GetCurrentIdentifier();
             var reviewId = await _reviewProductRepository.GetReviewId(userId, productId);
             await _reviewProductRepository.DeleteReview(reviewId);
-            return Ok();
+
+            var logDetails = new
+            {
+                productId
+            };
+
+            _requestContextService.SetLogDetails(logDetails);
+
+            return Ok(reviewId);
+        }
+
+        [Authorize(Roles = "Admin,Manager")]
+        [HttpDelete("admin/review/{reviewId}")]
+        [LogUserAction("User remove review", "review")]
+        public async Task<IActionResult> RemoveReviewById(int reviewId)
+        {
+            await _reviewProductRepository.DeleteReview(reviewId);
+            var managerId = _userIdentifierService.GetCurrentIdentifier();
+            var logDetails = new
+            {
+                reviewId,
+                managerId
+            };
+            _requestContextService.SetLogDetails(logDetails);
+
+            return Ok(reviewId);
         }
 
         [HttpPut("review")]
-        public async Task<IActionResult> UpdateReview([FromBody]CreateReviewDto reviewDto)
+        [LogUserAction("User update review", "review")]
+        public async Task<IActionResult> UpdateReview([FromBody] CreateReviewDto reviewDto)
         {
             var userId = _userIdentifierService.GetCurrentIdentifier();
             var reviewId = await _reviewProductRepository.GetReviewId(userId, reviewDto.ProductId);
@@ -107,11 +161,36 @@ namespace MercerStore.Controllers.Api
 
             review.Value = reviewDto.Value;
             review.ReviewText = reviewDto.ReviewText;
+            review.EditDateTime = DateTime.UtcNow;
+            review.Edited = true;
 
             await _reviewProductRepository.UpdateReview(review);
-            return Ok();
 
+            var logDetails = new
+            {
+                reviewDto.ProductId,
+                review.Value,
+                review.ReviewText
+            };
+            _requestContextService.SetLogDetails(logDetails);
 
+            return Ok(reviewId);
+        }
+        [Authorize(Roles = "Admin,Manager")]
+        [HttpGet("reviews/{pageNumber}/{pageSize}")]
+        public async Task<IActionResult> GetFilteredReviews(int pageNumber, int pageSize, ReviewSortOrder? sortOrder, TimePeriod? period, ReviewFilter? filter, string? query)
+        {
+
+            var (reviewDtos, totalReviews) = await _reviewProductRepository.GetFilteredReviews(pageNumber, pageSize, sortOrder, period, filter, query);
+
+            var result = new
+            {
+                Reviews = reviewDtos,
+                TotalItems = totalReviews,
+                TotalPages = (int)Math.Ceiling((double)totalReviews / pageSize)
+            };
+
+            return Ok(result);
         }
     }
 }

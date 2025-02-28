@@ -1,0 +1,21 @@
+﻿@using MercerStore.Models.Products
+@model IEnumerable<Category>
+@{
+    ViewData["Title"] = "Выбор категории";
+}
+
+<div class="container mt-3 mb-4">
+    <div class="card p-4 shadow-sm">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2>Выберите категорию</h2>
+                @foreach (var category in Model)
+                {
+                    <div class="row p-2">
+                        <a class="btn btn-outline-warning" asp-controller="Product" asp-action="CreateProduct" asp-route-categoryId="@category.Id">@category.Name</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

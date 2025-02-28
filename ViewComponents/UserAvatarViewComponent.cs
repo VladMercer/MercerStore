@@ -1,0 +1,24 @@
+﻿using MercerStore.Infrastructure.Extentions;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+namespace MercerStore.ViewComponents
+{
+	public class UserAvatarViewComponent : ViewComponent
+	{
+		private readonly IHttpContextAccessor _httpContextAccessor;
+
+		public UserAvatarViewComponent(IHttpContextAccessor httpContextAccessor)
+		{
+			_httpContextAccessor = httpContextAccessor;
+		}
+
+		public IViewComponentResult Invoke()
+		{
+			var user = _httpContextAccessor.HttpContext?.User;
+			var profilePictureUrl = user.GetProfilePictureUrl();
+
+			return View("Default", profilePictureUrl);
+		}
+	}
+}

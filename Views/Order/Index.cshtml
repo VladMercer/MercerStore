@@ -74,7 +74,7 @@
                                             @item.Name
                                             <small> x @item.Quantity</small>
                                         </td>
-                                        <td class="text-end">@((item.Price * item.Quantity).ToString("C0"))</td>
+                                        <td class="text-end">@(((item.DiscountedPrice ?? item.Price) * item.Quantity).ToString("C0"))</td>
                                     </tr>
                                 }
                             </tbody>

@@ -1,26 +1,29 @@
 ﻿using CloudinaryDotNet.Actions;
-using MercerStore.Data;
 using MercerStore.Infrastructure.Extentions;
 using MercerStore.Interfaces;
-using MercerStore.Models;
+using MercerStore.Models.Users;
 using MercerStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Controllers
 {
-	[Authorize(Policy = "BlacklistRolesPolicy")]
-	public class UserController : Controller
+    [Authorize(Policy = "BlacklistRolesPolicy")]
+    public class UserController : Controller
     {
         private readonly HttpContextAccessor _httpContextAccessor;
-        private readonly IUserProfileRepository _profileRepository;
+        private readonly IUserRepository _profileRepository;
         private readonly IPhotoService _photoService;
-        public UserController(IUserProfileRepository repository, HttpContextAccessor httpContextAccessor, IPhotoService photoService)
+        private readonly IRequestContextService _requestContextService;
+        public UserController(IUserRepository repository,
+            HttpContextAccessor httpContextAccessor,
+            IPhotoService photoService,
+            IRequestContextService requestContextService)
         {
             _profileRepository = repository;
-           
             _httpContextAccessor = httpContextAccessor;
             _photoService = photoService;
+            _requestContextService = requestContextService;
         }
         private void MapUserProfileEdit(AppUser user, UserProfileViewModel userProfileViewModel, ImageUploadResult photoResult)
         {
@@ -42,7 +45,13 @@ namespace MercerStore.Controllers
                 EmailAddress = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 UserImgUrl = user.UserImgUrl,
-                Address = user.Address
+                Address = user.Address,
+                Orders = user.Orders.ToList(),
+                Reviews = user.Reviews.ToList(),
+                CountOrders = user.Orders.Count(),
+                CountReviews = user.Reviews.Count(),
+                CreateDate = user.DateCreated,
+                
             };
             return View(userProfileViewModel);
         }
@@ -63,6 +72,7 @@ namespace MercerStore.Controllers
             return View(userProfileViewModel);
         }
         [HttpPost]
+        [LogUserAction("User update profile", "user")]
         public async Task<IActionResult> EditUserProfile(UserProfileViewModel userProfileViewModel)
         {
             if (!ModelState.IsValid)
@@ -77,7 +87,7 @@ namespace MercerStore.Controllers
             {
                 var photoResult = await _photoService.AddPhotoAsync(userProfileViewModel.UserImage);
                 MapUserProfileEdit(user, userProfileViewModel, photoResult);
-                _profileRepository.Update(user);
+                _profileRepository.UpdateUserProfile(user);
                 return RedirectToAction("UserProfile");
             }
             else
@@ -93,7 +103,19 @@ namespace MercerStore.Controllers
                 }
                 var photoResult = await _photoService.AddPhotoAsync(userProfileViewModel.UserImage);
                 MapUserProfileEdit(user, userProfileViewModel, photoResult);
-                _profileRepository.Update(user);
+                _profileRepository.UpdateUserProfile(user);
+
+                var logDetails = new
+                {
+                    userProfileViewModel?.UserName,
+                    UserImageUrl = photoResult.Url.ToString(),
+                    userProfileViewModel?.Address,
+                    userProfileViewModel?.PhoneNumber,
+                    userProfileViewModel?.EmailAddress,
+                };
+
+                _requestContextService.SetLogDetails(logDetails);
+
                 return RedirectToAction("UserProfile");
             }
         }

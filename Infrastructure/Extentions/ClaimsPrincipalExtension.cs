@@ -8,9 +8,13 @@ namespace MercerStore.Infrastructure.Extentions
         {
             return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
-		public static string GetUserRoles(this ClaimsPrincipal user)
+		public static IEnumerable<string> GetUserRoles(this ClaimsPrincipal user)
 		{
-			return user.FindFirst(ClaimTypes.Role)?.Value;
+            return user.FindAll(ClaimTypes.Role).Select(role => role.Value).ToList();
+        }
+		public static string GetProfilePictureUrl(this ClaimsPrincipal user)
+		{
+			return user?.FindFirst("profile_picture")?.Value;
 		}
 	}
 }
