@@ -1,6 +1,7 @@
 ﻿using MercerStore.Areas.Admin.ViewModels;
 using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Areas.Admin.Controllers
@@ -26,6 +27,7 @@ namespace MercerStore.Areas.Admin.Controllers
                 OrdersCount = count
             };
             return View(dashboardViewModel);
+
         }
     }
 }

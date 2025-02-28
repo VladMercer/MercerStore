@@ -27,6 +27,7 @@ namespace MercerStore.Interfaces
         Task UpdateOrderItems(List<OrderProductSnapshot> orderItems);
         Task DeleteOrderProduct(Order order, int productId);
         Task<object> GetSalesMetric();
+
         Task<decimal> GetRevenue();
         Task<int> GetOrdersCount();
     }
