@@ -236,15 +236,7 @@ namespace MercerStore.Repository
 
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateOrderItems(List<OrderProductSnapshot> orderItems)
-        {
-            foreach (var item in orderItems)
-            {
-                _context.Attach(item);
-                _context.Entry(item).Property(x => x.Quantity).IsModified = true;
-            }
-            await _context.SaveChangesAsync();
-        }
+
         public async Task<object> GetSalesMetric()
         {
             var now = DateTime.UtcNow;
@@ -281,8 +273,7 @@ namespace MercerStore.Repository
                 AverageOrderValue = _context.Orders
                     .AsNoTracking()
                     .Average(o => o.TotalOrderPrice),
-
-                TopProducts = await _context.OrderProductSnapshots
+                TopProducts = _context.OrderProductSnapshots
                     .AsNoTracking()
                     .GroupBy(p => p.ProductName)
                     .Select(g => new
@@ -296,14 +287,6 @@ namespace MercerStore.Repository
             };
 
             return salesMetric;
-        }
-        public async Task<decimal> GetRevenue()
-        {
-            return await _context.Orders.AsNoTracking().SumAsync(o => o.TotalOrderPrice);
-        }
-        public async Task<int> GetOrdersCount()
-        {
-            return await _context.Orders.AsNoTracking().CountAsync();
         }
     }
 }

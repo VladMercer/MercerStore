@@ -1,7 +1,4 @@
-﻿@model MercerStore.Areas.Admin.ViewModels.DashboardViewModel
-
-@{
-
+﻿@{
     ViewData["Title"] = "Метрики";
 }
 <div class="container-fluid bg-p dashboard-page px-4">
@@ -9,14 +6,19 @@
         <div class="col-12">
             <div class="card p-4">
                 <h1>Статистика</h1>
+                <h2>Статистика за месяц</h2>
                 <div class="row">
-                    <div class="col-md-6">
-                        <h4>Прибыль</h4>
-                        <p>@Model.Revenue</p>
+                    <div class="col-md-4">
+                        <h4>Выручка</h4>
+                        <p>150000000 ₽</p>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <h4>Количество заказов</h4>
-                        <p>@Model.OrdersCount</p>
+                        <p>35</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>Новые пользователи</h4>
+                        <p>3</p>
                     </div>
                 </div>
             </div>
