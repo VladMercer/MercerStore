@@ -1,9 +1,12 @@
-﻿namespace MercerStore.Interfaces
+﻿using MercerStore.Models.Users;
+
+namespace MercerStore.Interfaces
 {
     public interface IUserIdentifierService
     {
         string GetCurrentIdentifier();
-        string GetCurrentUserRoles();
-
-	}
+        IEnumerable<string> GetCurrentUserRoles();
+        List<string> GetUserRoles(AppUser user);
+        Task<bool> AddUserToRoleAsync(AppUser user, string roleName);
+    }
 }

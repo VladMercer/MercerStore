@@ -6,7 +6,10 @@ const TotalProductsInfoComponent = () => {
 
     return (
         <div className="total-products">
-            Показано {(pageNumber - 1) * pageSize + 1} - {Math.min(pageNumber * pageSize, totalProducts)} из {totalProducts}
+            <h3>
+                Показано {(pageNumber - 1) * pageSize + 1} - {Math.min(pageNumber * pageSize, totalProducts)} из {totalProducts}
+            </h3>
+           
         </div>
     );
 };

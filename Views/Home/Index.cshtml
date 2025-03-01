@@ -43,29 +43,37 @@
 		<div class="row">
 			@foreach (var product in Model.RandomProducts)
 			{
-
 				<div class="col-lg-4 col-sm-6 mb-3">
 					<div class="product-card">
 						<div class="product-thumb">
-							<a asp-controller="Product" asp-action="Details" asp-route-Id="@product.Id">
+							<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
 								<img src="@product.MainImageUrl" alt="фотокарточка" />
 							</a>
 						</div>
 						<div class="product-details">
 							<h4>
-								<a asp-controller="Product" asp-action="Details" asp-route-Id="@product.Id">
+								<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
 									@product.Name
 								</a>
 							</h4>
-							<p class="product-excerpt">@product.Descripton</p>
-							<div class="product-bottom-details d-flex justify-content-between">
-								<div class="product-price">@product.Price₽</div>
+							<p class="product-excerpt">@product.Description</p>
+							<div class="product-bottom-details d-flex justify-content-between align-items-center">
+								@if (product.DiscountedPrice.HasValue)
+								{
+									<div class="price-container">
+										<small class="old-price-card">@product.Price.ToString("N0")₽</small>
+										<div class="product-price">@product.DiscountedPrice.Value.ToString("N0")₽</div>
+									</div>
+								}
+								else
+								{
+									<div class="product-price">@product.Price.ToString("N0")₽</div>
+								}
 								<div id="add-to-cart-root-@product.Id" data-product-id="@product.Id"></div>
 							</div>
 						</div>
 					</div>
 				</div>
-
 			}
 		</div>
 	</div>
@@ -87,27 +95,35 @@
 			@foreach (var product in Model.Products)
 			{
 				<div class="item">
-
 					<div class="product-card">
 						<div class="product-thumb">
-							<a asp-controller="Product" asp-action="Details" asp-route-Id="@product.Id">
+							<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
 								<img src="@product.MainImageUrl" alt="фотокарточка" />
 							</a>
 						</div>
 						<div class="product-details">
 							<h4>
-								<a asp-controller="Product" asp-action="Details" asp-route-Id="@product.Id">
+								<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
 									@product.Name
 								</a>
 							</h4>
-							<p class="product-excerpt">@product.Descripton</p>
-							<div class="product-bottom-details d-flex justify-content-between">
-								<div class="product-price">@product.Price₽</div>
+							<p class="product-excerpt">@product.Description</p>
+							<div class="product-bottom-details d-flex justify-content-between align-items-center">
+								@if (product.DiscountedPrice.HasValue)
+								{
+									<div class="price-container">
+										<small class="old-price-card">@product.Price.ToString("N0")₽</small>
+										<div class="product-price">@product.DiscountedPrice.Value.ToString("N0")₽</div>
+									</div>
+								}
+								else
+								{
+									<div class="product-price">@product.Price.ToString("N0")₽</div>
+								}
 								<div id="add-to-cart-root-@product.Id" data-product-id="@product.Id"></div>
 							</div>
 						</div>
 					</div>
-
 				</div>
 			}
 		</div>

@@ -2,5 +2,10 @@
 export const API_CATEGORIES_URL = '/api/categories';
 export const API_REVIEWS_URL = '/api/reviews';
 export const API_SEARCH_URL = '/api/search';
-export const API_AUTH_URL = '/api/auth'
-export const API_USERS_URL = '/api/users'
+export const API_AUTH_URL = '/api/auth';
+export const API_USERS_URL = '/api/users';
+export const API_PRODUCTS_URL = '/api/products';
+export const API_ORDERS_URL = '/api/orders';
+export const API_SUPPLIERS_URL = '/api/suppliers';
+export const API_INVOICES_URL = '/api/invoices';
+export const API_METRICS_URL = '/api/metrics'

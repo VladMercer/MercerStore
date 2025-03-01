@@ -22,85 +22,12 @@
 		@if (ViewBag.ShowHeaderFooter ?? true)
 		{
 			<header class="header">
-				<div class="header-top py-1">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-sm-4 d-none d-sm-block">
-								<ul class="social-icons d-flex justify-content-start">
-									<li>
-										<a href="#">
-											<i class="fa-brands fa-vk"></i>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="fa-brands fa-telegram"></i>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="fa-brands fa-instagram"></i>
-										</a>
-									</li>
-								</ul>
-							</div>
-							<div class="col-6 col-sm-4 d-none d-sm-block">
-								<div class="header-top-phone d-flex justify-content-end align-items-center h-100">
-									<i class="fa-solid fa-mobile-screen"></i>
-									<a href="tel:+1234567890" class="phone-number ms-3">123-456-7890</a>
-									@if (User.IsInRole("Admin"))
-									{
-										<a class="phone-number ms-3" asp-controller="Category" asp-action="CreateCategory">Создание категории</a>
-										<a class="phone-number ms-3" asp-controller="Product" asp-action="CreateProduct">Создание продукта</a>
-
-									}
-								</div>
-							</div>
-
-
-							<div class="col-6 col-sm-4 ">
-								<div class="header-top-account d-flex justify-content-end">
-
-									<div class="btn-group me-2">
-										<div class="dropdown">
-											<button class="btn btn-sm dropdown-toggle" type="button"
-													data-bs-toggle="dropdown" aria-expanded="false">
-												Личный кабинет
-											</button>
-											<ul class="dropdown-menu">
-												@if (User.Identity.IsAuthenticated && (!User.IsInRole("Guest")))
-												{
-													<li>
-														<a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a>
-													</li>
-													<li>
-														<a class="dropdown-item" asp-controller="User" asp-action="UserProfile">Профиль</a>
-													</li>
-												}
-												else
-												{
-													<li>
-														<a class="dropdown-item" asp-controller="Account" asp-action="Login">Вход</a>
-													</li>
-												}
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- ./header-top-account -->
-						</div>
-					</div>
-				</div>
-				
-				<!-- ./header-top -->
-
-				<div class="header-middle bg-white py-4">
+				<div class="header-middle bg-white py-3">
 					<div class="container-fluid">
 						<div class="row align-items-center">
 
 							<div class="col-sm-6">
-								<a asp-controller="Home" asp-action="Index" class="header-logo h1">MERCER STORE</a>
+								<a asp-controller="Home" asp-action="Index" asp-area="" class="header-logo h1">MERCER STORE</a>
 							</div>
 
 							<div class="col-sm-6 mt-2 mt-md-0">
@@ -135,14 +62,14 @@
 						<div class="offcanvas-body">
 							<ul class="navbar-nav">
 								<li class="nav-item">
-									<a class="nav-link " asp-controller="Home" asp-action="Index">Главная</a>
+									<a class="nav-link " asp-controller="Home" asp-action="Index" asp-area="">Главная</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link " asp-controller="AboutUs" asp-action="Index">О нас</a>
+									<a class="nav-link " asp-controller="AboutUs" asp-action="Index" asp-area="">О нас</a>
 								</li>
 
 								<li class="nav-item">
-									<a class="nav-link " asp-controller="Info" asp-action="Index">Доставка</a>
+									<a class="nav-link " asp-controller="Info" asp-action="Index" asp-area="">Доставка</a>
 								</li>
 								<li class="nav-item dropdown">
 									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
@@ -161,7 +88,46 @@
 						<span class="header-badge badge text-bg-warning cart-badge bg-warning ">3</span>
 						</a> *@
 
-						<div id="cart-header-root"></div>
+						<div class="d-flex align-items-center gap-3">
+							<div id="cart-header-root"></div>
+							@if (User.Identity.IsAuthenticated && (!User.IsInRole("Guest")))
+							{
+								<div class="dropdown">
+									<a class="btn p-0 d-flex align-items-center" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+										@await Component.InvokeAsync("UserAvatar")
+									</a>
+									<ul class="dropdown-menu dropdown-menu-end">
+										@if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager")))
+										{
+											<li>
+												<a class="dropdown-item" asp-controller="Dashboard" asp-action="Index" asp-area="Admin">Админ панель</a>
+											</li>
+										}
+										<li>
+											<a class="dropdown-item" asp-controller="User" asp-action="UserProfile" asp-area="">Профиль</a>
+										</li>
+										<li>
+											<a class="dropdown-item">Настройки</a>
+										</li>
+										<li>
+											<a class="dropdown-item" asp-controller="Account" asp-action="Logout" asp-area="">Выход</a>
+										</li>
+									</ul>
+								</div>
+							}
+							else
+							{
+
+								<a class="btn" asp-controller="Account" asp-action="Login" asp-area="" role="button" aria-expanded="false">
+									<i class="fa-solid fa-user"></i>
+									<p class="mb-0">Войти</p>
+								</a>
+
+
+							}
+
+						</div>
+					
 					</div>
 
 				</div>
@@ -169,7 +135,9 @@
 		</div>
 		<!-- ./header-bottom -->
 		<div id="cart-offcanvas-root"></div>
-		
+
+
+
 		<div id="main-app"></div>
 		<main role="main" class="main">
 
@@ -187,9 +155,9 @@
 										Информация
 									</h4>
 									<ul class="list-unstyled">
-										<li><a asp-controller="Index" asp-action="Index">Главная</a></li>
+										<li><a asp-controller="Index" asp-action="Index" asp-area="" asp-area="">Главная</a></li>
 
-										<li><a asp-controller="AboutUs" asp-action="Index">Доставка</a></li>
+										<li><a asp-controller="AboutUs" asp-action="Index" asp-area="" asp-area="">Доставка</a></li>
 									</ul>
 								</div>
 

@@ -14,6 +14,17 @@ export const generateToken = createAsyncThunk('cart/generateToken', async () => 
     const response = await axios.post(`${API_AUTH_URL}/generate-token`);
 });
 
+
+export const sendHeartbeat = createAsyncThunk('cart/sendHeartbeat', async () => {
+    try {
+        const response = await axios.post(`/api/heartbeat`);
+        return response.data;
+    } catch (error) {
+        throw new Error('Heartbeat failed');
+    }
+});
+
+
 export const fetchCartData = createAsyncThunk('cart/fetchCartData', async () => {
     const response = await axios.get(`${API_CARTS_URL}/products`);
     return response.data;

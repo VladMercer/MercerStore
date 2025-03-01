@@ -29,16 +29,18 @@ namespace MercerStore.Controllers
 					Id = p.Id,
 					Name = p.Name,
 					MainImageUrl = p.MainImageUrl,
-					Descripton = p.Description,
-					Price = p.Price
-				}).ToList(),
+					Description = p.ProductDescription.DescriptionText,
+					Price = p.ProductPricing.OriginalPrice,
+                    DiscountedPrice = p.ProductPricing.DiscountedPrice
+                }).ToList(),
 				RandomProducts = randomProducts.Select(r => new RandomProductViewModel
 				{
 					Id = r.Id,
 					Name = r.Name,
 					MainImageUrl=r.MainImageUrl,
-					Descripton=r.Description,
-					Price=r.Price
+					Description = r.ProductDescription.DescriptionText,
+					Price=r.ProductPricing.OriginalPrice,
+					DiscountedPrice = r.ProductPricing.DiscountedPrice
 				}).ToList()
 			};
 			return View(homePageViewModel);

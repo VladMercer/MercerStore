@@ -1,4 +1,5 @@
-﻿using MercerStore.Interfaces;
+﻿using MercerStore.Dtos.ProductDto;
+using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,13 @@ namespace MercerStore.Controllers.Api
     public class CategoriesController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoriesController(IProductRepository productRepository)
+        public CategoriesController(IProductRepository productRepository,
+            ICategoryRepository categoryRepository)
         {
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
 
         /// <summary>
@@ -34,46 +38,78 @@ namespace MercerStore.Controllers.Api
 
             if (minPrice.HasValue)
             {
-                products = products.Where(p => p.Price >= minPrice.Value);
+                products = products.Where(p => p.ProductPricing.OriginalPrice >= minPrice.Value);
             }
             if (maxPrice.HasValue)
             {
-                products = products.Where(p => p.Price <= maxPrice.Value);
+                products = products.Where(p => p.ProductPricing.OriginalPrice <= maxPrice.Value);
             }
 
             products = sortOrder switch
             {
                 "name_desc" => products.OrderByDescending(p => p.Name),
-                "price_asc" => products.OrderBy(p => p.Price),
-                "price_desc" => products.OrderByDescending(p => p.Price),
+                "price_asc" => products.OrderBy(p => p.ProductPricing.OriginalPrice),
+                "price_desc" => products.OrderByDescending(p => p.ProductPricing.OriginalPrice),
                 _ => products.OrderBy(p => p.Name),
             };
 
             int totalItems = products.Count();
-            var pagedProducts = products.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+            var pageProducts = products
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.ProductPricing.OriginalPrice,
+                MainImageUrl = p.MainImageUrl,
+                CategoryId = p.CategoryId,
+                Description = p.ProductDescription.DescriptionText,
+                DiscountedPrice = p.ProductPricing.DiscountedPrice
+            });
 
             var result = new
             {
-                Products = pagedProducts,
+                Products = pageProducts,
                 TotalItems = totalItems,
                 TotalPages = (int)Math.Ceiling((double)totalItems / pageSize)
             };
 
             return Ok(result);
         }
+
         [HttpGet("price-range/{categoryId}")]
         public async Task<IActionResult> GetPriceRange(int categoryId)
         {
             var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
-            var minPrice = products.Min(p => p.Price);
-            var maxPrice = products.Max(p => p.Price);
+
+            var minPrice = products
+                .Select(p => p.ProductPricing.FixedDiscountPrice
+                             ?? p.ProductPricing.DiscountedPrice
+                             ?? p.ProductPricing.OriginalPrice)
+                .Min();
+
+            var maxPrice = products
+                .Select(p => p.ProductPricing.FixedDiscountPrice
+                             ?? p.ProductPricing.DiscountedPrice
+                             ?? p.ProductPricing.OriginalPrice)
+                .Max();
 
             var result = new
             {
                 MinPrice = minPrice,
                 MaxPrice = maxPrice
             };
+
             return Ok(result);
+        }
+
+        [HttpGet("categories")]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var categories = await _categoryRepository.GetAllCategoriesAsync();
+            return Ok(categories);
         }
     }
 }

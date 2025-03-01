@@ -1,6 +1,7 @@
 ﻿using MercerStore.Data;
 using MercerStore.Interfaces;
-using MercerStore.Models;
+using MercerStore.Models.Carts;
+using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.EntityFrameworkCore;
 
 namespace MercerStore.Repository
@@ -24,7 +25,7 @@ namespace MercerStore.Repository
                 throw new InvalidOperationException("Продукт не найден.");
             }
 
-            var cart = await _context.Carts.SingleOrDefaultAsync(c => c.AppUserId == userId);
+            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.AppUserId == userId);
             if (cart == null)
             {
                 cart = new Cart { AppUserId = userId };
@@ -68,8 +69,9 @@ namespace MercerStore.Repository
             var cart = await _context.Carts
                 .Include(c => c.CartProducts)
                 .ThenInclude(cp => cp.Product)
+                .ThenInclude(cp => cp.ProductPricing)
                 .SingleOrDefaultAsync(c => c.AppUserId == userId);
-            
+
             if (cart != null)
             {
                 var cartItems = cart.CartProducts.Select(cp => new CartProductViewModel
@@ -77,12 +79,13 @@ namespace MercerStore.Repository
                     ProductId = cp.ProductId,
                     Name = cp.Product.Name,
                     ImageUrl = cp.Product.MainImageUrl,
-                    Price = cp.Product.Price,
+                    Price = cp.Product.ProductPricing.OriginalPrice,
+                    DiscountedPrice = cp.Product.ProductPricing.DiscountedPrice,
                     Quantity = cp.Quantity
                 }).ToList();
 
                 var totalQuantity = cartItems.Sum(ci => ci.Quantity);
-                var totalPrice = cartItems.Sum(ci => ci.Price * ci.Quantity);
+                var totalPrice = cartItems.Sum(ci => (ci.DiscountedPrice ?? ci.Price) * ci.Quantity );
 
                 return new CartViewModel
                 {
@@ -112,12 +115,12 @@ namespace MercerStore.Repository
             {
                 if (cartItem.Quantity > 1)
                 {
-                   
+
                     cartItem.Quantity -= 1;
                 }
                 else
                 {
-                  
+
                     _context.CartProducts.Remove(cartItem);
                 }
 
@@ -134,9 +137,9 @@ namespace MercerStore.Repository
             return 0;
         }
 
-		public async Task<Cart> GetCartForUserId(string userId)
-		{
+        public async Task<Cart> GetCartForUserId(string userId)
+        {
             return await _context.Carts.FirstAsync(u => u.AppUserId == userId);
-		}
-	}
+        }
+    }
 }

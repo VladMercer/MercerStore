@@ -1,0 +1,57 @@
+﻿@model MercerStore.Areas.Admin.ViewModels.DashboardViewModel
+
+@{
+
+    ViewData["Title"] = "Метрики";
+}
+<div class="container-fluid bg-p dashboard-page px-4">
+    <div class="row mb-4 mt-4">
+        <div class="col-12">
+            <div class="card p-4">
+                <h1>Статистика</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Прибыль</h4>
+                        <p>@Model.Revenue</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Количество заказов</h4>
+                        <p>@Model.OrdersCount</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row d-flex align-items-stretch">
+        <div class="col-md-6 mb-4">
+            <div class="card p-4 h-100">
+                <h3>График продаж</h3>
+                <div id="sales-chart-root"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card p-4 h-100">
+                <h3>График заказов</h3>
+                <div id="invoices-chart-root"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row d-flex align-items-stretch">
+        <div class="col-md-6 mb-4">
+            <div class="card p-4 h-100">
+                <h3>График пользователей</h3>
+                <div id="users-chart-root"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card p-4 h-100">
+                <h3>График отзывов</h3>
+                <div id="reviews-chart-root"></div>
+            </div>
+        </div>
+    </div>
+</div>

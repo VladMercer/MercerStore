@@ -12,11 +12,15 @@ namespace MercerStore.Controllers.Api
     {
         private readonly ICartProductRepository _cartProductRepository;
         private readonly IUserIdentifierService _userIdentifierService;
-        public CartsController(ICartProductRepository cartProductRepository, IUserIdentifierService userIdentifierService = null)
+        private readonly IRequestContextService _requestContextService;
+        public CartsController(ICartProductRepository cartProductRepository,
+                               IUserIdentifierService userIdentifierService,
+                               IRequestContextService requestContextService)
         {
 
             _cartProductRepository = cartProductRepository;
             _userIdentifierService = userIdentifierService;
+            _requestContextService = requestContextService;
         }
 
         [HttpGet("products")]
@@ -35,21 +39,29 @@ namespace MercerStore.Controllers.Api
             return Ok(itemCount);
         }
         [HttpPost("product/{productId}")]
+        [LogUserAction("User added item to cart", "product")]
         public async Task<IActionResult> AddToCart(int productId)
         {
+
             var quantity = 1;
             var userId = _userIdentifierService.GetCurrentIdentifier();
             await _cartProductRepository.AddToCartProduct(productId, userId, quantity);
-            return Ok();
+            var logDetails = new
+            {
+                Quantity = quantity
+            };
+            _requestContextService.SetLogDetails(logDetails);
+            return Ok(productId);
         }
 
         [HttpDelete("product/{productId}")]
+        [LogUserAction("User removed item from cart", "product")]
         public async Task<IActionResult> RemoveFromCart(int productId)
         {
             var userId = _userIdentifierService.GetCurrentIdentifier();
             await _cartProductRepository.RemoveFromCartProduct(productId, userId);
 
-            return Ok();
+            return Ok(productId);
         }
     }
 }

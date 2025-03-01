@@ -1,4 +1,5 @@
-﻿using MercerStore.Models;
+﻿using MercerStore.Models.Products;
+using MercerStore.Models.Products;
 
 public class CategoryPageViewModel
 {

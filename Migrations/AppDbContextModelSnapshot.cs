@@ -37,7 +37,557 @@ namespace MercerStore.Migrations
                     b.ToTable("BrandCategory");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.AppUser", b =>
+            modelBuilder.Entity("MercerStore.Models.Carts.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Carts.CartProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.HasIndex("CartId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("CartProducts");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Invoice.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateReceived")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("EditDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ManagerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Invoice.InvoiceItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PurchasePrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("InvoiceItems");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Invoice.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContactPerson")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsCompany")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Orders.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CompletedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GuestId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("OrderProductListId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("TotalOrderPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("СreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderProductListId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Orders.OrderProductList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderProductLists");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Orders.OrderProductSnapshot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrderProductListId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("PriceAtOrder")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ProductImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderProductListId");
+
+                    b.ToTable("OrderProductSnapshots");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LogoImgUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryImgUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MainImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SKU")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.ProductDescription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DescriptionText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductDescriptions");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProductId1")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId1");
+
+                    b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.ProductPricing", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DateOfPriceChange")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DiscountEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("DiscountPercentage")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("DiscountStart")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("FixedDiscountPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("OriginalPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductPricings");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.ProductStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InStock")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("IsHit")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("IsNew")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsUnassigned")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductStatuses");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.ProductVariant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductVariants");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("EditDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Edited")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ReviewText")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Users.AppRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Users.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -52,12 +602,18 @@ namespace MercerStore.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastActivity")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -107,7 +663,22 @@ namespace MercerStore.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MercerStore.Models.Brand", b =>
+            modelBuilder.Entity("MercerStore.Models.Users.AppUserRole", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("MercerStore.Models.sales.OfflineSale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,1246 +686,25 @@ namespace MercerStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("LogoImgUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Brands");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.CartProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("CartProducts");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CategoryImgUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.CaseDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Accessories")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BottomFanSupport")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("BuiltInCardReader")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("BuiltInPowerSupply")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("CableManagementBehindMotherboardTray")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("CaseType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CompatibleMotherboardFormFactors")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CompatiblePowerSupplyFormFactors")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("CpuCoolerCutout")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("DriveBays5_25Count")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("DustFilters")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("External3_5DriveBaysCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FrontFanSupport")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FrontPanelMaterial")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FrontRadiatorSizes")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Height")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("HorizontalExpansionSlotsCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("IOConnectors")
-                        .HasColumnType("text");
-
-                    b.Property<string>("IOPanelLocation")
-                        .HasColumnType("text");
-
-                    b.Property<string>("IncludedFans")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Internal2_5DriveBaysCount")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Internal3_5DriveBaysCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Length")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LightingColor")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LightingConnector")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LightingControl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LightingSource")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LightingType")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("LiquidCoolingSupport")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("LowNoiseAntiVibrationCases")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("ManufacturerCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Material")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MaxCpuCoolerHeight")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MaxGpuLength")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MaxPowerSupplyLength")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MetalThickness")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MotherboardOrientation")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PowerSupplyPlacement")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PrimaryColor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RearFanSupport")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RearRadiatorSizes")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("SidePanelFixationScrews")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("SidePanelWindow")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("TopFanSupport")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TopRadiatorSizes")
-                        .HasColumnType("text");
-
-                    b.Property<int>("VerticalExpansionSlotsCount")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Width")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("WindowMaterial")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("CaseDetail");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.CoolingSystemDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BaseMaterial")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("BearingType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConstructionType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FanColor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FanConnector")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FanDimensions")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("FansIncludedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("HeatPipeDiameter")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("HeatPipesCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Height")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Length")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LightingType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ManufacturerCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("MaxAirflow")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("MaxFansCount")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("MaxNoiseLevel")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("MaxRotationSpeed")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MinRotationSpeed")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MountingKit")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("NickelPlating")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RadiatorColor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RadiatorMaterial")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("RatedCurrent")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("RatedVoltage")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RotationSpeedControl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SocketCompatibility")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TDP")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("ThermalPasteIncluded")
-                        .HasColumnType("boolean");
-
-                    b.Property<double?>("Weight")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Width")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("CoolingSystemDetail");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.MotherboardDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool?>("ARGBConnector5V_D_G")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("ActiveCooling")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("AnalogAudioPorts")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("AudioChipset")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AudioScheme")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BluetoothVersion")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("BoardLighting")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("BoxHeight")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BoxLength")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BoxWeight")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BoxWidth")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("CPUFanPowerConnectors")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("CPUPowerConnector")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("CaseFanPowerConnectors3Pin")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("CaseFanPowerConnectors4Pin")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Chipset")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CompatibleIntelCores")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FormFactor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Height")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("InternalUSBTypeAPorts")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("InternalUSBTypeCPort")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("LightingSyncSoftware")
-                        .HasColumnType("text");
-
-                    b.Property<string>("M2PCIeProcessorLines")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("M2Slots")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MainPowerConnector")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MaxMemoryFrequency")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MaxMemoryVolume")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("MemoryChannels")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MemoryFormFactor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("MemorySlots")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MemoryType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("NVMePCIeVersion")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("NVMeSupport")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("NetworkAdapter")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NetworkSpeed")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("OnBoardButtons")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PCIeSlots")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PCIeVersion")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("PCIeX1Slots")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PackageContents")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PassiveCooling")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("PowerPhaseCount")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("RGBConnector12V_G_R_B")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("RJ45Ports")
-                        .HasColumnType("integer");
-
-                    b.Property<bool?>("RS232Connector")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("ReleaseYear")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("SATAPorts")
-                        .HasColumnType("integer");
-
-                    b.Property<bool?>("SATA_RAIDSupport")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("SLICrossFireCards")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("SLICrossFireSupport")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("SPDIFPort")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Series")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Socket")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("USBTypeAPorts")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("USBTypeCPort")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("VideoOutputs")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("WiFiStandard")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Width")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("WirelessAdapter")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("WirelessModuleM2")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("MotherboardDetail");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.PowerSupplyDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("BraidedCables")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("CPUCableLength")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CPUConnectors")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CableColor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CoolingSystem")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("CurrentOn12VLine")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CurrentOn3_3VLine")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CurrentOn5VLine")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CurrentOnNegative12VLine")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FanControl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FanSize")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Features")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FormFactor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("GPUCableLength")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("GPUPowerConnectors")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Height")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("HybridMode")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("InputVoltageRange")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Length")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LightingType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MainCableLength")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MainPowerConnector")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ManufacturerCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("ModularCables")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("MolexCableLength")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("MolexPowerConnectors")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PackageContents")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlusCertification")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PowerCableIncluded")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PowerFactorCorrection")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("PowerOn12VLine")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ProtectionTechnologies")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SataCableLength")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("SataPowerConnectors")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("StandardCompliance")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("StandbyCurrent5V")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Wattage")
-                        .HasColumnType("integer");
-
-                    b.Property<double?>("Weight")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Width")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("PowerSupplyDetail");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.ProcessorDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BaseFrequency")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("CoolingSystemIncluded")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Core")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("ECCSupport")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("EnergyEfficientCores")
-                        .HasColumnType("integer");
-
-                    b.Property<bool?>("IntegratedGraphics")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("L2Cache")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("L3Cache")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ManufacturerCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MaxSupportedMemory")
-                        .HasColumnType("text");
-
-                    b.Property<int>("MaxTemperature")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MaxThreads")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MaxTurboFrequency")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("MemoryChannels")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MemoryFrequency")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MemoryType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PCIeController")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("PCIeLanes")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PerformanceCores")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ReleaseYear")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Socket")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TDP")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("TechnologyProcess")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("ThermalInterfaceIncluded")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("TotalCores")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("ProcessorDetail");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.RamDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ActivateToPrechargeDelay")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("CASLatency")
-                        .HasColumnType("integer");
-
-                    b.Property<bool?>("ECCMemory")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Frequency")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Height")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("LowProfile")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("ManufacturerCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MemoryFormFactor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MemoryType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ModuleCount")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ModuleMemoryVolume")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("RASToCASDelay")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RadiatorColor")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("RadiatorPresence")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("RankType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("RegisteredMemory")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("RowPrechargeDelay")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("TotalMemoryVolume")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Voltage")
-                        .HasColumnType("text");
-
-                    b.Property<string>("XMPProfiles")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("RamDetail");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.StorageDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BitsPerCell")
-                        .HasColumnType("text");
-
-                    b.Property<int>("CapacityGB")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Controller")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("DRAMBuffer")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("DRAMBufferSizeMB")
-                        .HasColumnType("integer");
-
-                    b.Property<double?>("DWPD")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("FormFactor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Length")
-                        .HasColumnType("text");
-
-                    b.Property<string>("M2Key")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ManufacturerCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MaxSequentialReadSpeed")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MaxSequentialWriteSpeed")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MemoryStructure")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("NVMe")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("PhysicalInterface")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PowerConsumption")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool?>("RadiatorIncluded")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("TBW")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Thickness")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("WeightGrams")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Width")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("StorageDetail");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.VideoCardDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ALUs")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BaseClockMHz")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BoostClockMHz")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ConnectionFormFactor")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CoolingType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DimensionsBracket")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DisplayConnectors")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DisplayPortVersion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FabricationProcess")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("FanCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("GPU")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("HDMIVersion")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("HasBIOSSwitch")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("HasLCDDisplay")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Interface")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsLHR")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsMiningPurpose")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("IsRGB")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("IsRGBSync")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("LengthMM")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ManufacturerCode")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("MaxMonitors")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MaxResolution")
-                        .HasColumnType("text");
-
-                    b.Property<int>("MemoryBandwidthGBps")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MemoryBusWidth")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MemoryFrequencyMHz")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MemorySizeGB")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MemoryType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Microarchitecture")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("PCILanes")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PowerConnectors")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ROPs")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("RayTracingCores")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("RayTracingSupport")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("RecommendedPSUWattage")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("TensorCores")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("TextureUnits")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ThicknessMM")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("WeightGrams")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("WidthMM")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("VideoCardDetail");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.Order", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("OrderId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
 
-                    b.Property<string>("GuestId")
-                        .HasColumnType("text");
-
-                    b.Property<int>("OrderProductListId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PhoneNumber")
+                    b.Property<string>("ManagerId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("numeric");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("OrderProductListId");
-
-                    b.ToTable("Orders");
+                    b.ToTable("OfflineSales");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.OrderProduct", b =>
+            modelBuilder.Entity("MercerStore.Models.sales.OfflineSaleItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1362,191 +712,26 @@ namespace MercerStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("OrderProductListId")
+                    b.Property<decimal>("ItemPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("OfflineSaleId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderProductListId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderProducts");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.OrderProductList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrderProductLists");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BrandId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("IsHit")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("IsNew")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("MainImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
 
                     b.Property<string>("SKU")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
+                    b.HasIndex("OfflineSaleId");
 
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.ProductImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductImages");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.ProductVariant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Color")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductVariant");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ReviewText")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("OfflineSaleItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1621,21 +806,6 @@ namespace MercerStore.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
@@ -1657,30 +827,30 @@ namespace MercerStore.Migrations
 
             modelBuilder.Entity("BrandCategory", b =>
                 {
-                    b.HasOne("MercerStore.Models.Brand", null)
+                    b.HasOne("MercerStore.Models.Products.Brand", null)
                         .WithMany()
                         .HasForeignKey("BrandsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MercerStore.Models.Category", null)
+                    b.HasOne("MercerStore.Models.Products.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MercerStore.Models.CartProduct", b =>
+            modelBuilder.Entity("MercerStore.Models.Carts.CartProduct", b =>
                 {
-                    b.HasOne("MercerStore.Models.Cart", "Cart")
+                    b.HasOne("MercerStore.Models.Carts.Cart", "Cart")
                         .WithMany("CartProducts")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("cartProduct")
-                        .HasForeignKey("MercerStore.Models.CartProduct", "ProductId")
+                    b.HasOne("MercerStore.Models.Products.Product", "Product")
+                        .WithOne("CartProduct")
+                        .HasForeignKey("MercerStore.Models.Carts.CartProduct", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1689,155 +859,132 @@ namespace MercerStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.CaseDetail", b =>
+            modelBuilder.Entity("MercerStore.Models.Invoice.Invoice", b =>
                 {
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("Case")
-                        .HasForeignKey("MercerStore.Models.DescriptionProducts.CaseDetail", "ProductId")
+                    b.HasOne("MercerStore.Models.Invoice.Supplier", "Supplier")
+                        .WithMany("Invoices")
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.CoolingSystemDetail", b =>
+            modelBuilder.Entity("MercerStore.Models.Invoice.InvoiceItem", b =>
                 {
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("coolingSystem")
-                        .HasForeignKey("MercerStore.Models.DescriptionProducts.CoolingSystemDetail", "ProductId")
+                    b.HasOne("MercerStore.Models.Invoice.Invoice", "Invoice")
+                        .WithMany("InvoiceItems")
+                        .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.MotherboardDetail", b =>
-                {
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("Motherboard")
-                        .HasForeignKey("MercerStore.Models.DescriptionProducts.MotherboardDetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.PowerSupplyDetail", b =>
-                {
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("PowerSupply")
-                        .HasForeignKey("MercerStore.Models.DescriptionProducts.PowerSupplyDetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.ProcessorDetail", b =>
-                {
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("Processor")
-                        .HasForeignKey("MercerStore.Models.DescriptionProducts.ProcessorDetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.RamDetail", b =>
-                {
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("Ram")
-                        .HasForeignKey("MercerStore.Models.DescriptionProducts.RamDetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.StorageDetail", b =>
-                {
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("Storage")
-                        .HasForeignKey("MercerStore.Models.DescriptionProducts.StorageDetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.DescriptionProducts.VideoCardDetail", b =>
-                {
-                    b.HasOne("MercerStore.Models.Product", "Product")
-                        .WithOne("VideoCard")
-                        .HasForeignKey("MercerStore.Models.DescriptionProducts.VideoCardDetail", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.Order", b =>
-                {
-                    b.HasOne("MercerStore.Models.OrderProductList", "OrderProductList")
-                        .WithMany()
-                        .HasForeignKey("OrderProductListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderProductList");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.OrderProduct", b =>
-                {
-                    b.HasOne("MercerStore.Models.OrderProductList", "OrderProductList")
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("OrderProductListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MercerStore.Models.Product", "Product")
+                    b.HasOne("MercerStore.Models.Products.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("OrderProductList");
+                    b.Navigation("Invoice");
 
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.Product", b =>
+            modelBuilder.Entity("MercerStore.Models.Orders.Order", b =>
                 {
-                    b.HasOne("MercerStore.Models.Brand", "Brand")
+                    b.HasOne("MercerStore.Models.Orders.OrderProductList", "OrderProductList")
+                        .WithMany()
+                        .HasForeignKey("OrderProductListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MercerStore.Models.Users.AppUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("OrderProductList");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Orders.OrderProductSnapshot", b =>
+                {
+                    b.HasOne("MercerStore.Models.Orders.OrderProductList", "OrderProductList")
+                        .WithMany("OrderProductSnapshots")
+                        .HasForeignKey("OrderProductListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderProductList");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.Product", b =>
+                {
+                    b.HasOne("MercerStore.Models.Products.Brand", null)
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
 
-                    b.HasOne("MercerStore.Models.Category", "Category")
+                    b.HasOne("MercerStore.Models.Products.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
-
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.ProductImage", b =>
+            modelBuilder.Entity("MercerStore.Models.Products.ProductDescription", b =>
                 {
-                    b.HasOne("MercerStore.Models.Product", "Product")
+                    b.HasOne("MercerStore.Models.Products.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId");
+
+                    b.HasOne("MercerStore.Models.Products.Product", "Product")
+                        .WithOne("ProductDescription")
+                        .HasForeignKey("MercerStore.Models.Products.ProductDescription", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.ProductImage", b =>
+                {
+                    b.HasOne("MercerStore.Models.Products.Product", "Product")
                         .WithMany("Images")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.ProductVariant", b =>
+            modelBuilder.Entity("MercerStore.Models.Products.ProductPricing", b =>
                 {
-                    b.HasOne("MercerStore.Models.Product", "Product")
+                    b.HasOne("MercerStore.Models.Products.Product", "Product")
+                        .WithOne("ProductPricing")
+                        .HasForeignKey("MercerStore.Models.Products.ProductPricing", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.ProductStatus", b =>
+                {
+                    b.HasOne("MercerStore.Models.Products.Product", "Product")
+                        .WithOne("ProductStatus")
+                        .HasForeignKey("MercerStore.Models.Products.ProductStatus", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.ProductVariant", b =>
+                {
+                    b.HasOne("MercerStore.Models.Products.Product", "Product")
                         .WithMany("ProductVariants")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1846,16 +993,16 @@ namespace MercerStore.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.Review", b =>
+            modelBuilder.Entity("MercerStore.Models.Products.Review", b =>
                 {
-                    b.HasOne("MercerStore.Models.Product", "Product")
+                    b.HasOne("MercerStore.Models.Products.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MercerStore.Models.AppUser", "User")
-                        .WithMany()
+                    b.HasOne("MercerStore.Models.Users.AppUser", "User")
+                        .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1865,9 +1012,39 @@ namespace MercerStore.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MercerStore.Models.Users.AppUserRole", b =>
+                {
+                    b.HasOne("MercerStore.Models.Users.AppRole", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MercerStore.Models.Users.AppUser", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.sales.OfflineSaleItem", b =>
+                {
+                    b.HasOne("MercerStore.Models.sales.OfflineSale", "Sale")
+                        .WithMany("Items")
+                        .HasForeignKey("OfflineSaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sale");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("MercerStore.Models.Users.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1876,7 +1053,7 @@ namespace MercerStore.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MercerStore.Models.AppUser", null)
+                    b.HasOne("MercerStore.Models.Users.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1885,22 +1062,7 @@ namespace MercerStore.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MercerStore.Models.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MercerStore.Models.AppUser", null)
+                    b.HasOne("MercerStore.Models.Users.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1909,53 +1071,75 @@ namespace MercerStore.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MercerStore.Models.AppUser", null)
+                    b.HasOne("MercerStore.Models.Users.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MercerStore.Models.Brand", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("MercerStore.Models.Cart", b =>
+            modelBuilder.Entity("MercerStore.Models.Carts.Cart", b =>
                 {
                     b.Navigation("CartProducts");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.OrderProductList", b =>
+            modelBuilder.Entity("MercerStore.Models.Invoice.Invoice", b =>
                 {
-                    b.Navigation("OrderProducts");
+                    b.Navigation("InvoiceItems");
                 });
 
-            modelBuilder.Entity("MercerStore.Models.Product", b =>
+            modelBuilder.Entity("MercerStore.Models.Invoice.Supplier", b =>
                 {
-                    b.Navigation("Case");
+                    b.Navigation("Invoices");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Orders.OrderProductList", b =>
+                {
+                    b.Navigation("OrderProductSnapshots");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.Brand", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Products.Product", b =>
+                {
+                    b.Navigation("CartProduct");
 
                     b.Navigation("Images");
 
-                    b.Navigation("Motherboard");
+                    b.Navigation("ProductDescription")
+                        .IsRequired();
 
-                    b.Navigation("PowerSupply");
+                    b.Navigation("ProductPricing")
+                        .IsRequired();
 
-                    b.Navigation("Processor");
+                    b.Navigation("ProductStatus")
+                        .IsRequired();
 
                     b.Navigation("ProductVariants");
 
-                    b.Navigation("Ram");
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Users.AppRole", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("MercerStore.Models.Users.AppUser", b =>
+                {
+                    b.Navigation("Orders");
 
                     b.Navigation("Reviews");
 
-                    b.Navigation("Storage");
+                    b.Navigation("UserRoles");
+                });
 
-                    b.Navigation("VideoCard");
-
-                    b.Navigation("cartProduct");
-
-                    b.Navigation("coolingSystem");
+            modelBuilder.Entity("MercerStore.Models.sales.OfflineSale", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

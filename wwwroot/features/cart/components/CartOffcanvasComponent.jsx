@@ -41,7 +41,21 @@ const CartOffcanvasComponent = () => {
                                                     {item.name}
                                                 </a>
                                             </td>
-                                            <td className="product-price-td">{item.price} ₽</td>
+                                            
+                                            <td className="product-price-td">{item.discountedPrice ? (
+                                                <div className="price-container">
+                                                    <small className="old-price-card">
+                                                        {item.price.toLocaleString()}₽
+                                                    </small>
+                                                    <div className="">
+                                                        {item.discountedPrice.toLocaleString()}₽
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="">
+                                                        {item.price.toLocaleString()}₽
+                                                </div>
+                                            )}</td>
                                             <td className="product-quantity-td">&times;{item.quantity}</td>
                                             <td className="remove-btn-td">
                                                 <button onClick={() => removeFromCart(item.productId)} className="remove-from-cart-button">

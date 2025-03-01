@@ -21,7 +21,7 @@ const CartPageComponent = () => {
                 <div className="col-lg-8 mb-3">
                     <div className="cart-content p-3 h-100 bg-white">
                         <div className="table-responsive">
-                            <table className="table align-middle table-hover">
+                            <table className="table align-middle table-hover cart-page-table">
                                 <thead className="table-grey">
                                     <tr>
                                         <th>Картинка</th>
@@ -43,7 +43,20 @@ const CartPageComponent = () => {
                                                 <td>
                                                     <a href={`/Product/Details/${item.productId}`} className="cart-content-title">{item.name}</a>
                                                 </td>
-                                                <td>{item.price} ₽</td>
+                                                <td className="product-price-td">{item.discountedPrice ? (
+                                                    <div className="price-container">
+                                                        <small className="old-price-card">
+                                                            {item.price.toLocaleString()}₽
+                                                        </small>
+                                                        <div className="">
+                                                            {item.discountedPrice.toLocaleString()}₽
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <div className="">
+                                                        {item.price.toLocaleString()}₽
+                                                    </div>
+                                                )}</td>
                                                 <td>{item.quantity}</td>
                                                 <td>
                                                     <button
