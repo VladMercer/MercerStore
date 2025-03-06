@@ -2,7 +2,7 @@
 using MercerStore.Data;
 using MercerStore.Data.Enum;
 using MercerStore.Data.Enum.Invoice;
-using MercerStore.Dtos.Invoice;
+using MercerStore.Dtos.InvoiceDto;
 using MercerStore.Interfaces;
 using MercerStore.Models.Invoice;
 using Microsoft.EntityFrameworkCore;

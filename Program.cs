@@ -12,11 +12,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
+using StackExchange.Redis;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +62,16 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect("localhost:6379")
+);
+builder.Services.AddSingleton<IRedisCacheService, RedisCacheService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

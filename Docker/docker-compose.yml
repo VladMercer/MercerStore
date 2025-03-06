@@ -23,7 +23,16 @@ services:
     depends_on:
       - elasticsearch
     environment:
-      - ELASTICSEARCH_URL=http://localhost:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    networks:
+      - elasticnetwork
+
+  redis:
+    container_name: redis
+    image: redis:latest  
+    restart: always
+    ports:
+      - "6379:6379" 
     networks:
       - elasticnetwork
 

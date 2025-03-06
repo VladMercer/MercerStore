@@ -1,7 +1,12 @@
 ﻿using MercerStore.Dtos.ProductDto;
+using MercerStore.Dtos.ResultDto;
 using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+
+
 
 namespace MercerStore.Controllers.Api
 {
@@ -12,12 +17,14 @@ namespace MercerStore.Controllers.Api
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
-
+        private readonly IRedisCacheService _redisCacheService;
         public CategoriesController(IProductRepository productRepository,
-            ICategoryRepository categoryRepository)
+            ICategoryRepository categoryRepository,
+            IRedisCacheService redisCacheService)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _redisCacheService = redisCacheService;
         }
 
         /// <summary>
@@ -33,7 +40,28 @@ namespace MercerStore.Controllers.Api
 
         [HttpGet("products/{categoryId}/{pageNumber}/{pageSize}")]
         public async Task<IActionResult> GetFilteredProducts(int categoryId, int pageNumber, int pageSize, string? sortOrder, int? maxPrice, int? minPrice)
-        {
+         {
+            var priceRange = await _categoryRepository.GetCategoryPriceRangeAsync(categoryId);
+
+            bool isDefaultQuery =
+            pageNumber == 1 &&
+            pageSize == 9 &&
+            string.IsNullOrEmpty(sortOrder) &&
+            (minPrice.Value == priceRange.MinPrice) &&
+            (maxPrice.Value == priceRange.MaxPrice);
+
+            string cacheKey = $"products:{categoryId}:page1";
+
+            if (isDefaultQuery)
+            {
+                var cachedData = await _redisCacheService.GetCacheAsync<string>(cacheKey);
+
+                if (!string.IsNullOrEmpty(cachedData))
+                {
+                    return Ok(JsonSerializer.Deserialize<object>(cachedData));
+                }
+            }
+
             var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
 
             if (minPrice.HasValue)
@@ -69,12 +97,12 @@ namespace MercerStore.Controllers.Api
                 DiscountedPrice = p.ProductPricing.DiscountedPrice
             });
 
-            var result = new
+            var result = new PaginatedResultDto<ProductDto>(pageProducts, totalItems, pageSize);
+
+            if (isDefaultQuery)
             {
-                Products = pageProducts,
-                TotalItems = totalItems,
-                TotalPages = (int)Math.Ceiling((double)totalItems / pageSize)
-            };
+                await _redisCacheService.SetCacheAsync(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
 
             return Ok(result);
         }
@@ -82,27 +110,8 @@ namespace MercerStore.Controllers.Api
         [HttpGet("price-range/{categoryId}")]
         public async Task<IActionResult> GetPriceRange(int categoryId)
         {
-            var products = await _productRepository.GetProductsByCategoryAsync(categoryId);
-
-            var minPrice = products
-                .Select(p => p.ProductPricing.FixedDiscountPrice
-                             ?? p.ProductPricing.DiscountedPrice
-                             ?? p.ProductPricing.OriginalPrice)
-                .Min();
-
-            var maxPrice = products
-                .Select(p => p.ProductPricing.FixedDiscountPrice
-                             ?? p.ProductPricing.DiscountedPrice
-                             ?? p.ProductPricing.OriginalPrice)
-                .Max();
-
-            var result = new
-            {
-                MinPrice = minPrice,
-                MaxPrice = maxPrice
-            };
-
-            return Ok(result);
+            var priceRange = await _categoryRepository.GetCategoryPriceRangeAsync(categoryId);
+            return Ok(priceRange);
         }
 
         [HttpGet("categories")]

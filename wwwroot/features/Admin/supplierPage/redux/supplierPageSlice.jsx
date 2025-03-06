@@ -53,8 +53,8 @@ const supplierPageSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchSuppliers.fulfilled, (state, action) => {
-                const { suppliers, totalItems, totalPages } = action.payload;
-                state.suppliers = suppliers;
+                const { items, totalItems, totalPages } = action.payload;
+                state.suppliers = items;
                 state.totalSuppliers = totalItems;
                 state.totalPages = totalPages;
                 state.isLoaded = true;

@@ -1,4 +1,6 @@
-﻿using MercerStore.Data;
+﻿using CloudinaryDotNet.Core;
+using MercerStore.Data;
+using MercerStore.Dtos.ProductDto;
 using MercerStore.Interfaces;
 using MercerStore.Models.Products;
 using Microsoft.EntityFrameworkCore;
@@ -42,7 +44,21 @@ namespace MercerStore.Repositories
             await _context.Categories.FindAsync(categoryId);
             await _context.SaveChangesAsync();
         }
+        public async Task<PriceRangeDto> GetCategoryPriceRangeAsync(int categoryId)
+        {
+            var products = await _context.Products
+                .AsNoTracking()
+                .Where(c => c.CategoryId == categoryId)
+                .Include(c => c.ProductPricing)
+                .ToListAsync();
 
+            var priceRange = new PriceRangeDto
+            {
+                MaxPrice =  products.Max(p => p.ProductPricing.DiscountedPrice ?? p.ProductPricing.OriginalPrice),
+                MinPrice =  products.Min(p => p.ProductPricing.DiscountedPrice ?? p.ProductPricing.OriginalPrice)
+            };
 
+            return priceRange;
+        }
     }
 }

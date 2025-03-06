@@ -65,8 +65,8 @@ const reviewPageSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchReviews.fulfilled, (state, action) => {
-                const { reviews, totalItems, totalPages } = action.payload;
-                state.reviews = reviews;
+                const { items, totalItems, totalPages } = action.payload;
+                state.reviews = items;
                 state.totalReviews = totalItems;
                 state.totalPages = totalPages;
                 state.isLoaded = true;

@@ -1,8 +1,12 @@
 ﻿using MercerStore.Data.Enum.Product;
+using MercerStore.Dtos.OrderDto;
 using MercerStore.Dtos.ProductDto;
+using MercerStore.Dtos.ResultDto;
 using MercerStore.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Nest;
+using System.Text.Json;
 
 namespace MercerStore.Controllers.Api
 {
@@ -13,10 +17,12 @@ namespace MercerStore.Controllers.Api
     {
         private readonly IProductRepository _productRepository;
         private readonly ISKUService _skuService;
-        public ProductsController(IProductRepository productRepository, ISKUService skuService)
+        private readonly IRedisCacheService _redisCacheService;
+        public ProductsController(IProductRepository productRepository, ISKUService skuService, IRedisCacheService redisCacheService)
         {
             _productRepository = productRepository;
             _skuService = skuService;
+            _redisCacheService = redisCacheService;
         }
 
         /// <summary>
@@ -32,8 +38,24 @@ namespace MercerStore.Controllers.Api
         [HttpGet("products/{pageNumber}/{pageSize}")]
         public async Task<IActionResult> GetAllProducts(int? categoryId, int pageNumber, int pageSize, AdminProductSortOrder? sortOrder, AdminProductFilter? filter)
         {
-            filter ??= AdminProductFilter.All;
-            sortOrder ??= AdminProductSortOrder.NameAsc;
+            bool isDefaultQuery =
+                categoryId == null &&
+                pageNumber == 1 &&
+                pageSize == 30 &&
+                !sortOrder.HasValue &&
+                !filter.HasValue;
+
+            string cacheKey = $"products:page1";
+            if (isDefaultQuery)
+            {
+                var cachedData = await _redisCacheService.GetCacheAsync<string>(cacheKey);
+
+                if (!string.IsNullOrEmpty(cachedData))
+                {
+                    return Ok(JsonSerializer.Deserialize<object>(cachedData));
+                }
+            }
+          
 
             var (products, totalItems) = await _productRepository
             .GetProductsAsync(categoryId, sortOrder.Value, filter.Value, pageNumber, pageSize);
@@ -61,12 +83,12 @@ namespace MercerStore.Controllers.Api
                 }
             });
 
-            var result = new
+            var result = new PaginatedResultDto<AdminProductDto>(pageProducts, totalItems, pageSize);
+
+            if (isDefaultQuery)
             {
-                Products = pageProducts,
-                TotalItems = totalItems,
-                TotalPages = (int)Math.Ceiling((double)totalItems / pageSize)
-            };
+                await _redisCacheService.SetCacheAsync(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
 
             return Ok(result);
         }

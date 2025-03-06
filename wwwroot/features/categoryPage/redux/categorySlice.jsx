@@ -80,8 +80,8 @@ const categorySlice = createSlice({
                 state.isPriceRangeLoaded = true;
             })
             .addCase(fetchProducts.fulfilled, (state, action) => {
-                const { products, totalItems, totalPages } = action.payload;
-                state.products = products;
+                const { items, totalItems, totalPages } = action.payload;
+                state.products = items;
                 state.totalProducts = totalItems;
                 state.totalPages = totalPages;
                 state.isLoaded = true;

@@ -1,6 +1,6 @@
 ﻿using MercerStore.Data.Enum.Invoice;
 using MercerStore.Data.Enum;
-using MercerStore.Dtos.Invoice;
+using MercerStore.Dtos.InvoiceDto;
 using MercerStore.Models.Invoice;
 using MercerStore.Areas.Admin.ViewModels;
 

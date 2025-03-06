@@ -236,15 +236,6 @@ namespace MercerStore.Repository
 
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateOrderItems(List<OrderProductSnapshot> orderItems)
-        {
-            foreach (var item in orderItems)
-            {
-                _context.Attach(item);
-                _context.Entry(item).Property(x => x.Quantity).IsModified = true;
-            }
-            await _context.SaveChangesAsync();
-        }
         public async Task<object> GetSalesMetric()
         {
             var now = DateTime.UtcNow;

@@ -58,8 +58,8 @@ const invoicePageSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchInvoices.fulfilled, (state, action) => {
-                const { invoices, totalItems, totalPages } = action.payload;
-                state.invoices = invoices;
+                const { items, totalItems, totalPages } = action.payload;
+                state.invoices = items;
                 state.totalInvoices = totalItems;
                 state.totalPages = totalPages;
                 state.isLoaded = true;
