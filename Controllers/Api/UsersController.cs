@@ -1,8 +1,13 @@
 ﻿using MercerStore.Data.Enum;
 using MercerStore.Data.Enum.User;
+using MercerStore.Dtos.ResultDto;
+using MercerStore.Dtos.SupplierDto;
+using MercerStore.Dtos.UserDto;
 using MercerStore.Interfaces;
+using MercerStore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace MercerStore.Controllers.Api
 {
@@ -13,12 +18,14 @@ namespace MercerStore.Controllers.Api
     {
         private readonly IUserIdentifierService _userIdentifierService;
         private readonly IUserRepository _userRepository;
+        private readonly IRedisCacheService _redisCacheService;
 
 
-        public UsersController(IUserIdentifierService userIdentifierService, IUserRepository userRepository)
+        public UsersController(IUserIdentifierService userIdentifierService, IUserRepository userRepository, IRedisCacheService redisCacheService)
         {
             _userIdentifierService = userIdentifierService;
             _userRepository = userRepository;
+            _redisCacheService = redisCacheService;
         }
 
         [HttpGet("userId")]
@@ -45,15 +52,33 @@ namespace MercerStore.Controllers.Api
         [HttpGet("users/{pageNumber}/{pageSize}")]
         public async Task<IActionResult> GetFilteredUsers(int pageNumber, int pageSize, UserSortOrder? sortOrder, TimePeriod? period, UserFilter? filter, string? query)
         {
+            bool isDefaultQuery =
+                pageNumber == 1 &&
+                pageSize == 30 &&
+                !sortOrder.HasValue &&
+                !period.HasValue && 
+                !filter.HasValue &&
+                string.IsNullOrEmpty(query);
+
+            string cacheKey = $"users:page1";
+            if (isDefaultQuery)
+            {
+                var cachedData = await _redisCacheService.GetCacheAsync<string>(cacheKey);
+
+                if (!string.IsNullOrEmpty(cachedData))
+                {
+                    return Ok(JsonSerializer.Deserialize<object>(cachedData));
+                }
+            }
 
             var (userDtos, totalUsers) = await _userRepository.GetFilteredUsers(pageNumber, pageSize, sortOrder, period, filter, query);
 
-            var result = new
+            var result = new PaginatedResultDto<UserDto>(userDtos, totalUsers, pageSize);
+
+            if (isDefaultQuery)
             {
-                Users = userDtos,
-                TotalItems = totalUsers,
-                TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize)
-            };
+                await _redisCacheService.SetCacheAsync(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
 
             return Ok(result);
         }

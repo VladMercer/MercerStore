@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using MercerStore.Data.Enum.Review;
 using Elasticsearch.Net;
+using MercerStore.Services;
+using System.Text.Json;
+using MercerStore.Dtos.ProductDto;
+using MercerStore.Dtos.ResultDto;
 
 namespace MercerStore.Controllers.Api
 {
@@ -22,13 +26,16 @@ namespace MercerStore.Controllers.Api
         private readonly IReviewProductRepository _reviewProductRepository;
         private readonly IUserIdentifierService _userIdentifierService;
         private readonly IRequestContextService _requestContextService;
+        private readonly IRedisCacheService _redisCacheService;
         public ReviewsController(IReviewProductRepository reviewProductRepository,
             IUserIdentifierService userIdentifierService,
-            IRequestContextService requestContextService)
+            IRequestContextService requestContextService,
+            IRedisCacheService redisCacheService)
         {
             _reviewProductRepository = reviewProductRepository;
             _userIdentifierService = userIdentifierService;
             _requestContextService = requestContextService;
+            _redisCacheService = redisCacheService;
         }
 
         [HttpGet("reviews/{productId}")]
@@ -180,15 +187,32 @@ namespace MercerStore.Controllers.Api
         [HttpGet("reviews/{pageNumber}/{pageSize}")]
         public async Task<IActionResult> GetFilteredReviews(int pageNumber, int pageSize, ReviewSortOrder? sortOrder, TimePeriod? period, ReviewFilter? filter, string? query)
         {
+            bool isDefaultQuery =
+              pageNumber == 1 &&
+              pageSize == 30 &&
+              !sortOrder.HasValue &&
+              !filter.HasValue &&
+              query == "";
+
+            string cacheKey = $"reviews:page1";
+            if (isDefaultQuery)
+            {
+                var cachedData = await _redisCacheService.GetCacheAsync<string>(cacheKey);
+
+                if (!string.IsNullOrEmpty(cachedData))
+                {
+                    return Ok(JsonSerializer.Deserialize<object>(cachedData));
+                }
+            }
 
             var (reviewDtos, totalReviews) = await _reviewProductRepository.GetFilteredReviews(pageNumber, pageSize, sortOrder, period, filter, query);
 
-            var result = new
+            var result = new PaginatedResultDto<AdminReviewDto>(reviewDtos, totalReviews, pageSize);
+
+            if (isDefaultQuery)
             {
-                Reviews = reviewDtos,
-                TotalItems = totalReviews,
-                TotalPages = (int)Math.Ceiling((double)totalReviews / pageSize)
-            };
+                await _redisCacheService.SetCacheAsync(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
 
             return Ok(result);
         }

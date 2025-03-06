@@ -1,12 +1,16 @@
 ﻿using MercerStore.Data.Enum;
 using MercerStore.Data.Enum.Order;
+using MercerStore.Dtos.InvoiceDto;
 using MercerStore.Dtos.OrderDto;
+using MercerStore.Dtos.ResultDto;
 using MercerStore.Infrastructure.Extentions;
 using MercerStore.Interfaces;
 using MercerStore.Models.Orders;
+using MercerStore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nest;
+using System.Text.Json;
 
 namespace MercerStore.Controllers.Api
 {
@@ -17,27 +21,43 @@ namespace MercerStore.Controllers.Api
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IRequestContextService _requestContextService;
-        public OrdersController(IOrderRepository orderRepository, IRequestContextService requestContextService)
+        private readonly IRedisCacheService _redisCacheService;
+        public OrdersController(IOrderRepository orderRepository, IRequestContextService requestContextService, IRedisCacheService redisCacheService)
         {
             _orderRepository = orderRepository;
             _requestContextService = requestContextService;
+            _redisCacheService = redisCacheService;
         }
 
         [HttpGet("orders/{pageNumber}/{pageSize}")]
         public async Task<IActionResult> GetFilteredOrders(int pageNumber, int pageSize, OrdersSortOrder? sortOrder, TimePeriod? period, OrderStatuses? status, string? query)
         {
-          /*  period ??= TimePeriod.All;
-            sortOrder ??= OrdersSortOrder.DateTimeAsc;
-            status ??= OrderStatuses.All;*/
+            bool isDefaultQuery =
+                pageNumber == 1 &&
+                pageSize == 30 &&
+                !sortOrder.HasValue &&
+                !status.HasValue &&
+                query == "";
+
+            string cacheKey = $"orders:page1";
+            if (isDefaultQuery)
+            {
+                var cachedData = await _redisCacheService.GetCacheAsync<string>(cacheKey);
+
+                if (!string.IsNullOrEmpty(cachedData))
+                {
+                    return Ok(JsonSerializer.Deserialize<object>(cachedData));
+                }
+            }
 
             var (orderDtos, totalItems) = await _orderRepository.GetFilteredOrders(pageNumber, pageSize, sortOrder, period, status, query);
 
-            var result = new
+            var result = new PaginatedResultDto<OrderDto>(orderDtos, totalItems, pageSize);
+
+            if (isDefaultQuery)
             {
-                Orders = orderDtos,
-                TotalItems = totalItems,
-                TotalPages = (int)Math.Ceiling((double)totalItems / pageSize)
-            };
+                await _redisCacheService.SetCacheAsync(cacheKey, result, TimeSpan.FromMinutes(10));
+            }
 
             return Ok(result);
         }

@@ -56,8 +56,8 @@ const userPageSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchUsers.fulfilled, (state, action) => {
-                const { users, totalItems, totalPages } = action.payload;
-                state.users = users;
+                const { items, totalItems, totalPages } = action.payload;
+                state.users = items;
                 state.totalUsers = totalItems;
                 state.totalPages = totalPages;
                 state.isLoaded = true;

@@ -1,7 +1,6 @@
-﻿using MercerStore.Data.Enum.Invoice;
-using MercerStore.Models.Invoice;
+﻿
 
-namespace MercerStore.Dtos.Invoice
+namespace MercerStore.Dtos.InvoiceDto
 {
     public class InvoiceDto
     {

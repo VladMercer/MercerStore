@@ -1,4 +1,5 @@
-﻿using MercerStore.Models.Products;
+﻿using MercerStore.Dtos.ProductDto;
+using MercerStore.Models.Products;
 
 namespace MercerStore.Interfaces
 {
@@ -9,6 +10,8 @@ namespace MercerStore.Interfaces
         Task<Category> AddCategory(Category category);
         Task UpdateCategory(Category category);
         Task DeleteCategory(int categoryId);
-       
+        Task<PriceRangeDto> GetCategoryPriceRangeAsync(int categoryId);
+
+
     }
 }
