@@ -1,0 +1,47 @@
+﻿@using MercerStore.Web.Application.ViewModels.Users
+@model RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.ShowHeaderFooter = false;
+    ViewData["Title"] = "Регистрация";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav class="breadcrumbs">
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
+                    <li><a asp-controller="Account" asp-action="Login">Вход</a></li>
+                    <li><span>Регистрация</span></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="register-wrapper">
+    <div class="register-background">
+        <form asp-action="Register" class="registration-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-success btn-block">Зарегистрироваться</button>
+            </div>
+        </form>
+    </div>
+</div>

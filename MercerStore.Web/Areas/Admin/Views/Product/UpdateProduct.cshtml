@@ -1,0 +1,103 @@
+﻿@using MercerStore.Web.Areas.Admin.ViewModels.Products
+@model UpdateProductViewModel
+
+@{
+    ViewData["Title"] = "Редактировать продукт";
+}
+
+<div class="container mt-3 mb-4">
+    <div class="card p-4 shadow-sm">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2>Редактирование продукта</h2>
+
+                <form asp-action="UpdateProduct" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                 
+
+                    <div class="form-group mb-3">
+                        <label asp-for="ProductName"></label>
+                        <textarea asp-for="ProductName" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Price"></label>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="DiscountPrice"></label>
+                        <input asp-for="DiscountPrice" class="form-control" />
+                        <span asp-validation-for="DiscountPrice" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="DiscountPercentage"></label>
+                        <input asp-for="DiscountPercentage" class="form-control" />
+                        <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+                    </div>
+                    @if (Model.RemainingDiscountDays.HasValue)
+                    {
+                        <div class="form-group mb-3">
+                            <label asp-for="RemainingDiscountDays"></label>
+                            <span>: @Model.RemainingDiscountDays</span>
+                        </div>
+                    }
+                  
+                    <div class="form-group mb-3">
+                        <label asp-for="DiscountStart"></label>
+                        <input asp-for="DiscountStart" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="DiscountStart" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="DiscountEnd"></label>
+                        <input asp-for="DiscountEnd" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="DiscountEnd" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" class="form-control" rows="10"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="MainImage"></label>
+                        <input type="file" asp-for="MainImage" class="form-control" />
+                        <span asp-validation-for="MainImage" class="text-danger"></span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.MainImageUrl))
+                    {
+                        <input type="hidden" asp-for="MainImageUrl" />
+                        <div class="form-group mb-3">
+                            <label>Текущая ссылка на изображение:</label>
+                            <a href="@Model.MainImageUrl" target="_blank">@Model.MainImageUrl</a>
+                        </div>
+                    }
+                    <div class="form-group mb-3">
+                        <label asp-for="Status"></label>
+                        <select asp-for="Status" class="form-control">
+                            <option value="Available">Доступен</option>
+                            <option value="OutOfStock">Нет в наличии</option>
+                            <option value="Archived">Снят с продажи</option>
+                        </select>             
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="InStock"></label>
+                        <input asp-for="InStock" class="form-control" />
+                        <span asp-validation-for="InStock" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-outline-warning w-100">Сохранить изменения</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
