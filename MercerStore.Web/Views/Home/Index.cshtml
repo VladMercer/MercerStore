@@ -1,0 +1,153 @@
+﻿@using MercerStore.Web.Application.ViewModels.Products
+@model HomePageViewModel
+@{
+	ViewData["Title"] = "Mercer Store";
+}
+
+<div class="event-carousel-container">
+	<div class="owl-carousel owl-theme owl-carousel-full event-carousel">
+		<div class="item">
+			<img src="~/img/event/sborkaPK.jpg" alt="Image 1" />
+			<div class="carousel-caption">
+				<h2>Сборка ПК</h2>
+				<p>При заказе всех комплектующих у нас сборка ПК бесплатная</p>
+			</div>
+		</div>
+		<div class="item">
+			<img src="~/img/event/intel.jpg" alt="Image 2" />
+			<div class="carousel-caption">
+				<h2>Последнее поколение Intel</h2>
+				<p>В ассортименте есть процессоры Intel core 14 поколения</p>
+			</div>
+		</div>
+		<div class="item">
+			<img src="~/img/event/rtx.jpg" alt="Image 3" />
+			<div class="carousel-caption">
+				<h2>RTX тут</h2>
+				<p>В ассортименте можно найти все последние видеокарты от Nvidia</p>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="featured-products">
+	<div class="container-fluid">
+		<div class="row mb-5">
+			<div class="col-12">
+				<hr class="my-4">
+				<h2>
+					<span>Рекомендуемые товары</span>
+				</h2>
+				<hr class="my-4">
+			</div>
+		</div>
+		<div class="row">
+			@foreach (var product in Model.RandomProducts)
+			{
+				<div class="col-lg-4 col-sm-6 mb-3">
+					<div class="product-card">
+						<div class="product-thumb">
+							<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+								<img src="@product.MainImageUrl" alt="фотокарточка" />
+							</a>
+						</div>
+						<div class="product-details">
+							<h4>
+								<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+									@product.Name
+								</a>
+							</h4>
+							<p class="product-excerpt">@product.Description</p>
+							<div class="product-bottom-details d-flex justify-content-between align-items-center">
+								@if (product.DiscountedPrice.HasValue)
+								{
+									<div class="price-container">
+										<small class="old-price-card">@product.Price.ToString("N0")₽</small>
+										<div class="product-price">@product.DiscountedPrice.Value.ToString("N0")₽</div>
+									</div>
+								}
+								else
+								{
+									<div class="product-price">@product.Price.ToString("N0")₽</div>
+								}
+								<div id="add-to-cart-root-@product.Id" data-product-id="@product.Id"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</section>
+
+<section class="new-products">
+	<div class="container-fluid">
+		<div class="row mb-5">
+			<div class="col-12">
+				<hr class="my-4">
+				<h2>
+					<span>Новинки</span>
+				</h2>
+				<hr class="my-4">
+			</div>
+		</div>
+
+		<div class="owl-carousel owl-theme owl-carousel-full product-carousel">
+			@foreach (var product in Model.Products)
+			{
+				<div class="item">
+					<div class="product-card">
+						<div class="product-thumb">
+							<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+								<img src="@product.MainImageUrl" alt="фотокарточка" />
+							</a>
+						</div>
+						<div class="product-details">
+							<h4>
+								<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+									@product.Name
+								</a>
+							</h4>
+							<p class="product-excerpt">@product.Description</p>
+							<div class="product-bottom-details d-flex justify-content-between align-items-center">
+								@if (product.DiscountedPrice.HasValue)
+								{
+									<div class="price-container">
+										<small class="old-price-card">@product.Price.ToString("N0")₽</small>
+										<div class="product-price">@product.DiscountedPrice.Value.ToString("N0")₽</div>
+									</div>
+								}
+								else
+								{
+									<div class="product-price">@product.Price.ToString("N0")₽</div>
+								}
+								<div id="add-to-cart-root-@product.Id" data-product-id="@product.Id"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+
+	</div>
+</section>
+
+<section class="about-us">
+	<div class="container fluid">
+		<div class="row mb-5">
+			<div class="col-12">
+				<hr class="my-4">
+				<h2><span>Где нас найти</span></h2>
+
+				<hr class="my-4">
+			</div>
+		</div>
+		<iframe id="map"
+				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2407.1070529675467!2d2.3478712780714384!3d48.85881153486507!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e1ee52239cb%3A0x2cacf4239af49ccb!2zMTggUnVlIFNhaW50LURlbmlzLCA3NTAwMSBQYXJpcywg0KTRgNCw0L3RhtC40Y8!5e0!3m2!1sru!2sua!4v1683972127217!5m2!1sru!2sua"
+				width="100%" height="450" style="border:0; display: block;" allowfullscreen="" loading="lazy"
+				referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+	</div>
+	</div>
+</section>
+
+<div id="cart-app"></div>

@@ -1,0 +1,70 @@
+﻿@using MercerStore.Web.Application.ViewModels.Categories
+@model CategoryPageViewModel
+@{
+    ViewData["Title"] = Model.Category.Name;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav class="breadcrumbs">
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
+                    <li><span>@Model.Category.Name</span></li>
+                 
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row mx-lg-5 align-items-center">
+        <div class="col-6">
+            <h2><span>@Model.Category.Name</span></h2>
+        </div>
+        <div class="col-6 d-flex justify-content-end">
+            <div id="total-products-info-root"></div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row mx-lg-5">
+        <div class="col-lg-3 col-md-4">
+           <div id="filter-root"></div>
+        </div>
+        <div class="col-lg-9 col-md-8">
+            <div class="row mt-2">
+              
+             @*    <div class="col-4 col-sm-2">
+                    <img src="@Model.Category.CategoryImgUrl" alt="" class="img-thumbnail">
+                </div>
+                <div class="col-8 col-sm-10">
+                    <p>
+                        <h5>@Model.Category.Description</h5>
+                    </p>
+                </div> *@
+            </div>
+@* 
+            <hr class=""> *@
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div id="category-sort-root"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="category-page-size-root"></div>
+                </div>
+            </div>
+
+            <div id="category-product-list-root"></div>
+
+            <div class="d-flex justify-content-start flex-column flex-lg-row">
+                <div class="pagination mb-2 mb-lg-0">
+                    <div id="category-pagination-root"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+                   

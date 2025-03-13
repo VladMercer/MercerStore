@@ -1,0 +1,99 @@
+﻿@using MercerStore.Web.Application.ViewModels
+@model OrderViewModel
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <nav class="breadcrumbs">
+                <ul>
+                    <li><a asp-controller="Home asp-action="Index" >Главная</a></li>
+                    <li><span>Оплата</span></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <form asp-action="AddOrder" asp-controller="Order" class="order-group-form" id="orderForm">
+
+        <div class="row">
+
+            <div class="col-lg-8 mb-3">
+                <div class="Checkout p-3 h-100 bg-white">
+                    <h5><span>Данные для заказа</span></h5>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="form-label required"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Address" class="form-label required"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3">
+                <div class="cart-summary p-3 sidebar h-100">
+                    <h5><span>Ваш заказ</span></h5>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Продукт</th>
+                                    <th class="text-end">Стоимость</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CartViewModel.CartItems)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.Name
+                                            <small> x @item.Quantity</small>
+                                        </td>
+                                        <td class="text-end">@(((item.DiscountedPrice ?? item.Price) * item.Quantity).ToString("C0"))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" class="text-end"><strong>Итого:</strong> @Model.CartViewModel.CartTotalPrice.ToString("C0")</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-outline-warning">Подтвердить заказ</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>

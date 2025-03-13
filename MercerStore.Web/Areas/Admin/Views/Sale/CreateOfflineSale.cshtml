@@ -1,0 +1,70 @@
+﻿@using MercerStore.Web.Application.Models.sales
+@model OfflineSale
+
+@{
+    ViewData["Title"] = "Оформление офлайн-продажи";
+}
+
+<div class="container mt-3 mb-4">
+    <div class="card p-4 shadow-sm">
+        <h2 class="mb-3 text-center">@ViewData["Title"]</h2>
+
+        <div class="form-group mb-3">
+            <label class="form-label">ID менеджера</label>
+            <input value="@Model.ManagerId" class="form-control" disabled />
+        </div>
+
+        <h4 class="mb-3">Товары в продаже</h4>
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Product ID</th>
+                    <th>Количество</th>
+                    <th>Цена за единицу</th>
+                    <th>Общая стоимость</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+
+                {
+                    <tr>
+                        <td>@item.ProductId</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.ItemPrice.ToString("C0")</td>
+                        <td>@((item.ItemPrice * item.Quantity).ToString("C0"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h4 class="mt-4">Добавить товар</h4>
+        <form asp-action="AddItem" method="post">
+            <input type="hidden" name="saleId" value="@Model.Id" />
+
+            <div class="form-group mb-3">
+                <label class="form-label">Product ID или Артикул</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input name="productId" class="form-control" placeholder="ID продукта" />
+                    </div>
+                    <div class="col-md-6">
+                        <input name="sku" class="form-control" placeholder="Артикул" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="form-label">Количество</label>
+                <input name="quantity" type="number" class="form-control" min="1" value="1" />
+            </div>
+
+            <button type="submit" class="btn btn-outline-warning w-100">Добавить товар</button>
+        </form>
+
+        <form asp-action="CloseSale" method="post" class="mt-4">
+            <input type="hidden" name="saleId" value="@Model.Id" />
+            <button type="submit" class="btn btn-outline-warning w-100">Закрыть продажу</button>
+        </form>
+    </div>
+</div>
