@@ -1,48 +1,47 @@
-﻿using MercerStore.Web.Application.Interfaces;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using MercerStore.Web.Application.Interfaces;
+using MercerStore.Web.Application.Requests.Account;
+using MercerStore.Web.Infrastructure.Helpers;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
-namespace MercerStore.Web.Infrastructure.Services
+namespace MercerStore.Web.Infrastructure.Services;
+
+public class JwtProvider : IJwtProvider
 {
-    public class JwtProvider : IJwtProvider
+    private readonly IOptions<JwtOptions> _jwtOptions;
+
+    public JwtProvider(IOptions<JwtOptions> jwtOptions)
     {
-        private readonly string _secretKey;
-        private readonly double _expiresDays;
-        public JwtProvider(IConfiguration configuration)
+        _jwtOptions = jwtOptions;
+    }
+
+    public async Task<string> GenerateJwtToken(JwtTokenRequest request)
+    {
+        var defaultProfilePictureUrl = "https://localhost:7208/img/default/default_user_image.jpg";
+        var claims = new List<Claim>
         {
-            _secretKey = configuration["JwtOptions:SecretKey"];
-            _expiresDays = double.Parse(configuration["JwtOptions:ExpiresDays"]);
+            new(JwtRegisteredClaimNames.Sub, request.UserId),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
-        }
+        claims.AddRange(request.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        public string GenerateJwtToken(string userId, IEnumerable<string> roles, string? profilePictureUrl, DateTime creationDate)
-        {
-            var defaultProfilePictureUrl = "https://localhost:7208/img/default/default_user_image.jpg";
-            var claims = new List<Claim>
-            {
-                 new Claim(JwtRegisteredClaimNames.Sub, userId),
-                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+        var resolvedProfilePictureUrl = request.ProfilePictureUrl ?? defaultProfilePictureUrl;
 
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        claims.Add(new Claim("profile_picture", resolvedProfilePictureUrl));
+        claims.Add(new Claim("creation_date", request.CreationDate.ToString("o")));
 
-            var resolvedProfilePictureUrl = profilePictureUrl ?? defaultProfilePictureUrl;
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.SecretKey));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            claims.Add(new Claim("profile_picture", resolvedProfilePictureUrl));
-            claims.Add(new Claim("creation_date", creationDate.ToString("o")));
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddDays(_jwtOptions.Value.ExpiresDays),
+            signingCredentials: credentials);
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(_expiresDays),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
-

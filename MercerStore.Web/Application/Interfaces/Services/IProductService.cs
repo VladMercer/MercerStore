@@ -4,21 +4,18 @@ using MercerStore.Web.Application.Models.Products;
 using MercerStore.Web.Application.Requests.Products;
 using MercerStore.Web.Application.ViewModels.Products;
 using MercerStore.Web.Areas.Admin.ViewModels.Products;
-using MercerStore.Web.Infrastructure.Helpers;
 
 namespace MercerStore.Web.Application.Interfaces.Services
 {
     public interface IProductService
     {
-        Task<PaginatedResultDto<AdminProductDto>> GetAdminFilteredProducts(ProductFilterRequest request);
-        Task<Product> GetProduct(int productId);
-        Task<string> GetProductSku(int productId);
+        Task<PaginatedResultDto<AdminProductDto>> GetFilteredProductsWithoutCache(ProductFilterRequest request);
+        Task<Product> GetProductById(int productId);
         Task<ProductViewModel> GetProductDetails(int productId);
         Task<IEnumerable<Category>> GetAllCategories();
-        Task<int> CreateProduct(CreateProductViewModel createViewModel, int categoryId);
-        void UpdateSkus();
+        Task AddProduct(Product product);
         Task<UpdateProductViewModel> GetUpdateProductViewModel(int productId);
-        Task<Result<int>> UpdateProduct(UpdateProductViewModel updateProductViewModel);
-        Task IndexAllProducts();
+        Task UpdateProduct(Product product);
+        Task<IEnumerable<Product>> GetAllProducts();
     }
 }

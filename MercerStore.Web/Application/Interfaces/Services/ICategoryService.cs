@@ -8,10 +8,10 @@ namespace MercerStore.Web.Application.Interfaces.Services
 {
     public interface ICategoryService
     {
-        Task<PaginatedResultDto<ProductDto>> GetFilteredProducts(CateroryFilterRequest request);
+        Task<PaginatedResultDto<ProductDto>> GetFilteredProductsWithoutCache(CateroryFilterRequest request);
         Task<PriceRangeDto> GetPriceRange(int categoryId);
         Task<IEnumerable<Category>> GetAllCategories();
-        Task<int> AddCategory(CreateCategoryViewModel createCategoryViewModel);
+        Task<Category> AddCategory(CreateCategoryViewModel createCategoryViewModel, string? categoryImgUrl);
         Task<CategoryPageViewModel> GetCategoryPageViewModel(int categoryId);
     }
 }

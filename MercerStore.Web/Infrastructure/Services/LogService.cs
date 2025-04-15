@@ -12,11 +12,9 @@ namespace MercerStore.Web.Infrastructure.Services
             _logger = logger;
         }
 
-
-
-        public void LogUserAction(IEnumerable<string>? roles, string? userId, string action, string entityName, int? entityId, object? details)
+        public void LogUserAction<TEntityId>(IEnumerable<string>? roles, string? userId, string action, string entityName, TEntityId? entityId, object? details)
         {
-            var userActionLog = new UserActionLog
+            var userActionLog = new UserActionLog<TEntityId>
             {
                 Roles = roles,
                 UserId = userId,

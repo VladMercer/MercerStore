@@ -1,5 +1,4 @@
-﻿using MercerStore.Web.Application.Interfaces;
-using MercerStore.Web.Application.Interfaces.Repositories;
+﻿using MercerStore.Web.Application.Interfaces.Repositories;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.ViewModels.Carts;
 
@@ -8,23 +7,14 @@ namespace MercerStore.Web.Application.Services
     public class CartService : ICartService
     {
         private readonly ICartProductRepository _cartProductRepository;
-        private readonly IRequestContextService _requestContextService;
-        private readonly IUserIdentifierService _userIdentifierService;
 
-        private string UserId => _userIdentifierService.GetCurrentIdentifier();
-
-        public CartService(
-            ICartProductRepository cartProductRepository,
-            IRequestContextService requestContextService,
-            IUserIdentifierService userIdentifierService)
+        public CartService(ICartProductRepository cartProductRepository)
         {
             _cartProductRepository = cartProductRepository;
-            _requestContextService = requestContextService;
-            _userIdentifierService = userIdentifierService;
         }
-        public async Task<CartViewModel> GetCartViewModel()
+        public async Task<CartViewModel> GetCartViewModel(string userId)
         {
-            var cartItems = await _cartProductRepository.GetCartItems(UserId);
+            var cartItems = await _cartProductRepository.GetCartItems(userId);
 
             var cartProductViewModel = cartItems.Select(c => new CartProductViewModel
             {
@@ -46,35 +36,19 @@ namespace MercerStore.Web.Application.Services
                 CartTotalPrice = totalPrice
             };
         }
-        public async Task<int?> GetCartItemCount()
+        public async Task<int?> GetCartItemCount(string userId)
         {
-            return await _cartProductRepository.GetCartItemCount(UserId);
-        } 
-        public async Task AddToCart(int productId)
+            return await _cartProductRepository.GetCartItemCount(userId);
+        }
+        public async Task AddToCart(int productId, string userId)
         {
             var quantity = 1;
-
-            await _cartProductRepository.AddToCartProduct(productId, UserId, quantity);
-
-            var logDetails = new
-            {
-                quantity,
-                UserId,
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
+            await _cartProductRepository.AddToCartProduct(productId, userId, quantity);
         }
-
-        public async Task RemoveFromCart(int productId)
+        
+        public async Task RemoveFromCart(int productId, string userId)
         {
-            await _cartProductRepository.RemoveFromCartProduct(productId, UserId);
-            var logDetails = new
-            {
-                UserId,
-                productId
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
+            await _cartProductRepository.RemoveFromCartProduct(productId, userId);
         }
     }
 }

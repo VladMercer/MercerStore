@@ -45,5 +45,14 @@
       "applicationUrl": "http://localhost:41728",
       "sslPort": 44329
     }
+  },
+  "Integration Tests": {
+    "commandName": "Project",
+    "dotnetRunMessages": true,
+    "launchBrowser": false,
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "Test",
+      "TEST_MODE": "Integration"
+    }
   }
 }

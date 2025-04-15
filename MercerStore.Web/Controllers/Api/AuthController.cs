@@ -1,4 +1,5 @@
-﻿using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Auth.Commands;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Web.Controllers.Api
@@ -7,17 +8,17 @@ namespace MercerStore.Web.Controllers.Api
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly IMediator _mediator;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IMediator mediator)
         {
-            _authService = authService;
+            _mediator = mediator;
         }
 
         [HttpPost("generate-token")]
-        public IActionResult GenerateToken()
+        public async Task<IActionResult> GenerateToken()
         {
-            var token = _authService.GenerateGuestToken();
+            var token = await _mediator.Send(new GenerateTokenCommand());
             Response.Cookies.Append("OhCookies", token);
 
             return Ok(new { Token = token });

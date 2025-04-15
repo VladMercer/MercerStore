@@ -12,7 +12,7 @@ namespace MercerStore.Web.Application.Interfaces.Repositories
     {
         Task<IEnumerable<Order>> GetAllOrders();
         Task<Order> GetOrderById(int orderId);
-        Task<int> CreateOrderFromCart(string? userId, string? guestId, OrderViewModel orderViewModel);
+        Task<Order> CreateOrderFromCart(string? userId, string? guestId, OrderViewModel orderViewModel);
         Task<Order> AddOrder(Order order);
         Task UpdateOrder(Order order);
         Task DeleteOrder(int orderId);

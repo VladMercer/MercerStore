@@ -1,6 +1,5 @@
-﻿using MercerStore.Web.Application.Interfaces;
-using MercerStore.Web.Application.Interfaces.Repositories;
-using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Heartbeat.Commands;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Web.Controllers.Api
@@ -10,17 +9,17 @@ namespace MercerStore.Web.Controllers.Api
     public class HeartbeatController : ControllerBase
     {
        
-        private readonly IUserActivityService _userActivityService;
+        private readonly IMediator _mediator;
 
-        public HeartbeatController(IUserActivityService userActivityService)
+        public HeartbeatController(IMediator mediator)
         {
-            _userActivityService = userActivityService;
+            _mediator = mediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateActivity()
         {
-            await _userActivityService.UpdateUserActivity();
+            await _mediator.Send(new UpdateActivityCommand());
             return Ok();
         }
     }

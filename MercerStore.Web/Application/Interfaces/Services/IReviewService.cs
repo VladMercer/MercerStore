@@ -8,12 +8,12 @@ namespace MercerStore.Web.Application.Interfaces.Services
 {
     public interface IReviewService
     {
-        Task<PaginatedResultDto<AdminReviewDto>> GetFilteredReviews(ReviewFilterRequest request);
-        Task<int?> UpdateReview(CreateReviewDto dto);
+        Task<PaginatedResultDto<AdminReviewDto>> GetFilteredReviewsWithoutCache(ReviewFilterRequest request);
+        Task UpdateReview(Review review);
         Task RemoveReviewById(int reviewId);
-        Task<int?> RemoveReview(int productId);
-        Task<Result<int>> AddReview(CreateReviewDto reviewDto);
-        Task<Review> GetReview(int productId);
+        Task RemoveReview(int reviewId);
+        Task AddReview(Review review);
+        Task<Review> GetReview(int productId, string userId);
         Task<int> GetCountProductReviews(int productId);
         Task<double> GetAvgRateProduct(int productId);
         Task<IEnumerable<ReviewDto>> GetProductReviews(int productId);

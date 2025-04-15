@@ -1,6 +1,7 @@
-﻿using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Users.Commands;
+using MercerStore.Web.Application.Handlers.Users.Queries;
 using MercerStore.Web.Application.ViewModels.Users;
-using MercerStore.Web.Infrastructure.Extentions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,19 +10,16 @@ namespace MercerStore.Web.Controllers.Mvc
     [Authorize(Policy = "BlacklistRolesPolicy")]
     public class UserController : Controller
     {
-        private readonly HttpContextAccessor _httpContextAccessor;
-        private readonly IUserService _userService;
+        private readonly IMediator _mediator;
 
-        public UserController(IUserService userService, HttpContextAccessor httpContextAccessor)
+        public UserController(IMediator mediator)
         {
-            _userService = userService;
-            _httpContextAccessor = httpContextAccessor;
+            _mediator = mediator;
         }
 
         public async Task<IActionResult> UserProfile()
         {
-            var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var userProfileViewModel = await _userService.GetUserProfile(curUserId);
+            var userProfileViewModel = await _mediator.Send(new GetUserProfileQuery());
             if (userProfileViewModel == null) return NotFound();
 
             return View(userProfileViewModel);
@@ -29,15 +27,13 @@ namespace MercerStore.Web.Controllers.Mvc
 
         public async Task<IActionResult> EditUserProfile()
         {
-            var curUserId = _httpContextAccessor.HttpContext.User.GetUserId();
-            var userProfileViewModel = await _userService.GetUserProfileForEdit(curUserId);
+            var userProfileViewModel = await _mediator.Send(new GetUserProfileForEditQuery());
             if (userProfileViewModel == null) return NotFound();
 
             return View(userProfileViewModel);
         }
 
         [HttpPost]
-        [LogUserAction("User update profile", "user")]
         public async Task<IActionResult> EditUserProfile(UserProfileViewModel userProfileViewModel)
         {
             if (!ModelState.IsValid)
@@ -46,7 +42,7 @@ namespace MercerStore.Web.Controllers.Mvc
                 return View(userProfileViewModel);
             }
 
-            var result = await _userService.UpdateUserProfile(userProfileViewModel);
+            var result = await _mediator.Send(new UpdateUserProfileCommand(userProfileViewModel));
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError("", result.ErrorMessage);

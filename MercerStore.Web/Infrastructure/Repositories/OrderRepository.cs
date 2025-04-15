@@ -27,7 +27,7 @@ namespace MercerStore.Web.Infrastructure.Repositories
             return order;
         }
 
-        public async Task<int> CreateOrderFromCart(string? userId, string? guestId, OrderViewModel orderViewModel)
+        public async Task<Order> CreateOrderFromCart(string? userId, string? guestId, OrderViewModel orderViewModel)
         {
             var currentCart = _context.Carts
              .Include(c => c.CartProducts)
@@ -75,7 +75,7 @@ namespace MercerStore.Web.Infrastructure.Repositories
 
             currentCart.CartProducts.Clear();
             await _context.SaveChangesAsync();
-            return order.Id;
+            return order;
         }
 
         public async Task DeleteOrder(int orderId)

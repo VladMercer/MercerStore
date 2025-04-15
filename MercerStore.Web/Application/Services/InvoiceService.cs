@@ -1,13 +1,12 @@
-﻿using MercerStore.Web.Application.Interfaces.Repositories;
-using MercerStore.Web.Application.Interfaces;
+﻿using MercerStore.Web.Application.Dtos.InvoiceDto;
 using MercerStore.Web.Application.Dtos.ResultDto;
-using MercerStore.Web.Application.Dtos.InvoiceDto;
-using MercerStore.Web.Infrastructure.Data.Enum.Invoice;
+using MercerStore.Web.Application.Interfaces.Repositories;
 using MercerStore.Web.Application.Interfaces.Services;
-using MercerStore.Web.Application.Requests.Invoices;
-using MercerStore.Web.Areas.Admin.ViewModels.Invoices;
 using MercerStore.Web.Application.Models.Invoice;
 using MercerStore.Web.Application.Models.Products;
+using MercerStore.Web.Application.Requests.Invoices;
+using MercerStore.Web.Areas.Admin.ViewModels.Invoices;
+using MercerStore.Web.Infrastructure.Data.Enum.Invoice;
 using MercerStore.Web.Infrastructure.Helpers;
 
 namespace MercerStore.Web.Application.Services
@@ -15,41 +14,14 @@ namespace MercerStore.Web.Application.Services
     public class InvoiceService : IInvoiceService
     {
         private readonly IInvoiceRepository _invoiceRepository;
-        private readonly IRedisCacheService _redisCacheService;
-        private readonly IUserIdentifierService _userIdentifierService;
-        private readonly ILogService _logService;
-        private readonly IRequestContextService _requestContextService;
         private readonly IProductRepository _productRepository;
-        public InvoiceService(IInvoiceRepository invoiceRepository, IRedisCacheService redisCacheService, IUserIdentifierService userIdentifierService, ILogService logService, IRequestContextService requestContextService, IProductRepository productRepository)
+        public InvoiceService(IInvoiceRepository invoiceRepository, IProductRepository productRepository)
         {
             _invoiceRepository = invoiceRepository;
-            _redisCacheService = redisCacheService;
-            _userIdentifierService = userIdentifierService;
-            _logService = logService;
-            _requestContextService = requestContextService;
             _productRepository = productRepository;
         }
-        public async Task<PaginatedResultDto<InvoiceDto>> GetFilteredInvoices(InvoiceFilterRequest request)
-        {
 
-            bool isDefaultQuery =
-            request.PageNumber == 1 &&
-            request.PageSize == 30 &&
-            !request.SortOrder.HasValue &&
-            !request.Filter.HasValue &&
-            request.Query == "";
-
-            string cacheKey = $"invoices:page1";
-
-            return await _redisCacheService.TryGetOrSetCacheAsync(
-                cacheKey,
-                () => FetchFilteredInvoicesAsync(request),
-                isDefaultQuery,
-                TimeSpan.FromMinutes(10)
-            );
-        }
-
-        private async Task<PaginatedResultDto<InvoiceDto>> FetchFilteredInvoicesAsync(InvoiceFilterRequest request)
+        public async Task<PaginatedResultDto<InvoiceDto>> GetFilteredInvoicesWithoutCache(InvoiceFilterRequest request)
         {
             var (invoices, totalItems) = await _invoiceRepository.GetFilteredInvoices(request);
 
@@ -79,12 +51,9 @@ namespace MercerStore.Web.Application.Services
 
             return new PaginatedResultDto<InvoiceDto>(invoiceDtos, totalItems, request.PageSize);
         }
-        public async Task<CreateInvoiceViewModel> AddInvoice(int supplierId)
+        public async Task<CreateInvoiceViewModel> GetCreateInvoiceViewModel(int supplierId, string managerId)
         {
-            var managerId = _userIdentifierService.GetCurrentIdentifier();
-
             var invoice = await _invoiceRepository.GetInvoiceByManagerId(managerId);
-
 
             if (invoice == null)
             {
@@ -111,13 +80,13 @@ namespace MercerStore.Web.Application.Services
                 }).ToList()
             };
         }
-        public async Task<Result<AddInvoiceItemResultViewModel>> AddInvoiceItem(CreateInvoiceViewModel createInvoiceViewModel)
+        public async Task<Result<Invoice>> AddInvoiceItem(CreateInvoiceViewModel createInvoiceViewModel)
         {
             var invoice = await _invoiceRepository.GetInvoiceById(createInvoiceViewModel.InvoiceId);
 
             if (invoice == null || invoice.Status == InvoiceStatus.Closed)
             {
-                return Result<AddInvoiceItemResultViewModel>.Failure("Поставка не найдена");
+                return Result<Invoice>.Failure("Поставка не найдена");
             }
 
             Product? product = null;
@@ -135,7 +104,7 @@ namespace MercerStore.Web.Application.Services
 
             if (product == null)
             {
-                return Result<AddInvoiceItemResultViewModel>.Failure("Продукт не найден");
+                return Result<Invoice>.Failure("Продукт не найден");
             }
 
             var newInvoiceItem = new InvoiceItem
@@ -144,7 +113,6 @@ namespace MercerStore.Web.Application.Services
                 ProductId = product.Id,
                 Quantity = createInvoiceViewModel.Quantity,
                 PurchasePrice = createInvoiceViewModel.ProductPrice,
-
             };
 
             await _invoiceRepository.AddInvoiceItem(newInvoiceItem);
@@ -166,35 +134,16 @@ namespace MercerStore.Web.Application.Services
                 await _invoiceRepository.AddInvoiceItems(invoiceItems);
             }
 
-            var logDetails = new
-            {
-                createInvoiceViewModel.InvoiceId,
-                ProductId = createInvoiceViewModel.ProductId ?? product.Id,
-                createInvoiceViewModel.Quantity,
-                PurchasePrice = createInvoiceViewModel.ProductPrice,
-                createInvoiceViewModel.AvailableProducts,
-                createInvoiceViewModel.Notes
-
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
-
-            var result = new AddInvoiceItemResultViewModel
-            {
-                ProductId = product.Id,
-                SupplierId = invoice.SupplierId
-            };
-           
-            return Result<AddInvoiceItemResultViewModel>.Success(result);
+            return Result<Invoice>.Success(invoice);
         }
 
-        public async Task<Result<int>> CloseInvoice(int invoiceId, string notes)
+        public async Task<Result<Invoice>> CloseInvoice(int invoiceId, string notes)
         {
             var invoice = await _invoiceRepository.GetInvoiceById(invoiceId);
 
             if (invoice == null || invoice.Status == InvoiceStatus.Closed)
             {
-                return Result<int>.Failure("Поставка не найдена");
+                return Result<Invoice>.Failure("Поставка не найдена");
             }
 
             invoice.Notes = notes;
@@ -209,18 +158,7 @@ namespace MercerStore.Web.Application.Services
             invoice.TotalAmount = invoice.InvoiceItems.Sum(item => item.PurchasePrice * item.Quantity);
             await _invoiceRepository.UpdateInvoice(invoice);
 
-            var logDetails = new
-            {
-                invoice.Id,
-                invoice.ManagerId,
-                invoice.SupplierId,
-                invoice.TotalAmount,
-                invoice.Notes
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
-
-            return Result<int>.Success(invoiceId);
+            return Result<Invoice>.Success(invoice);
         }
         public async Task<UpdateInvoiceViewModel> GetUpdateInvoiceViewModel(int invoiceId)
         {
@@ -247,7 +185,7 @@ namespace MercerStore.Web.Application.Services
                 }).ToList()
             };
         }
-        public async Task<int> UpdateInvoice(UpdateInvoiceViewModel updateInvoiceViewModel)
+        public async Task<Invoice> UpdateInvoice(UpdateInvoiceViewModel updateInvoiceViewModel)
         {
             var updatedTotalAmount = updateInvoiceViewModel.InvoiceItems.Sum(i => i.Quantity * i.PurchasePrice);
 
@@ -277,15 +215,7 @@ namespace MercerStore.Web.Application.Services
 
             await _invoiceRepository.UpdateInvoiceItems(updateInvoiceItems);
 
-            var logDetails = new
-            {
-                updateInvoiceViewModel.Status,
-                invoice.ManagerId,
-                invoice.SupplierId
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
-            return invoice.Id;
+            return invoice;
         }
-    }   
+    }
 }

@@ -1,114 +1,109 @@
-﻿using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Account.Commands;
 using MercerStore.Web.Application.ViewModels.Users;
-using MercerStore.Web.Infrastructure.Extentions;
+using MercerStore.Web.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
+namespace MercerStore.Web.Controllers.Mvc;
 
-namespace MercerStore.Web.Controllers.Mvc
+public class AccountController : Controller
 {
-    public class AccountController : Controller
+    private readonly IOptions<JwtOptions> _jwtOptions;
+    private readonly IMediator _mediator;
+
+    public AccountController(IMediator mediator, IOptions<JwtOptions> jwtOptions)
     {
-       private readonly IAccountService _accountService;
-       private readonly double _expiresDays;
-        public AccountController(IAccountService accountService, IConfiguration configuration)
+        _mediator = mediator;
+        _jwtOptions = jwtOptions;
+    }
+
+    [HttpGet]
+    public IActionResult Login()
+    {
+        var response = new LoginViewModel();
+        return View(response);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+    {
+        var result = await _mediator.Send(new LoginCommand(loginViewModel));
+
+        if (!result.IsSuccess)
         {
-            _expiresDays = double.Parse(configuration["JwtOptions:ExpiresDays"]);
-            _accountService = accountService;
+            ModelState.AddModelError(string.Empty, result.ErrorMessage!);
+            return View(loginViewModel);
         }
 
-        [HttpGet]
-        public IActionResult Login()
+        AppendJwtTokenToResponse(result.Data);
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    public IActionResult Register()
+    {
+        var response = new RegisterViewModel();
+        return View(response);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+    {
+        var result = await _mediator.Send(new RegisterUserCommand(registerViewModel));
+
+        if (!result.IsSuccess)
         {
-            var response = new LoginViewModel();
-            return View(response);
+            ModelState.AddModelError(string.Empty, result.ErrorMessage!);
+            return View(registerViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        AppendJwtTokenToResponse(result.Data!);
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Admin")]
+    public IActionResult RegisterManager()
+    {
+        var response = new RegisterViewModel();
+        return View(response);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RegisterManager(RegisterViewModel registerViewModel)
+    {
+        var result = await _mediator.Send(new RegisterManagerCommand(registerViewModel));
+
+        if (!result.IsSuccess)
         {
-            var ipAddress = GetClientIpAddress();
-            var result = await _accountService.LoginAsync(loginViewModel, ipAddress);
-
-            if (!result.IsSuccess)
-            {
-                ModelState.AddModelError(string.Empty, result.ErrorMessage!);
-                return View(loginViewModel);
-            }
-
-            AppendJwtTokenToResponse(result.Data!);
-            return RedirectToAction("Index", "Home");
+            ModelState.AddModelError(string.Empty, result.ErrorMessage!);
+            return View(registerViewModel);
         }
 
-        [HttpGet]
-        public IActionResult Register()
+        AppendJwtTokenToResponse(result.Data);
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    public IActionResult Logout()
+    {
+        _mediator.Send(new LogoutCommand());
+        return RedirectToAction("Index", "Home");
+    }
+
+    private void AppendJwtTokenToResponse(string token)
+    {
+        Response.Cookies.Append("OohhCookies", token, new CookieOptions
         {
-            var response = new RegisterViewModel();
-            return View(response);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
-        {
-            var ipAddress = GetClientIpAddress();
-            var result = await _accountService.RegisterUserAsync(registerViewModel, ipAddress);
-
-            if (!result.IsSuccess)
-            {
-                ModelState.AddModelError(string.Empty, result.ErrorMessage!);
-                return View(registerViewModel);
-            }
-
-            AppendJwtTokenToResponse(result.Data!);
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public IActionResult RegisterManager()
-        {
-            var response = new RegisterViewModel();
-            return View(response);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegisterManager(RegisterViewModel registerViewModel)
-        {
-            var ipAddress = GetClientIpAddress();
-            var result = await _accountService.RegisterManagerAsync(registerViewModel, ipAddress);
-
-            if (!result.IsSuccess)
-            {
-                ModelState.AddModelError(string.Empty, result.ErrorMessage!);
-                return View(registerViewModel);
-            }
-
-            AppendJwtTokenToResponse(result.Data);
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        [LogUserAction("User logged out", "User")]
-        public IActionResult Logout()
-        {
-            Response.Cookies.Delete("OohhCookies");
-            return RedirectToAction("Index", "Home");
-        }
-        private void AppendJwtTokenToResponse(string token)
-        {
-            Response.Cookies.Append("OohhCookies", token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(_expiresDays)
-            });
-        }
-        private string? GetClientIpAddress()
-        {
-            return Request.Headers["X-Forwarded-For"].FirstOrDefault() ?? HttpContext.Connection.RemoteIpAddress?.ToString();
-        }
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddDays(_jwtOptions.Value.ExpiresDays)
+        });
     }
 }
-

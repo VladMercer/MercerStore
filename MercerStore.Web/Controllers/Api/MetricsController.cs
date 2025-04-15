@@ -1,28 +1,27 @@
-﻿using MercerStore.Web.Application.Interfaces.Repositories;
-using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Metrics.Queries;
+using MercerStore.Web.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Api
+namespace MercerStore.Web.Controllers.Api;
+
+[Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Manager}")]
+[Route("api/metrics")]
+[ApiController]
+public class MetricsController : ControllerBase
 {
-    [Authorize(Roles = "Admin,Manager")]
-    [Route("api/metrics")]
-    [ApiController]
-    public class MetricsController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public MetricsController(IMediator mediator)
     {
-     
-        private readonly IMetricService _metricService;
+        _mediator = mediator;
+    }
 
-        public MetricsController(IMetricService metricService)
-        {
-            _metricService = metricService;
-        }
-
-        [HttpGet("metrics")]
-        public async Task<IActionResult> GetMetrics()
-        {
-            var metrics = await _metricService.GetMetrics();
-            return Ok(metrics);
-        }
+    [HttpGet("metrics")]
+    public async Task<IActionResult> GetMetrics()
+    {
+        var metrics = await _mediator.Send(new GetMetricsQuery());
+        return Ok(metrics);
     }
 }

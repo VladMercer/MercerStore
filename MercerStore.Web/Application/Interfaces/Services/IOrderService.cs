@@ -3,21 +3,22 @@ using MercerStore.Web.Application.Dtos.ResultDto;
 using MercerStore.Web.Application.Models.Orders;
 using MercerStore.Web.Application.Requests.Orders;
 using MercerStore.Web.Application.ViewModels;
+using MercerStore.Web.Application.ViewModels.Carts;
 using MercerStore.Web.Areas.Admin.ViewModels.Orders;
 
 namespace MercerStore.Web.Application.Interfaces.Services
 {
     public interface IOrderService
     {
-        Task<PaginatedResultDto<OrderDto>> GetFilteredOrders(OrderFilterRequest request);
+        Task<PaginatedResultDto<OrderDto>> GetFilteredOrdersWithoutCache(OrderFilterRequest request);
         Task<Order> GetOrderById(int orderId);
-        Task<IEnumerable<Order>> GetOrderByUserId(string userId);
+        Task<IEnumerable<Order>> GetOrdersByUserId(string userId);
         Task<Order> AddOrder(Order order);
         Task UpdateOrderStatus(UpdateOrderStatusDto dto);
         Task RemoveOrder(int orderId);
         Task RemoveOrderProduct(int orderId, int productId);
-        Task<OrderViewModel> GetOrderViewModel();
-        Task<int> CreateOrderFromCart(OrderViewModel orderViewModel);
+        Task<OrderViewModel> GetOrderViewModel(string userId, CartViewModel cartViewModel);
+        Task<Order> CreateOrderFromCart(OrderViewModel orderViewModel, string currentUserId, IEnumerable<string> roles);
         Task<UpdateOrderViewModel> GetUpdateOrderViewModel(int orderId);
         Task UpdateOder(UpdateOrderViewModel updateOrderViewModel);
 

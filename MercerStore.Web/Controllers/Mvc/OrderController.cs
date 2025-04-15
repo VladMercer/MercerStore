@@ -1,36 +1,34 @@
-﻿using MercerStore.Web.Application.Interfaces.Services;
-using MercerStore.Web.Application.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Orders.Commands;
+using MercerStore.Web.Application.Handlers.Orders.Queries;
 using MercerStore.Web.Application.ViewModels;
-using MercerStore.Web.Infrastructure.Extentions;
 using Microsoft.AspNetCore.Mvc;
 public class OrderController : Controller
 {
-	private readonly IOrderService _orderService;
-    private readonly ICartService _cartService;
-    public OrderController(IOrderService orderService, ICartService cartService)
+    private readonly IMediator _mediator;
+
+    public OrderController(IMediator mediator)
     {
-        _orderService = orderService;
-        _cartService = cartService;
+        _mediator = mediator;
     }
 
     [HttpGet]
-	public async Task<IActionResult> Index()
-	{
-		var orderViewModel = await _orderService.GetOrderViewModel();
-		return View(orderViewModel);
-	}
+    public async Task<IActionResult> Index()
+    {
+        var orderViewModel = await _mediator.Send(new GetOrderViewModelQuery());
+        return View(orderViewModel);
+    }
 
-	[HttpPost]
-    [LogUserAction("User created an order", "order")]
-    public async Task<IActionResult> AddOrder(OrderViewModel orderViewModel)
-	{
+    [HttpPost]
+    public async Task<IActionResult> AddOrder(OrderViewModel viewModel)
+    {
         if (!ModelState.IsValid)
         {
-            var cartViewModel = await _cartService.GetCartViewModel();
-            orderViewModel.CartViewModel = cartViewModel;
+            var orderViewModel = await _mediator.Send(new GetOrderViewModelQuery());
             return View("Index", orderViewModel);
         }
-        var orderId = await _orderService.CreateOrderFromCart(orderViewModel);
-        return RedirectToAction("Index", new { id = orderId });
+        await _mediator.Send(new CreateOrderFromCartCommand(viewModel));
+
+        return RedirectToAction("Index");
     }
 }

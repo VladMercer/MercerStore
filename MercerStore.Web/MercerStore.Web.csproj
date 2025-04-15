@@ -14,9 +14,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNet.Security.OAuth.Yandex" Version="8.0.0" />
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
@@ -51,6 +51,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\Handlers\Account\Queries\" />
+    <Folder Include="Application\Handlers\Auth\Queries\" />
+    <Folder Include="Application\Handlers\Dashboard\Commands\" />
+    <Folder Include="Application\Handlers\Heartbeat\Queries\" />
+    <Folder Include="Application\Handlers\Home\Commands\" />
+    <Folder Include="Application\Handlers\Metrics\Commands\" />
+    <Folder Include="Application\Handlers\Search\Commands\" />
     <Folder Include="Application\Response\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
@@ -60,7 +67,7 @@
     <Folder Include="wwwroot\owlcarousel\" />
     <Folder Include="wwwroot\dist\" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <Content Update="Areas\Admin\Views\_ViewStart.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>

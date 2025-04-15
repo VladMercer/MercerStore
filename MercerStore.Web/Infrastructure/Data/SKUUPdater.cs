@@ -1,18 +1,18 @@
 ﻿using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Infrastructure.Data;
 
-public class SKUUpdater : ISKUUpdater
+public class SKUUpdater : ISkuUpdater
 {
     private readonly AppDbContext _context;
-    private readonly ISKUService _skuService;
+    private readonly ISkuService _skuService;
 
-    public SKUUpdater(AppDbContext context, ISKUService skuService)
+    public SKUUpdater(AppDbContext context, ISkuService skuService)
     {
         _context = context;
         _skuService = skuService;
     }
 
-    public async void UpdateSKUs()
+    public void UpdateSKUs()
     {
         var products = _context.Products.Where(p => p.SKU == null).ToList();
         if (products.Count == 0)
@@ -23,7 +23,7 @@ public class SKUUpdater : ISKUUpdater
         {
             foreach (var product in products)
             {
-                product.SKU = _skuService.GenerateSKU(product);
+                product.SKU = _skuService.GenerateSku(product);
                 Console.WriteLine($"Product {product.Id} обновлено с SKU {product.SKU}");
             }
             _context.SaveChanges();

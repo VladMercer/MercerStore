@@ -2,6 +2,6 @@
 {
     public interface IAuthService
     {
-        string GenerateGuestToken();
+        Task<(string, string)> GenerateGuestToken();
     }
 }

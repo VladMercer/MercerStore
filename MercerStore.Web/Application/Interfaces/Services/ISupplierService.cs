@@ -8,7 +8,7 @@ namespace MercerStore.Web.Application.Interfaces.Services
 {
     public interface ISupplierService
     {
-        Task<PaginatedResultDto<AdminSupplierDto>> GetFilteredSuppliers(SupplierFilterRequest request);
+        Task<PaginatedResultDto<AdminSupplierDto>> GetFilteredSuppliersWithoutCache(SupplierFilterRequest request);
         Task RemoveSupplier(int supplierId);
         Task<int> CreateSupplier(CreateSupplierViewModel createSupplierViewModel);
         Task<UpdateSupplierViewModel> GetUpdateSupplierViewModel(int supplierId);

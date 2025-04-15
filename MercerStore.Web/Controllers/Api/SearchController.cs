@@ -1,4 +1,5 @@
-﻿using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Search.Queries;
 using MercerStore.Web.Application.Requests.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,17 +12,17 @@ namespace MercerStore.Web.Controllers.Api
     public class SearchController : ControllerBase
     {
 
-        private readonly ISearchService _searchService;
+        private readonly IMediator _mediator;
 
-        public SearchController(ISearchService searchService)
+        public SearchController(IMediator mediator)
         {
-            _searchService = searchService;
+            _mediator = mediator;
         }
 
         [HttpGet("search")]
         public async Task<IActionResult> Search([FromQuery] SearchFilterRequest request)
         {
-            var result = await _searchService.SearchProduct(request);
+            var result = await _mediator.Send(new SearchProductQuery(request));
             return Ok(result);
         }
     }

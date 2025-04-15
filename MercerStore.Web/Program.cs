@@ -1,3 +1,7 @@
+using System.Reflection;
+using System.Text;
+using MediatR;
+using MercerStore.Web.Application.Handlers;
 using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Repositories;
 using MercerStore.Web.Application.Interfaces.Services;
@@ -15,24 +19,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
 using StackExchange.Redis;
-using System.Reflection;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<HttpContextAccessor>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<ISKUUpdater, SKUUpdater>();
-builder.Services.AddScoped<ISKUService, SKUService>();
+builder.Services.AddScoped<ISkuUpdater, SKUUpdater>();
+builder.Services.AddScoped<ISkuService, SKUService>();
 builder.Services.AddScoped<ICartProductRepository, CartProductRepository>();
 builder.Services.AddScoped<IElasticSearchService, ElasticSearchService>();
 builder.Services.AddScoped<IReviewProductRepository, ReviewProductRepostitory>();
@@ -62,14 +64,22 @@ builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
 
-
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<ApplicationAssemblyMarker>());
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
-builder.Services.AddElasticSearch(builder.Configuration);
-builder.Services.AddSingleton(Log.Logger);
+
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
+
+builder.Services.Configure<ElasticConfiguration>(builder.Configuration.GetSection("ElasticConfiguration"));
+var elasticConfiguration = builder.Configuration.GetSection("ElasticConfiguration").Get<ElasticConfiguration>();
+
+builder.Services.Configure<ElasticConfiguration>(builder.Configuration.GetSection("ElasticConfiguration"));
+builder.Services.AddElasticSearch(elasticConfiguration);
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
     options.DocInclusionPredicate((docName, apiDesc) =>
@@ -80,11 +90,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ContractResolver =
-            new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
+            new CamelCasePropertyNamesContractResolver();
         options.SerializerSettings.Formatting = Formatting.None;
     });
 
@@ -96,30 +108,26 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
 }).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(("VHG5TQGxzE2tEMzplusK1pqTH4UwTwdC")))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
     };
 
     options.Events = new JwtBearerEvents
     {
-
         OnMessageReceived = context =>
         {
             context.Token = context.Request.Cookies["OohhCookies"] ??
-            context.Request.Cookies["OhCookies"];
+                            context.Request.Cookies["OhCookies"];
             return Task.CompletedTask;
         }
     };
-
 });
 
 builder.Services.AddAuthorizationBuilder()
@@ -129,33 +137,28 @@ builder.Services.AddAuthorizationBuilder()
         return !blacklistedRoles.Any(role => context.User.IsInRole(role));
     }));
 
-builder.Logging.AddConsole();
-builder.Services.AddLogging();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddIdentityCore<AppUser>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 1;
-})
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 6;
+        options.Password.RequiredUniqueChars = 1;
+    })
     .AddRoles<IdentityRole>()
     .AddSignInManager()
     .AddEntityFrameworkStores<AppDbContext>();
-builder.Services.AddLogging(loggingBuilder =>
-{
-    loggingBuilder.ClearProviders();
-    loggingBuilder.AddSerilog();
-});
-ConfigureLogging();
+
+ConfigureLogging(builder.Environment);
 builder.Host.UseSerilog();
 var app = builder.Build();
-
+Console.WriteLine($"Current environment: {app.Environment.EnvironmentName}");
+Log.Information("Application started in {Environment} mode", app.Environment.EnvironmentName);
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -181,38 +184,45 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    "areas",
+    "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 
-void ConfigureLogging()
+void ConfigureLogging(IHostEnvironment env)
 {
-    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+    if (env.IsEnvironment("Test"))
+    {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateLogger();
+        return;
+    }
+
     var configuration = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{environment}.json", optional: true)
+        .AddJsonFile("appsettings.json", false, true)
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
         .Build();
 
     var consoleLogger = new LoggerConfiguration()
-       .Enrich.FromLogContext()
-       .WriteTo.Console()
-       .CreateLogger();
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .CreateLogger();
 
     var elasticLogger = new LoggerConfiguration()
         .Enrich.FromLogContext()
         .Enrich.WithProperty("CustomLog", false)
         .Filter.ByIncludingOnly(logEvent =>
-        logEvent.Level >= LogEventLevel.Warning ||
-        (logEvent.Properties.TryGetValue("CustomLog", out var customLogValue) &&
-            customLogValue is ScalarValue { Value: bool boolValue } &&
-            boolValue)
+            logEvent.Level >= LogEventLevel.Warning ||
+            (logEvent.Properties.TryGetValue("CustomLog", out var customLogValue) &&
+             customLogValue is ScalarValue { Value: bool boolValue } &&
+             boolValue)
         )
-        .WriteTo.Elasticsearch(ConfigureElasticSink(configuration, environment))
+        .WriteTo.Elasticsearch(ConfigureElasticSink(configuration, env.EnvironmentName))
         .CreateLogger();
 
     Log.Logger = new LoggerConfiguration()
@@ -227,8 +237,12 @@ ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, 
     {
         AutoRegisterTemplate = true,
         IndexFormat = $"{Assembly.GetExecutingAssembly()
-        .GetName().Name
-        .ToLower()
-        .Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
+            .GetName().Name
+            .ToLower()
+            .Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
     };
+}
+
+public partial class Program
+{
 }

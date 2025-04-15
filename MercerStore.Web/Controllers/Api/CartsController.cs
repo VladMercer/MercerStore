@@ -1,6 +1,7 @@
-﻿using MercerStore.Web.Application.Interfaces;
-using MercerStore.Web.Application.Interfaces.Services;
-using MercerStore.Web.Infrastructure.Extentions;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Cart.Commands;
+using MercerStore.Web.Application.Handlers.Cart.Queries;
+using MercerStore.Web.Application.Handlers.Carts.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,45 +12,39 @@ namespace MercerStore.Web.Controllers.Api
     [ApiController]
     public class CartsController : ControllerBase
     {
-        private readonly ICartService _cartService;
-        private readonly IUserIdentifierService _userIdentifierService;
+        private readonly IMediator _mediator;
 
-        public CartsController(ICartService cartService, IUserIdentifierService userIdentifierService)
+        public CartsController(IMediator mediator)
         {
-            _cartService = cartService;
-            _userIdentifierService = userIdentifierService;
+            _mediator = mediator;
         }
 
         [HttpGet("products")]
         public async Task<IActionResult> GetProducts()
         {
-          
-            var cartViewModel = await _cartService.GetCartViewModel();
+            var cartViewModel = await _mediator.Send(new GetCartViewModelQuery());
             return Ok(cartViewModel);
         }
 
         [HttpGet("itemCount")]
         public async Task<IActionResult> GetCartItemCount()
         {
-            
-            var itemCount = await _cartService.GetCartItemCount();
+            var itemCount = await _mediator.Send(new GetCartItemCountQuery());
             return Ok(itemCount);
         }
 
         [HttpPost("product/{productId}")]
-        [LogUserAction("User added item to cart", "product")]
         public async Task<IActionResult> AddToCart(int productId)
         {
-            await _cartService.AddToCart(productId);
-            return Ok(productId);
+            await _mediator.Send(new AddToCartCommand(productId));
+            return Ok();
         }
 
         [HttpDelete("product/{productId}")]
-        [LogUserAction("User removed item from cart", "product")]
         public async Task<IActionResult> RemoveFromCart(int productId)
         {
-            await _cartService.RemoveFromCart(productId);
-            return Ok(productId);
+            await _mediator.Send(new RemoveFromCartCommand(productId));
+            return Ok();
         }
     }
 }

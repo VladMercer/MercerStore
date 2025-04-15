@@ -6,7 +6,6 @@ namespace MercerStore.Web.Application.Services
 {
     public class MetricService : IMetricService
     {
-        private readonly IProductRepository _productRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IReviewProductRepository _reviewProductRepository;
         private readonly IUserRepository _userRepository;
@@ -14,14 +13,12 @@ namespace MercerStore.Web.Application.Services
         private readonly IInvoiceRepository _invoiceRepository;
 
         public MetricService(
-            IProductRepository productRepository,
             IOrderRepository orderRepository,
             IReviewProductRepository reviewProductRepository,
             IUserRepository userRepository,
             ISupplierRepository supplierRepository,
             IInvoiceRepository invoiceRepository)
         {
-            _productRepository = productRepository;
             _orderRepository = orderRepository;
             _reviewProductRepository = reviewProductRepository;
             _userRepository = userRepository;

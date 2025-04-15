@@ -5,17 +5,18 @@ using MercerStore.Web.Infrastructure.Data.Enum;
 using MercerStore.Web.Application.Requests.Invoices;
 using MercerStore.Web.Areas.Admin.ViewModels.Invoices;
 using MercerStore.Web.Infrastructure.Helpers;
+using MercerStore.Web.Application.Models.Invoice;
 
 namespace MercerStore.Web.Application.Interfaces.Services
 {
     public interface IInvoiceService
     {
-        Task<PaginatedResultDto<InvoiceDto>> GetFilteredInvoices(InvoiceFilterRequest request);
-        Task<CreateInvoiceViewModel> AddInvoice(int supplierId);
-        Task<Result<AddInvoiceItemResultViewModel>> AddInvoiceItem(CreateInvoiceViewModel createInvoiceViewModel);
-        Task<Result<int>> CloseInvoice(int invoiceId, string notes);
+        Task<PaginatedResultDto<InvoiceDto>> GetFilteredInvoicesWithoutCache(InvoiceFilterRequest request);
+        Task<CreateInvoiceViewModel> GetCreateInvoiceViewModel(int supplierId, string managerId);
+        Task<Result<Invoice>> AddInvoiceItem(CreateInvoiceViewModel createInvoiceViewModel);
+        Task<Result<Invoice>> CloseInvoice(int invoiceId, string notes);
         Task<UpdateInvoiceViewModel> GetUpdateInvoiceViewModel(int invoiceId);
-        Task<int> UpdateInvoice(UpdateInvoiceViewModel updateInvoiceViewModel);
+        Task<Invoice> UpdateInvoice(UpdateInvoiceViewModel updateInvoiceViewModel);
 
 
     }
