@@ -1,8 +1,7 @@
 ﻿using MercerStore.Web.Application.Interfaces.Repositories;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Services;
-using MercerStore.Web.Application.Models.sales;
 using MercerStore.Web.Application.Models.Products;
+using MercerStore.Web.Application.Models.sales;
 using MercerStore.Web.Application.Requests.Sales;
 using MercerStore.Web.Infrastructure.Helpers;
 
@@ -10,29 +9,18 @@ namespace MercerStore.Web.Application.Services
 {
     public class SaleService : ISaleService
     {
-        private readonly ILogService _logService;
-        private readonly IRequestContextService _requestContextService;
+       
         private readonly ISaleRepository _saleRepository;
         private readonly IProductRepository _productRepository;
-        private readonly IUserIdentifierService _userIdentifierService;
 
-        public SaleService(
-            ILogService logService,
-            IRequestContextService requestContextService,
-            ISaleRepository saleRepository,
-            IProductRepository productRepository,
-            IUserIdentifierService userIdentifierService)
+        public SaleService(ISaleRepository saleRepository, IProductRepository productRepository)
         {
-            _logService = logService;
-            _requestContextService = requestContextService;
             _saleRepository = saleRepository;
             _productRepository = productRepository;
-            _userIdentifierService = userIdentifierService;
         }
-        public async Task<OfflineSale> CreateOfflineSale()
-        {
-            var managerId = _userIdentifierService.GetCurrentIdentifier();
 
+        public async Task<OfflineSale> CreateOfflineSale(string managerId)
+        {
             var sale = await _saleRepository.GetSaleByManagerId(managerId);
 
             if (sale == null)
@@ -40,7 +28,7 @@ namespace MercerStore.Web.Application.Services
                 sale = new OfflineSale { ManagerId = managerId };
                 await _saleRepository.AddOfflineSales(sale);
             }
-            
+
             return sale;
         }
         public async Task<Result<int>> AddItem(SaleRequest request)
@@ -80,17 +68,6 @@ namespace MercerStore.Web.Application.Services
 
             await _saleRepository.AddOfflineSaleItems(newSaleItem);
 
-            var logDetails = new
-            {
-                OfflineSaleId = request.SaleId,
-                request.ProductId,
-                request.Sku,
-                request.Quantity,
-                sale.ManagerId
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
-
             return Result<int>.Success(sale.Id);
         }
         public async Task<Result<int>> CloseSale(int saleId)
@@ -111,18 +88,10 @@ namespace MercerStore.Web.Application.Services
             sale.TotalPrice = sale.Items.Sum(item => item.ItemPrice * item.Quantity);
             await _saleRepository.UpdateSale(sale);
 
-            var logDetails = new
-            {
-                OfflineSaleId = saleId,
-                sale.ManagerId,
-                sale.TotalPrice
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
-
+          
             return Result<int>.Success(saleId);
         }
-        public async Task<Result<OfflineSale>> GetSummarySale(int saleId) 
+        public async Task<Result<OfflineSale>> GetSummarySale(int saleId)
         {
             var sale = await _saleRepository.GetSaleById(saleId);
 

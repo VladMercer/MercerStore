@@ -1,6 +1,5 @@
 ﻿using MercerStore.Web.Application.Dtos.ProductDto;
 using MercerStore.Web.Application.Dtos.ResultDto;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Repositories;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Models.Products;
@@ -13,61 +12,16 @@ namespace MercerStore.Web.Application.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IRedisCacheService _redisCacheService;
-        private readonly IPhotoService _photoService;
-        private readonly IRequestContextService _requestContextService;
+
         public CategoryService(
             IProductRepository productRepository,
-            ICategoryRepository categoryRepository,
-            IRedisCacheService redisCacheService,
-            IPhotoService photoService,
-            IRequestContextService requestContextService)
+            ICategoryRepository categoryRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
-            _redisCacheService = redisCacheService;
-            _photoService = photoService;
-            _requestContextService = requestContextService;
         }
 
-        public async Task<PaginatedResultDto<ProductDto>> GetFilteredProducts(CateroryFilterRequest request)
-        {
-            var priceRange = await GetPriceRange(request.CategoryId);
-
-            bool isDefaultQuery =
-                request.PageNumber == 1 &&
-                request.PageSize == 9 &&
-                string.IsNullOrEmpty(request.SortOrder) &&
-                request.MinPrice == priceRange.MinPrice &&
-                request.MaxPrice == priceRange.MaxPrice;
-
-            string cacheKey = $"products:{request.CategoryId}:page1";
-
-            return await _redisCacheService.TryGetOrSetCacheAsync(
-                cacheKey,
-                () => FetchFilteredProductsAsync(request),
-                isDefaultQuery,
-                TimeSpan.FromMinutes(10)
-            );
-        }
-        public async Task<PriceRangeDto> GetPriceRange(int categoryId)
-        {
-            var products = await _categoryRepository.GetProductsByCategoryId(categoryId);
-            var priceRange = new PriceRangeDto
-            {
-                MaxPrice = products.Max(p => p.ProductPricing.DiscountedPrice ?? p.ProductPricing.OriginalPrice),
-                MinPrice = products.Min(p => p.ProductPricing.DiscountedPrice ?? p.ProductPricing.OriginalPrice)
-            };
-
-            return priceRange;
-        }
-
-        public async Task<IEnumerable<Category>> GetAllCategories()
-        {
-            return await _categoryRepository.GetAllCategoriesAsync();
-        }
-
-        private async Task<PaginatedResultDto<ProductDto>> FetchFilteredProductsAsync(CateroryFilterRequest request)
+        public async Task<PaginatedResultDto<ProductDto>> GetFilteredProductsWithoutCache(CateroryFilterRequest request)
         {
             var products = await _productRepository.GetProductsByCategoryAsync(request.CategoryId);
 
@@ -106,33 +60,37 @@ namespace MercerStore.Web.Application.Services
 
             return new PaginatedResultDto<ProductDto>(pageProducts, totalItems, request.PageSize);
         }
-        public async Task<int> AddCategory(CreateCategoryViewModel createCategoryViewModel)
+
+        public async Task<PriceRangeDto> GetPriceRange(int categoryId)
+        {
+            var products = await _categoryRepository.GetProductsByCategoryId(categoryId);
+            return new PriceRangeDto
+            {
+                MaxPrice = products.Max(p => p.ProductPricing.DiscountedPrice ?? p.ProductPricing.OriginalPrice),
+                MinPrice = products.Min(p => p.ProductPricing.DiscountedPrice ?? p.ProductPricing.OriginalPrice)
+            };
+        }
+
+        public async Task<IEnumerable<Category>> GetAllCategories()
+        {
+            return await _categoryRepository.GetAllCategoriesAsync();
+        }
+
+        public async Task<Category> AddCategory(CreateCategoryViewModel createCategoryViewModel, string? categoryImgUrl)
         {
             var category = new Category
             {
                 Name = createCategoryViewModel.Name,
-                Description = createCategoryViewModel.Description
+                Description = createCategoryViewModel.Description,
+                CategoryImgUrl = categoryImgUrl
             };
 
-            if (createCategoryViewModel.CategoryImage != null)
-            {
-                var photoResult = await _photoService.AddPhotoAsync(createCategoryViewModel.CategoryImage);
-                category.CategoryImgUrl = photoResult.Url.ToString();
-            }
-
-            var logDetails = new
-            {
-                category.Name,
-                category.Description,
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
             return await _categoryRepository.AddCategory(category);
         }
+
         public async Task<CategoryPageViewModel> GetCategoryPageViewModel(int categoryId)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(categoryId);
-
             return new CategoryPageViewModel
             {
                 Category = category,

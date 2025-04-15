@@ -1,12 +1,13 @@
-﻿using MercerStore.Web.Application.ViewModels.Users;
+﻿using MercerStore.Web.Application.Dtos.Account;
+using MercerStore.Web.Application.ViewModels.Users;
 using MercerStore.Web.Infrastructure.Helpers;
 
 namespace MercerStore.Web.Application.Interfaces.Services
 {
     public interface IAccountService
     {
-        Task<Result<string>> LoginAsync(LoginViewModel loginViewModel, string ipAddress);
-        Task<Result<string>> RegisterUserAsync(RegisterViewModel model, string ipAddress);
-        Task<Result<string>> RegisterManagerAsync(RegisterViewModel model, string ipAddress);
+        Task<Result<JwtTokenDto>> LoginAsync(LoginViewModel loginViewModel);
+        Task<Result<JwtTokenDto>> RegisterUserAsync(RegisterViewModel registerViewModel);
+        Task<Result<JwtTokenDto>> RegisterManagerAsync(RegisterViewModel registerViewModel);
     }
 }

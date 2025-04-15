@@ -1,25 +1,21 @@
 ﻿using MercerStore.Web.Application.Interfaces.Repositories;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Dtos.SearchDto;
+using MercerStore.Web.Application.Dtos.ProductDto;
 using MercerStore.Web.Application.Requests.Search;
 
 namespace MercerStore.Web.Application.Services
 {
     public class SearchService : ISearchService
     {
-        private readonly IElasticSearchService _elasticSearchService;
         private readonly IProductRepository _productRepository;
 
-        public SearchService(IElasticSearchService elasticSearchService, IProductRepository productRepository)
+        public SearchService(IProductRepository productRepository)
         {
-            _elasticSearchService = elasticSearchService;
             _productRepository = productRepository;
         }
-        public async Task<SearchResultDto> SearchProduct(SearchFilterRequest request)
+        public async Task<SearchResultDto> SearchProduct(IEnumerable<ProductIndexDto> productIndexDto, SearchFilterRequest request)
         {
-            var productIndexDto = await _elasticSearchService.SearchProductsAsync(request.Query);
-
             var productIds = productIndexDto.Select(x => x.Id).ToList();
 
             var products = await _productRepository.GetProductsByIdsAsync(productIds);

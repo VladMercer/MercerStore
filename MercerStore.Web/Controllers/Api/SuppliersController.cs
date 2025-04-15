@@ -1,36 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using MercerStore.Web.Infrastructure.Extentions;
-using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Suppliers.Commands;
+using MercerStore.Web.Application.Handlers.Suppliers.Queries;
 using MercerStore.Web.Application.Requests.Suppliers;
+using MercerStore.Web.Infrastructure.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Api
+namespace MercerStore.Web.Controllers.Api;
+
+[Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Manager}")]
+[Route("api/suppliers")]
+[ApiController]
+public class SuppliersController : ControllerBase
 {
-    [Authorize(Roles = "Admin,Manager")]
-    [Route("api/suppliers")]
-    [ApiController]
-    public class SuppliersController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public SuppliersController(IMediator mediator)
     {
-        private readonly ISupplierService _supplierService;
+        _mediator = mediator;
+    }
 
-        public SuppliersController(ISupplierService supplierService)
-        {
-            _supplierService = supplierService;
-        }
+    [HttpGet("suppliers")]
+    public async Task<IActionResult> GetFilteredSuppliers([FromQuery] SupplierFilterRequest request)
+    {
+        var result = await _mediator.Send(new GetFilteredSuppliersQuery(request));
+        return Ok(result);
+    }
 
-        [HttpGet("suppliers")]
-        public async Task<IActionResult> GetFilteredSuppliers([FromQuery] SupplierFilterRequest request)
-        {
-            var result = await _supplierService.GetFilteredSuppliers(request);
-            return Ok(result);
-        }
-
-        [HttpDelete("supplier/{supplierId}")]
-        [LogUserAction("Manager remove supplier", "supplier")]
-        public async Task<IActionResult> RemoveSupplier(int supplierId)
-        {
-            await _supplierService.RemoveSupplier(supplierId);
-            return Ok(supplierId);
-        }
+    [HttpDelete("supplier/{supplierId}")]
+    public async Task<IActionResult> RemoveSupplier(int supplierId)
+    {
+        await _mediator.Send(new RemoveSupplierCommand(supplierId));
+        return Ok();
     }
 }

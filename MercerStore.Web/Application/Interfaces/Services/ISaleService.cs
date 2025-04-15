@@ -6,7 +6,7 @@ namespace MercerStore.Web.Application.Interfaces.Services
 {
     public interface ISaleService
     {
-        Task<OfflineSale> CreateOfflineSale();
+        Task<OfflineSale> CreateOfflineSale(string managerId);
         Task<Result<int>> AddItem(SaleRequest request);
         Task<Result<int>> CloseSale(int saleId);
         Task<Result<OfflineSale>> GetSummarySale(int saleId);

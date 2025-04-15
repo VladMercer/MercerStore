@@ -24,11 +24,11 @@ namespace MercerStore.Web.Infrastructure.Repositories
             return await _context.Categories.FindAsync(id);
         }
 
-        public async Task<int> AddCategory(Category category)
+        public async Task<Category> AddCategory(Category category)
         {
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
-            return category.Id;
+            return category;
         }
 
         public async Task UpdateCategory(Category category)

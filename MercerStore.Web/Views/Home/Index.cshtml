@@ -1,5 +1,4 @@
-﻿@using MercerStore.Web.Application.ViewModels.Products
-@model HomePageViewModel
+﻿@model MercerStore.Web.Application.ViewModels.Products.HomePageViewModel
 @{
 	ViewData["Title"] = "Mercer Store";
 }
@@ -7,21 +6,21 @@
 <div class="event-carousel-container">
 	<div class="owl-carousel owl-theme owl-carousel-full event-carousel">
 		<div class="item">
-			<img src="~/img/event/sborkaPK.jpg" alt="Image 1" />
+			<img src="~/img/event/sborkaPK.jpg" alt="Image 1"/>
 			<div class="carousel-caption">
 				<h2>Сборка ПК</h2>
 				<p>При заказе всех комплектующих у нас сборка ПК бесплатная</p>
 			</div>
 		</div>
 		<div class="item">
-			<img src="~/img/event/intel.jpg" alt="Image 2" />
+			<img src="~/img/event/intel.jpg" alt="Image 2"/>
 			<div class="carousel-caption">
 				<h2>Последнее поколение Intel</h2>
 				<p>В ассортименте есть процессоры Intel core 14 поколения</p>
 			</div>
 		</div>
 		<div class="item">
-			<img src="~/img/event/rtx.jpg" alt="Image 3" />
+			<img src="~/img/event/rtx.jpg" alt="Image 3"/>
 			<div class="carousel-caption">
 				<h2>RTX тут</h2>
 				<p>В ассортименте можно найти все последние видеокарты от Nvidia</p>
@@ -47,7 +46,7 @@
 					<div class="product-card">
 						<div class="product-thumb">
 							<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
-								<img src="@product.MainImageUrl" alt="фотокарточка" />
+								<img src="@product.MainImageUrl" alt="фотокарточка"/>
 							</a>
 						</div>
 						<div class="product-details">
@@ -98,7 +97,7 @@
 					<div class="product-card">
 						<div class="product-thumb">
 							<a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
-								<img src="@product.MainImageUrl" alt="фотокарточка" />
+								<img src="@product.MainImageUrl" alt="фотокарточка"/>
 							</a>
 						</div>
 						<div class="product-details">
@@ -131,7 +130,7 @@
 	</div>
 </section>
 
-<section class="about-us">
+@*<section class="about-us">
 	<div class="container fluid">
 		<div class="row mb-5">
 			<div class="col-12">
@@ -147,7 +146,6 @@
 				referrerpolicy="no-referrer-when-downgrade"></iframe>
 
 	</div>
-	</div>
-</section>
+</section>*@
 
 <div id="cart-app"></div>

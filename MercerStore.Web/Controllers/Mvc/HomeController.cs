@@ -1,20 +1,21 @@
-using MercerStore.Web.Application.Interfaces.Services;
+using MediatR;
+using MercerStore.Web.Application.Handlers.Home.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Web.Controllers.Mvc
 {
     public class HomeController : Controller
     {
-        private readonly IHomeService _homeService;
+        private readonly IMediator _mediator;
 
-        public HomeController(IHomeService homeService)
+        public HomeController(IMediator mediator)
         {
-            _homeService = homeService;
+            _mediator = mediator;
         }
 
         public async Task<IActionResult> Index()
         {
-            var homePageViewModel = await _homeService.GetHomePageProduct();
+            var homePageViewModel = await _mediator.Send(new GetHomePageProductQuery());
             return View(homePageViewModel);
         }
     }

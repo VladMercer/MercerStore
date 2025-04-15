@@ -18,24 +18,24 @@ namespace MercerStore.Web.Infrastructure.Extentions
 
         }
 
-        public override void OnActionExecuted(ActionExecutedContext context)
+        public override async void OnActionExecuted(ActionExecutedContext context)
         {
             var requestContextService = context.HttpContext.RequestServices.GetService<IRequestContextService>();
             var logDetails = requestContextService?.GetLogDetails();
 
             int? entityId = null;
 
-           /* if (context.Result is ObjectResult result)
-            {
-                if (result.Value is IEntity entity)
-                {
-                    entityId = entity.Id;
-                }
-                if (result.Value is int id)
-                {
-                    entityId = id;
-                }
-            }*/
+            /* if (context.Result is ObjectResult result)
+             {
+                 if (result.Value is IEntity entity)
+                 {
+                     entityId = entity.Id;
+                 }
+                 if (result.Value is int id)
+                 {
+                     entityId = id;
+                 }
+             }*/
 
             if (context.Result is RedirectToActionResult redirectResult && redirectResult.RouteValues != null)
             {

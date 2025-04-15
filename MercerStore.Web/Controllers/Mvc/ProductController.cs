@@ -1,4 +1,5 @@
-﻿using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Products.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,16 +8,16 @@ namespace MercerStore.Web.Controllers.Mvc
     [Authorize]
     public class ProductController : Controller
     {
-        private readonly IProductService _productService;
+        private readonly IMediator _mediator;
 
-        public ProductController(IProductService productService)
+        public ProductController(IMediator mediator)
         {
-            _productService = productService;
+            _mediator = mediator;
         }
 
         public async Task<IActionResult> Details(int Id)
         {
-            var productViewModel = await _productService.GetProductDetails(Id);
+            var productViewModel = await _mediator.Send(new GetProductDetailsQuery(Id));
             return View(productViewModel);
         }
     }

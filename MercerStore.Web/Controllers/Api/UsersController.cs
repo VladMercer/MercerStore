@@ -1,43 +1,42 @@
-﻿using MercerStore.Web.Application.Interfaces;
-using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Users.Queries;
 using MercerStore.Web.Application.Requests.Users;
+using MercerStore.Web.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Api
+namespace MercerStore.Web.Controllers.Api;
+
+[Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Manager}")]
+[Route("api/users")]
+[ApiController]
+public class UsersController : ControllerBase
 {
-    [Authorize(Roles = "Admin,Manager")]
-    [Route("api/users")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public UsersController(IMediator mediator)
     {
-        private readonly IUserService _userService;
-        private readonly IUserIdentifierService _userIdentifierService;
+        _mediator = mediator;
+    }
 
-        public UsersController(IUserService userService, IUserIdentifierService userIdentifierService)
-        {
-            _userService = userService;
-            _userIdentifierService = userIdentifierService;
-        }
+    [HttpGet("userId")]
+    public async Task<IActionResult> GetCurrentUserId()
+    {
+        var userId = _mediator.Send(new GetCurrentIdentifierQuery());
+        return Ok(userId);
+    }
 
-        [HttpGet("userId")]
-        public IActionResult GetCurrentUserId()
-        {
-            var userId = _userIdentifierService.GetCurrentIdentifier();
-            return Ok(userId);
-        }
+    [HttpGet("roles")]
+    public async Task<IActionResult> GetCurrentUserRoles()
+    {
+        var roles = _mediator.Send(new GetCurrentUserRolesQuery());
+        return Ok(roles);
+    }
 
-        [HttpGet("roles")]
-        public IActionResult GetCurrentUserRoles()
-        {
-            var roles = _userIdentifierService.GetCurrentUserRoles();
-            return Ok(roles);
-        }
-        [HttpGet("users")]
-        public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilterRequest request)
-        {
-            var result = await _userService.GetFilteredUsers(request);
-            return Ok(result);
-        }
+    [HttpGet("users")]
+    public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilterRequest request)
+    {
+        var result = await _mediator.Send(new GetFilteredUsersQuery(request));
+        return Ok(result);
     }
 }

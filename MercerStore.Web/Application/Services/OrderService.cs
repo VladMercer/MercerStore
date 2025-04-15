@@ -1,112 +1,27 @@
-﻿using MercerStore.Web.Application.Interfaces.Repositories;
-using MercerStore.Web.Application.Interfaces;
+﻿using MercerStore.Web.Application.Dtos.OrderDto;
 using MercerStore.Web.Application.Dtos.ResultDto;
-using MercerStore.Web.Application.Dtos.OrderDto;
-using MercerStore.Web.Application.Requests.Orders;
-using MercerStore.Web.Infrastructure.Data.Enum.Order;
+using MercerStore.Web.Application.Interfaces.Repositories;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Models.Orders;
+using MercerStore.Web.Application.Requests.Orders;
 using MercerStore.Web.Application.ViewModels;
+using MercerStore.Web.Application.ViewModels.Carts;
 using MercerStore.Web.Areas.Admin.ViewModels.Orders;
+using MercerStore.Web.Infrastructure.Data.Enum.Order;
 
 namespace MercerStore.Web.Application.Services
 {
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IRequestContextService _requestContextService;
-        private readonly IRedisCacheService _redisCacheService;
-        private readonly IUserIdentifierService _userIdentifierService;
-        private readonly ICartProductRepository _cartProductRepository;
         private readonly IUserRepository _userProfileRepository;
-        private readonly ICartService _cartService;
 
-        public OrderService(
-            IOrderRepository orderRepository,
-            IRequestContextService requestContextService,
-            IRedisCacheService redisCacheService,
-            IUserIdentifierService userIdentifierService,
-            ICartProductRepository cartProductRepository,
-            IUserRepository userProfileRepository,
-            ICartService cartService)
+        public OrderService(IOrderRepository orderRepository, IUserRepository userProfileRepository)
         {
             _orderRepository = orderRepository;
-            _requestContextService = requestContextService;
-            _redisCacheService = redisCacheService;
-            _userIdentifierService = userIdentifierService;
-            _cartProductRepository = cartProductRepository;
             _userProfileRepository = userProfileRepository;
-            _cartService = cartService;
         }
-        public async Task<PaginatedResultDto<OrderDto>> GetFilteredOrders(OrderFilterRequest request)
-        {
-
-            bool isDefaultQuery =
-            request.PageNumber == 1 &&
-            request.PageSize == 30 &&
-            !request.SortOrder.HasValue &&
-            !request.Status.HasValue &&
-            request.Query == "";
-
-            string cacheKey = $"orders:page1";
-
-            return await _redisCacheService.TryGetOrSetCacheAsync(
-                cacheKey,
-                () => FetchFilteredOrders(request),
-                isDefaultQuery,
-                TimeSpan.FromMinutes(10)
-            );
-        }
-        public async Task<Order> GetOrderById(int orderId)
-        {
-            return await _orderRepository.GetOrderById(orderId);
-        }
-        public async Task<IEnumerable<Order>> GetOrderByUserId(string userId)
-        {
-            return await _orderRepository.GetOrdersByUser(userId);
-        }
-        public async Task<Order> AddOrder(Order order)
-        {
-            return await _orderRepository.AddOrder(order);
-        }
-        public async Task UpdateOrderStatus(UpdateOrderStatusDto dto)
-        {
-            var order = await _orderRepository.GetOrderById(dto.OrderId);
-            order.Status = dto.Status;
-            await _orderRepository.UpdateOrder(order);
-        }
-        public async Task RemoveOrder(int orderId)
-        {
-            await _orderRepository.DeleteOrder(orderId);
-        }
-        public async Task RemoveOrderProduct(int orderId, int productId)
-        {
-            var order = await _orderRepository.GetOrderById(orderId);
-
-            await _orderRepository.DeleteOrderProduct(order, productId);
-
-            var logDetails = new
-            {
-                productId
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
-        }
-        public async Task<OrderViewModel> GetOrderViewModel()
-        {
-            var userId = _userIdentifierService.GetCurrentIdentifier();
-            var User = await _userProfileRepository.GetUserByIdAsyncNoTracking(userId);
-            var cartViewModel = await _cartService.GetCartViewModel();
-
-            return new OrderViewModel
-            {
-                Address = User?.Address,
-                Email = User?.Email,
-                CartViewModel = cartViewModel,
-                PhoneNumber = User?.PhoneNumber
-            };
-        }
-        private async Task<PaginatedResultDto<OrderDto>> FetchFilteredOrders(OrderFilterRequest request)
+        public async Task<PaginatedResultDto<OrderDto>> GetFilteredOrdersWithoutCache(OrderFilterRequest request)
         {
             var (orders, totalItems) = await _orderRepository.GetFilteredOrders(request);
 
@@ -132,13 +47,50 @@ namespace MercerStore.Web.Application.Services
                 CompletedDate = order.CompletedDate,
             }).ToList();
 
-            var result = new PaginatedResultDto<OrderDto>(orderDtos, totalItems, request.PageSize);
-            return result;
+            return new PaginatedResultDto<OrderDto>(orderDtos, totalItems, request.PageSize);
         }
-        public async Task<int> CreateOrderFromCart(OrderViewModel orderViewModel)
+        public async Task<Order> GetOrderById(int orderId)
         {
-            var currentUserId = _userIdentifierService.GetCurrentIdentifier();
-            var roles = _userIdentifierService.GetCurrentUserRoles();
+            return await _orderRepository.GetOrderById(orderId);
+        }
+        public async Task<IEnumerable<Order>> GetOrdersByUserId(string userId)
+        {
+            return await _orderRepository.GetOrdersByUser(userId);
+        }
+        public async Task<Order> AddOrder(Order order)
+        {
+            return await _orderRepository.AddOrder(order);
+        }
+        public async Task UpdateOrderStatus(UpdateOrderStatusDto dto)
+        {
+            var order = await _orderRepository.GetOrderById(dto.OrderId);
+            order.Status = dto.Status;
+            await _orderRepository.UpdateOrder(order);
+        }
+        public async Task RemoveOrder(int orderId)
+        {
+            await _orderRepository.DeleteOrder(orderId);
+        }
+        public async Task RemoveOrderProduct(int orderId, int productId)
+        {
+            var order = await _orderRepository.GetOrderById(orderId);
+            await _orderRepository.DeleteOrderProduct(order, productId);
+        }
+        public async Task<OrderViewModel> GetOrderViewModel(string userId, CartViewModel cartViewModel)
+        {
+            var User = await _userProfileRepository.GetUserByIdAsyncNoTracking(userId);
+
+            return new OrderViewModel
+            {
+                Address = User?.Address,
+                Email = User?.Email,
+                CartViewModel = cartViewModel,
+                PhoneNumber = User?.PhoneNumber
+            };
+        }
+
+        public async Task<Order> CreateOrderFromCart(OrderViewModel orderViewModel, string currentUserId, IEnumerable<string> roles)
+        {
             var isGuest = roles.Contains("Guest");
 
             var guestId = isGuest ? currentUserId : null;
@@ -208,14 +160,7 @@ namespace MercerStore.Web.Application.Services
 
             await _orderRepository.UpdateOrderItems(updateOrderItems);
 
-            var logDetails = new
-            {
-                updateOrderViewModel.Status,
-            };
-
             await _orderRepository.UpdateOrderProductListTotalPrice(updateOrderViewModel.OrderProductListId, updatedTotalPrice);
-
-            _requestContextService.SetLogDetails(logDetails);
         }
     }
 }

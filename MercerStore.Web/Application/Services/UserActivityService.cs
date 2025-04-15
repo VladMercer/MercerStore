@@ -1,5 +1,5 @@
-﻿using MercerStore.Web.Application.Interfaces.Repositories;
-using MercerStore.Web.Application.Interfaces;
+﻿using MercerStore.Web.Application.Interfaces;
+using MercerStore.Web.Application.Interfaces.Repositories;
 using MercerStore.Web.Application.Interfaces.Services;
 
 namespace MercerStore.Web.Application.Services

@@ -1,48 +1,43 @@
-﻿using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Orders.Commands;
+using MercerStore.Web.Application.Handlers.Orders.Queries;
 using MercerStore.Web.Areas.Admin.ViewModels.Orders;
-using MercerStore.Web.Infrastructure.Extentions;
+using MercerStore.Web.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+namespace MercerStore.Web.Areas.Admin.Controllers;
 
-namespace MercerStore.Web.Areas.Admin.Controllers
+[Area("Admin")]
+[Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Manager}")]
+public class OrderController : Controller
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin,Manager")]
-    public class OrderController : Controller
+    private readonly IMediator _mediator;
+
+    public OrderController(IMediator mediator)
     {
+        _mediator = mediator;
+    }
 
-        private readonly IOrderService _orderService;
+    public IActionResult Index()
+    {
+        return View();
+    }
 
-        public OrderController(IOrderService orderService)
-        {
-            _orderService = orderService;
-        }
+    [HttpGet("[area]/[controller]/update/{orderId}")]
+    public async Task<IActionResult> Details(int orderId)
+    {
+        var orderUpdateViewModel = await _mediator.Send(new GetUpdateOrderViewModelQuery(orderId));
+        return View(orderUpdateViewModel);
+    }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+    [HttpPost("[area]/[controller]/update/")]
+    public async Task<IActionResult> Details(UpdateOrderViewModel updateOrderViewModel)
+    {
+        if (!ModelState.IsValid) return View(updateOrderViewModel);
 
-        [HttpGet("[area]/[controller]/update/{orderId}")]
-        public async Task<IActionResult> Details(int orderId)
-        {
-            var orderUpdateViewModel = await _orderService.GetUpdateOrderViewModel(orderId);
-            return View(orderUpdateViewModel);
-        }
+        await _mediator.Send(new UpdateOderCommand(updateOrderViewModel));
 
-        [HttpPost("[area]/[controller]/update/")]
-        [LogUserAction("Manager update order", "order")]
-        public async Task<IActionResult> Details(UpdateOrderViewModel updateOrderViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(updateOrderViewModel);
-            }
-
-            await _orderService.UpdateOder(updateOrderViewModel);
-
-            return RedirectToAction("Index", new { id = updateOrderViewModel.Id });
-        }
+        return RedirectToAction("Index");
     }
 }

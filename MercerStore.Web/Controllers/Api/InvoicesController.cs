@@ -1,29 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using MercerStore.Web.Application.Interfaces.Services;
+﻿using MediatR;
+using MercerStore.Web.Application.Handlers.Invoices.Queries;
 using MercerStore.Web.Application.Requests.Invoices;
+using MercerStore.Web.Infrastructure.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Api
+namespace MercerStore.Web.Controllers.Api;
+
+[Authorize(Roles = $"{RoleNames.Admin},{RoleNames.Manager}")]
+[Route("api/invoices")]
+[ApiController]
+public class InvoicesController : ControllerBase
 {
-    [Authorize(Roles = "Admin,Manager")]
-    [Route("api/invoices")]
-    [ApiController]
+    private readonly IMediator _mediator;
 
-    public class InvoicesController : ControllerBase
+    public InvoicesController(IMediator mediator)
     {
-      
-       private readonly IInvoiceService _invoiceService;
+        _mediator = mediator;
+    }
 
-        public InvoicesController(IInvoiceService invoiceService)
-        {
-            _invoiceService = invoiceService;
-        }
-
-        [HttpGet("invoices")]
-        public async Task<IActionResult> GetFilteredinvoices([FromQuery] InvoiceFilterRequest request)
-        {
-            var result = await _invoiceService.GetFilteredInvoices(request);
-            return Ok(result);
-        }
+    [HttpGet("invoices")]
+    public async Task<IActionResult> GetFilteredinvoices([FromQuery] InvoiceFilterRequest request)
+    {
+        var result = await _mediator.Send(new GetFilteredInvoicesQuery(request));
+        return Ok(result);
     }
 }

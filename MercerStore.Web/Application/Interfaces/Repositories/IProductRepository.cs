@@ -1,5 +1,6 @@
 ﻿using MercerStore.Web.Application.Models.Products;
 using MercerStore.Web.Application.Requests.Products;
+using MercerStore.Web.Application.ViewModels.Products;
 using MercerStore.Web.Infrastructure.Data.Enum.Product;
 
 namespace MercerStore.Web.Application.Interfaces.Repositories
@@ -13,10 +14,10 @@ namespace MercerStore.Web.Application.Interfaces.Repositories
         Task<IEnumerable<Product>> GetProductsByIdsAsync(IEnumerable<int> productIds);
         Task<IEnumerable<Product>> GetLastProductsAsync(int count);
         Task<int?> GetCategoryByProductId(int productId);
-        Task<IEnumerable<Product>> GetRandomProductsAsync(int count);
+        Task<IEnumerable<RandomProductViewModel>> GetRandomProductsAsync(int count);
         Task<IEnumerable<Review>> GetAllReview(int productId);
         Task<IEnumerable<Review>> GetAllReviewByUser(string userId);
-        Task<Product> AddProduct(Product product);
+        Task AddProduct(Product product);
         Task UpdateProduct(Product product);
         Task DeleteProduct(int productId);
         Task DecreaseProductStock(int? productId, string? sku, int quantity);

@@ -1,5 +1,4 @@
 ﻿using MercerStore.Web.Application.Interfaces.Repositories;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Dtos.ResultDto;
 using MercerStore.Web.Application.Requests.Suppliers;
 using MercerStore.Web.Application.Dtos.SupplierDto;
@@ -12,49 +11,16 @@ namespace MercerStore.Web.Application.Services
 {
     public class SupplierService : ISupplierService
     {
-        private readonly IRequestContextService _requestContextService;
         private readonly ISupplierRepository _supplierRepository;
-        private readonly IRedisCacheService _redisCacheService;
-        private readonly ILogService _logService;
 
-
-        public SupplierService(
-            IRequestContextService requestContextService,
-            ISupplierRepository supplierRepository,
-            IRedisCacheService redisCacheService,
-            ILogService logService)
+        public SupplierService(ISupplierRepository supplierRepository)
         {
-            _requestContextService = requestContextService;
             _supplierRepository = supplierRepository;
-            _redisCacheService = redisCacheService;
-            _logService = logService;
         }
-        public async Task<PaginatedResultDto<AdminSupplierDto>> GetFilteredSuppliers(SupplierFilterRequest request)
-        {
-            bool isDefaultQuery =
-            request.PageNumber == 1 &&
-            request.PageSize == 30 &&
-            request.Query == "";
 
-            string cacheKey = $"suppliers:page1";
-
-            return await _redisCacheService.TryGetOrSetCacheAsync(
-                cacheKey,
-                () => FetchFilteredSuppliers(request),
-                isDefaultQuery,
-                TimeSpan.FromMinutes(10)
-            );
-        }
         public async Task RemoveSupplier(int supplierId)
         {
             await _supplierRepository.RemoveSupplier(supplierId);
-
-            var logDetails = new
-            {
-                supplierId
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
         }
         public async Task<int> CreateSupplier(CreateSupplierViewModel createSupplierViewModel)
         {
@@ -70,21 +36,6 @@ namespace MercerStore.Web.Application.Services
             };
 
             var newSupplier = await _supplierRepository.AddSupplier(supplier);
-
-            var logDetails = new
-            {
-                newSupplier.Id,
-                createSupplierViewModel.Name,
-                createSupplierViewModel.Address,
-                createSupplierViewModel.Phone,
-                createSupplierViewModel.ContactPerson,
-                createSupplierViewModel.Email,
-                createSupplierViewModel.IsCompany,
-                createSupplierViewModel.TaxId
-
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
 
             return newSupplier.Id;
         }
@@ -120,25 +71,11 @@ namespace MercerStore.Web.Application.Services
             supplier.IsCompany = updateSupplierViewModel.IsCompany;
             supplier.TaxId = updateSupplierViewModel.TaxId;
 
-            var logDetails = new
-            {
-                supplier.Id,
-                supplier.Address,
-                supplier.Name,
-                supplier.Phone,
-                supplier.Email,
-                supplier.ContactPerson,
-                supplier.IsCompany,
-                supplier.TaxId
-            };
-
-            _requestContextService.SetLogDetails(logDetails);
-
             var supplierId = await _supplierRepository.UpdateSupplier(supplier);
 
             return Result<int>.Success(supplierId);
         }
-        private async Task<PaginatedResultDto<AdminSupplierDto>> FetchFilteredSuppliers(SupplierFilterRequest request)
+        public async Task<PaginatedResultDto<AdminSupplierDto>> GetFilteredSuppliersWithoutCache(SupplierFilterRequest request)
         {
             var (suppliers, totalSuppliers) = await _supplierRepository.GetFilteredSuppliers(request);
             var supplierDtos = suppliers.Select(s => new AdminSupplierDto

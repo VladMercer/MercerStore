@@ -1,9 +1,9 @@
 ﻿using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Models.Products;
 
-public class SKUService : ISKUService
+public class SKUService : ISkuService
 {
-    public string GenerateSKU(Product product)
+    public string GenerateSku(Product product)
     {
         var creationDate = DateTime.UtcNow.ToString("yyMM");
         var uniqueSegment = Guid.NewGuid().ToString().Substring(0,6);

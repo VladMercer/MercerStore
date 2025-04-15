@@ -11,6 +11,7 @@
 
         <form asp-action="AddItem" method="post">
             <input type="hidden" name="InvoiceId" value="@Model.InvoiceId" />
+            <input type="hidden" name="SupplierId" value="@Model.SupplierId" />
 
             <h4 class="mb-3">Добавить товары вручную</h4>
             <div class="row">

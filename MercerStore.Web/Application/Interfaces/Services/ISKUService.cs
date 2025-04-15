@@ -2,8 +2,8 @@
 
 namespace MercerStore.Web.Application.Interfaces
 {
-    public interface ISKUService
+    public interface ISkuService
     {
-        string GenerateSKU(Product product);
+        string GenerateSku(Product product);
     }
 }
