@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Клонирование кода
+        uses: actions/checkout@v3
+
+      - name: Установка .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Восстановление зависимостей
+        run: dotnet restore MercerStore.sln
+
+      - name: Сборка проекта
+        run: dotnet build MercerStore.sln --no-restore --configuration Release
+
+      - name: Прогон тестов
+        run: dotnet test tests/MercerStore.Tests/MercerStore.Tests.csproj --no-build --verbosity normal
