@@ -23,9 +23,7 @@ public class AddToCartHandler : IRequestHandler<AddToCartCommand, Unit>
     {
         var userId = _userIdentifierService.GetCurrentIdentifier();
         await _cartService.AddToCart(request.ProductId, userId);
-        var description = "ПАПА ПЕВЕ ГИМА БОРИ";
         request.EntityId = request.ProductId;
-        request.Details = new { description };
         return Unit.Value;
     }
 }
