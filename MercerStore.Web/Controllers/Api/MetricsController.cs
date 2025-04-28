@@ -19,9 +19,9 @@ public class MetricsController : ControllerBase
     }
 
     [HttpGet("metrics")]
-    public async Task<IActionResult> GetMetrics()
+    public async Task<IActionResult> GetMetrics(CancellationToken ct)
     {
-        var metrics = await _mediator.Send(new GetMetricsQuery());
+        var metrics = await _mediator.Send(new GetMetricsQuery(), ct);
         return Ok(metrics);
     }
 }

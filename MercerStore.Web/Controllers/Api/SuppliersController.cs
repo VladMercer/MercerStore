@@ -21,16 +21,17 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpGet("suppliers")]
-    public async Task<IActionResult> GetFilteredSuppliers([FromQuery] SupplierFilterRequest request)
+    public async Task<IActionResult> GetFilteredSuppliers([FromQuery] SupplierFilterRequest request,
+        CancellationToken ct)
     {
-        var result = await _mediator.Send(new GetFilteredSuppliersQuery(request));
+        var result = await _mediator.Send(new GetFilteredSuppliersQuery(request), ct);
         return Ok(result);
     }
 
     [HttpDelete("supplier/{supplierId}")]
-    public async Task<IActionResult> RemoveSupplier(int supplierId)
+    public async Task<IActionResult> RemoveSupplier(int supplierId, CancellationToken ct)
     {
-        await _mediator.Send(new RemoveSupplierCommand(supplierId));
+        await _mediator.Send(new RemoveSupplierCommand(supplierId), ct);
         return Ok();
     }
 }

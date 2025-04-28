@@ -16,9 +16,9 @@ public class HeartbeatController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateActivity()
+    public async Task<IActionResult> UpdateActivity(CancellationToken ct)
     {
-        await _mediator.Send(new UpdateActivityCommand());
+        await _mediator.Send(new UpdateActivityCommand(), ct);
         return Ok();
     }
 }

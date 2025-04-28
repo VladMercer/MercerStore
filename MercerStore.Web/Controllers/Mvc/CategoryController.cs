@@ -26,19 +26,20 @@ public class CategoryController : Controller
 
     [Authorize(Roles = "Admin")]
     [HttpPost("category/create")]
-    public async Task<IActionResult> CreateCategory(CreateCategoryViewModel createCategoryViewModel)
+    public async Task<IActionResult> CreateCategory(CreateCategoryViewModel createCategoryViewModel,
+        CancellationToken ct)
     {
         if (!ModelState.IsValid) return View(createCategoryViewModel);
 
-        await _mediator.Send(new AddCategoryCommand(createCategoryViewModel));
+        await _mediator.Send(new AddCategoryCommand(createCategoryViewModel), ct);
 
         return RedirectToAction("CreateCategory");
     }
 
     [HttpGet("category/{categoryId}")]
-    public async Task<IActionResult> Index(int categoryId)
+    public async Task<IActionResult> Index(int categoryId, CancellationToken ct)
     {
-        var categoryPageViewModel = await _mediator.Send(new GetCategoryPageViewModelQuery(categoryId));
+        var categoryPageViewModel = await _mediator.Send(new GetCategoryPageViewModelQuery(categoryId), ct);
         return View(categoryPageViewModel);
     }
 }

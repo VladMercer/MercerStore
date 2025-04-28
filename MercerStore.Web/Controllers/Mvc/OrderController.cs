@@ -16,22 +16,22 @@ public class OrderController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(CancellationToken ct)
     {
-        var orderViewModel = await _mediator.Send(new GetOrderViewModelQuery());
+        var orderViewModel = await _mediator.Send(new GetOrderViewModelQuery(), ct);
         return View(orderViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddOrder(OrderViewModel viewModel)
+    public async Task<IActionResult> AddOrder(OrderViewModel viewModel, CancellationToken ct)
     {
         if (!ModelState.IsValid)
         {
-            var orderViewModel = await _mediator.Send(new GetOrderViewModelQuery());
+            var orderViewModel = await _mediator.Send(new GetOrderViewModelQuery(), ct);
             return View("Index", orderViewModel);
         }
 
-        await _mediator.Send(new CreateOrderFromCartCommand(viewModel));
+        await _mediator.Send(new CreateOrderFromCartCommand(viewModel), ct);
 
         return RedirectToAction("Index");
     }

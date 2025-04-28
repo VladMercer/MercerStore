@@ -19,23 +19,24 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("products")]
-    public async Task<IActionResult> GetFilteredProducts([FromQuery] CategoryFilterRequest request)
+    public async Task<IActionResult> GetFilteredProducts([FromQuery] CategoryFilterRequest request,
+        CancellationToken ct)
     {
-        var result = await _mediator.Send(new GetFilteredProductsQuery(request));
+        var result = await _mediator.Send(new GetFilteredProductsQuery(request), ct);
         return Ok(result);
     }
 
     [HttpGet("price-range/{categoryId}")]
-    public async Task<IActionResult> GetPriceRange(int categoryId)
+    public async Task<IActionResult> GetPriceRange(int categoryId, CancellationToken ct)
     {
-        var priceRange = await _mediator.Send(new GetPriceRangeQuery(categoryId));
+        var priceRange = await _mediator.Send(new GetPriceRangeQuery(categoryId), ct);
         return Ok(priceRange);
     }
 
     [HttpGet("categories")]
-    public async Task<IActionResult> GetAllCategories()
+    public async Task<IActionResult> GetAllCategories(CancellationToken ct)
     {
-        var categories = await _mediator.Send(new GetCategoriesQuery());
+        var categories = await _mediator.Send(new GetCategoriesQuery(), ct);
         return Ok(categories);
     }
 }

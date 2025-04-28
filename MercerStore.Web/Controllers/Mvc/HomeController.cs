@@ -13,9 +13,9 @@ public class HomeController : Controller
         _mediator = mediator;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(CancellationToken ct)
     {
-        var homePageViewModel = await _mediator.Send(new GetHomePageProductQuery());
+        var homePageViewModel = await _mediator.Send(new GetHomePageProductQuery(), ct);
         return View(homePageViewModel);
     }
 }

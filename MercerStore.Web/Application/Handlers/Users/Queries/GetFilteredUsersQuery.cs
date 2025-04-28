@@ -24,14 +24,10 @@ public class GetFilteredUsersHandler : IRequestHandler<GetFilteredUsersQuery, Pa
     {
         var request = query.Request;
         var isDefaultQuery =
-            request.PageNumber == 1 &&
-            request.PageSize == 30 &&
-            !request.SortOrder.HasValue &&
-            !request.Period.HasValue &&
-            !request.Filter.HasValue &&
+            request is { PageNumber: 1, PageSize: 30, SortOrder: null, Period: null, Filter: null } &&
             string.IsNullOrEmpty(request.Query);
 
-        var cacheKey = "users:page1";
+        const string cacheKey = "users:page1";
 
         return await _redisCacheService.TryGetOrSetCacheAsync(
             cacheKey,

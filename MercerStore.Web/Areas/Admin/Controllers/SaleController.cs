@@ -20,16 +20,16 @@ public class SaleController : Controller
     }
 
     [HttpGet("[area]/[controller]/create-offline-sale")]
-    public async Task<IActionResult> CreateOfflineSale()
+    public async Task<IActionResult> CreateOfflineSale(CancellationToken ct)
     {
-        var sale = await _mediator.Send(new CreateOfflineSaleQuery());
+        var sale = await _mediator.Send(new CreateOfflineSaleQuery(), ct);
         return View(sale);
     }
 
     [HttpPost("[area]/[controller]/addItem")]
-    public async Task<IActionResult> AddItem(SaleRequest request)
+    public async Task<IActionResult> AddItem(SaleRequest request, CancellationToken ct)
     {
-        var result = await _mediator.Send(new AddItemCommand(request));
+        var result = await _mediator.Send(new AddItemCommand(request), ct);
 
         if (!result.IsSuccess)
         {
@@ -41,9 +41,9 @@ public class SaleController : Controller
     }
 
     [HttpPost("[area]/[controller]/closeSale")]
-    public async Task<IActionResult> CloseSale(int saleId)
+    public async Task<IActionResult> CloseSale(int saleId, CancellationToken ct)
     {
-        var result = await _mediator.Send(new CloseSaleCommand(saleId));
+        var result = await _mediator.Send(new CloseSaleCommand(saleId), ct);
         if (!result.IsSuccess)
         {
             ModelState.AddModelError("", result.ErrorMessage);
@@ -54,9 +54,9 @@ public class SaleController : Controller
     }
 
     [HttpGet("[area]/[controller]/summary/{id}")]
-    public async Task<IActionResult> SaleSummary(int id)
+    public async Task<IActionResult> SaleSummary(int id, CancellationToken ct)
     {
-        var result = await _mediator.Send(new GetSummarySaleQuery(id));
+        var result = await _mediator.Send(new GetSummarySaleQuery(id), ct);
         return View(result.Data);
     }
 }

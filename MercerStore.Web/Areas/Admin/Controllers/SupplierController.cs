@@ -32,28 +32,30 @@ public class SupplierController : Controller
     }
 
     [HttpPost("[area]/[controller]/create")]
-    public async Task<IActionResult> CreateSupplier(CreateSupplierViewModel createSupplierViewModel)
+    public async Task<IActionResult> CreateSupplier(CreateSupplierViewModel createSupplierViewModel,
+        CancellationToken ct)
     {
         if (!ModelState.IsValid) return View(createSupplierViewModel);
 
-        await _mediator.Send(new CreateSupplierCommand(createSupplierViewModel));
+        await _mediator.Send(new CreateSupplierCommand(createSupplierViewModel), ct);
 
         return RedirectToAction("CreateSupplier");
     }
 
     [HttpGet("[area]/[controller]/update/{supplierId}")]
-    public async Task<IActionResult> UpdateSupplier(int supplierId)
+    public async Task<IActionResult> UpdateSupplier(int supplierId, CancellationToken ct)
     {
-        var updateSupplierViewModel = await _mediator.Send(new GetUpdateSupplierViewModelQuery(supplierId));
+        var updateSupplierViewModel = await _mediator.Send(new GetUpdateSupplierViewModelQuery(supplierId), ct);
         return View(updateSupplierViewModel);
     }
 
     [HttpPost("[area]/[controller]/update/{supplierId}")]
-    public async Task<IActionResult> UpdateSupplier(UpdateSupplierViewModel updateSupplierViewModel)
+    public async Task<IActionResult> UpdateSupplier(UpdateSupplierViewModel updateSupplierViewModel,
+        CancellationToken ct)
     {
         if (!ModelState.IsValid) return View(updateSupplierViewModel);
 
-        var result = await _mediator.Send(new UpdateSupplierCommand(updateSupplierViewModel));
+        var result = await _mediator.Send(new UpdateSupplierCommand(updateSupplierViewModel), ct);
 
         if (!result.IsSuccess)
         {

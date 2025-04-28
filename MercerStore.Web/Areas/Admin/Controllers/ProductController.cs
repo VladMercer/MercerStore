@@ -20,9 +20,9 @@ public class ProductController : Controller
         _mediator = mediator;
     }
 
-    public async Task<IActionResult> SelectCategory()
+    public async Task<IActionResult> SelectCategory(CancellationToken ct)
     {
-        var categories = await _mediator.Send(new GetCategoriesQuery());
+        var categories = await _mediator.Send(new GetCategoriesQuery(), ct);
         return View(categories);
     }
 
@@ -47,32 +47,33 @@ public class ProductController : Controller
     }
 
     [HttpPost("[area]/[controller]/create/{categoryId}")]
-    public async Task<IActionResult> CreateProduct(CreateProductViewModel createViewModel, int categoryId)
+    public async Task<IActionResult> CreateProduct(CreateProductViewModel createViewModel, int categoryId,
+        CancellationToken ct)
     {
         if (!ModelState.IsValid) return View(createViewModel);
 
-        await _mediator.Send(new CreateProductCommand(createViewModel, categoryId));
+        await _mediator.Send(new CreateProductCommand(createViewModel, categoryId), ct);
 
         return RedirectToAction("CreateProduct");
     }
 
-    public async Task<IActionResult> UpdateSkus()
+    public async Task<IActionResult> UpdateSkus(CancellationToken ct)
     {
-        await _mediator.Send(new UpdateSkusCommand());
+        await _mediator.Send(new UpdateSkusCommand(), ct);
         return Ok("Skus обновление успешно");
     }
 
     [HttpGet("[area]/[controller]/update/{productId}")]
-    public async Task<IActionResult> UpdateProduct(int productId)
+    public async Task<IActionResult> UpdateProduct(int productId, CancellationToken ct)
     {
-        var updateProductViewModel = await _mediator.Send(new GetUpdateProductViewModelQuery(productId));
+        var updateProductViewModel = await _mediator.Send(new GetUpdateProductViewModelQuery(productId), ct);
         return View(updateProductViewModel);
     }
 
     [HttpPost("[area]/[controller]/update/{productId}")]
-    public async Task<IActionResult> UpdateProduct(UpdateProductViewModel updateProductViewModel)
+    public async Task<IActionResult> UpdateProduct(UpdateProductViewModel updateProductViewModel, CancellationToken ct)
     {
-        var result = await _mediator.Send(new UpdateProductCommand(updateProductViewModel));
+        var result = await _mediator.Send(new UpdateProductCommand(updateProductViewModel), ct);
         if (!result.IsSuccess)
         {
             ModelState.AddModelError("", result.ErrorMessage);
@@ -83,9 +84,9 @@ public class ProductController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> IndexAllProducts()
+    public async Task<IActionResult> IndexAllProducts(CancellationToken ct)
     {
-        await _mediator.Send(new IndexAllProductsQuery());
+        await _mediator.Send(new IndexAllProductsQuery(), ct);
         return Ok("Все продукты были проиндексированны.");
     }
 }

@@ -34,9 +34,9 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("users")]
-    public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilterRequest request)
+    public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilterRequest request, CancellationToken ct)
     {
-        var result = await _mediator.Send(new GetFilteredUsersQuery(request));
+        var result = await _mediator.Send(new GetFilteredUsersQuery(request), ct);
         return Ok(result);
     }
 }

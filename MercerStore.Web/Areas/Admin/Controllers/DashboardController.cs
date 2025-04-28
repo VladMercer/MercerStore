@@ -17,9 +17,9 @@ public class DashboardController : Controller
         _mediator = mediator;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(CancellationToken ct)
     {
-        var dashboardViewModel = await _mediator.Send(new GetDashboardViewMetricQuery());
+        var dashboardViewModel = await _mediator.Send(new GetDashboardViewMetricQuery(), ct);
         return View(dashboardViewModel);
     }
 }

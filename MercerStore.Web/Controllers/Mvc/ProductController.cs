@@ -15,9 +15,9 @@ public class ProductController : Controller
         _mediator = mediator;
     }
 
-    public async Task<IActionResult> Details(int Id)
+    public async Task<IActionResult> Details(int Id, CancellationToken ct)
     {
-        var productViewModel = await _mediator.Send(new GetProductDetailsQuery(Id));
+        var productViewModel = await _mediator.Send(new GetProductDetailsQuery(Id), ct);
         return View(productViewModel);
     }
 }

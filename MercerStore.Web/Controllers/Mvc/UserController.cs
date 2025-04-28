@@ -17,20 +17,20 @@ public class UserController : Controller
         _mediator = mediator;
     }
 
-    public async Task<IActionResult> UserProfile()
+    public async Task<IActionResult> UserProfile(CancellationToken ct)
     {
-        var userProfileViewModel = await _mediator.Send(new GetUserProfileQuery());
+        var userProfileViewModel = await _mediator.Send(new GetUserProfileQuery(), ct);
         return View(userProfileViewModel);
     }
 
-    public async Task<IActionResult> EditUserProfile()
+    public async Task<IActionResult> EditUserProfile(CancellationToken ct)
     {
-        var userProfileViewModel = await _mediator.Send(new GetUserProfileForEditQuery());
+        var userProfileViewModel = await _mediator.Send(new GetUserProfileForEditQuery(), ct);
         return View(userProfileViewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditUserProfile(UserProfileViewModel userProfileViewModel)
+    public async Task<IActionResult> EditUserProfile(UserProfileViewModel userProfileViewModel, CancellationToken ct)
     {
         if (!ModelState.IsValid)
         {
@@ -38,7 +38,7 @@ public class UserController : Controller
             return View(userProfileViewModel);
         }
 
-        var result = await _mediator.Send(new UpdateUserProfileCommand(userProfileViewModel));
+        var result = await _mediator.Send(new UpdateUserProfileCommand(userProfileViewModel), ct);
         if (!result.IsSuccess)
         {
             ModelState.AddModelError("", result.ErrorMessage);

@@ -31,16 +31,16 @@ public class InvoiceController : Controller
     }
 
     [HttpGet("[area]/[controller]/create-invoice/{supplierId}")]
-    public async Task<IActionResult> CreateInvoice(int supplierId)
+    public async Task<IActionResult> CreateInvoice(int supplierId, CancellationToken ct)
     {
-        var createInvoiceViewModel = await _mediator.Send(new GetCreateInvoiceViewModelQuery(supplierId));
+        var createInvoiceViewModel = await _mediator.Send(new GetCreateInvoiceViewModelQuery(supplierId), ct);
         return View(createInvoiceViewModel);
     }
 
     [HttpPost("[area]/[controller]/addItem")]
-    public async Task<IActionResult> AddItem(CreateInvoiceViewModel createInvoiceViewModel)
+    public async Task<IActionResult> AddItem(CreateInvoiceViewModel createInvoiceViewModel, CancellationToken ct)
     {
-        var result = await _mediator.Send(new AddInvoiceItemCommand(createInvoiceViewModel));
+        var result = await _mediator.Send(new AddInvoiceItemCommand(createInvoiceViewModel), ct);
 
         if (!result.IsSuccess)
         {
@@ -56,9 +56,9 @@ public class InvoiceController : Controller
     }
 
     [HttpPost("[area]/[controller]/close-invoice")]
-    public async Task<IActionResult> CloseInvoice(int invoiceId, string notes)
+    public async Task<IActionResult> CloseInvoice(int invoiceId, string notes, CancellationToken ct)
     {
-        var result = await _mediator.Send(new CloseInvoiceCommand(invoiceId, notes));
+        var result = await _mediator.Send(new CloseInvoiceCommand(invoiceId, notes), ct);
 
         if (!result.IsSuccess) ModelState.AddModelError("", result.ErrorMessage);
 
@@ -66,18 +66,18 @@ public class InvoiceController : Controller
     }
 
     [HttpGet("[area]/[controller]/update/{invoiceId}")]
-    public async Task<IActionResult> UpdateInvoice(int invoiceId)
+    public async Task<IActionResult> UpdateInvoice(int invoiceId, CancellationToken ct)
     {
-        var updateInvoiceViewModel = await _mediator.Send(new GetUpdateInvoiceViewModelQuery(invoiceId));
+        var updateInvoiceViewModel = await _mediator.Send(new GetUpdateInvoiceViewModelQuery(invoiceId), ct);
         return View(updateInvoiceViewModel);
     }
 
     [HttpPost("[area]/[controller]/update/{invoiceId}")]
-    public async Task<IActionResult> UpdateInvoice(UpdateInvoiceViewModel updateInvoiceViewModel)
+    public async Task<IActionResult> UpdateInvoice(UpdateInvoiceViewModel updateInvoiceViewModel, CancellationToken ct)
     {
         if (!ModelState.IsValid) return View(updateInvoiceViewModel);
 
-        await _mediator.Send(new UpdateInvoiceCommand(updateInvoiceViewModel));
+        await _mediator.Send(new UpdateInvoiceCommand(updateInvoiceViewModel), ct);
 
         return RedirectToAction("InvoicePage");
     }

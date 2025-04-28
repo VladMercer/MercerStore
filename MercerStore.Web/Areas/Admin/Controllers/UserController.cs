@@ -30,17 +30,18 @@ public class UserController : Controller
     }
 
     [HttpGet("[area]/[controller]/update/{userId}")]
-    public async Task<IActionResult> UpdateUserProfile(string userId)
+    public async Task<IActionResult> UpdateUserProfile(string userId, CancellationToken ct)
     {
-        var updateUserProfileViewModel = await _mediator.Send(new GetUpdateUserProfileViewModelQuery(userId));
+        var updateUserProfileViewModel = await _mediator.Send(new GetUpdateUserProfileViewModelQuery(userId), ct);
         return View(updateUserProfileViewModel);
     }
 
     [HttpPost("[area]/[controller]/update/{userId}")]
-    public async Task<IActionResult> UpdateUserProfileAsync(UpdateUserProfileViewModel updateUserProfileViewModel)
+    public async Task<IActionResult> UpdateUserProfileAsync(UpdateUserProfileViewModel updateUserProfileViewModel,
+        CancellationToken ct)
     {
         if (!ModelState.IsValid) return View(updateUserProfileViewModel);
-        await _mediator.Send(new AdminUpdateUserProfileCommand(updateUserProfileViewModel));
+        await _mediator.Send(new AdminUpdateUserProfileCommand(updateUserProfileViewModel), ct);
 
         return RedirectToAction("UpdateUserProfile");
     }

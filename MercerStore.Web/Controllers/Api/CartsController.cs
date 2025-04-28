@@ -35,14 +35,14 @@ public class CartsController : ControllerBase
     [HttpPost("product/{productId}")]
     public async Task<IActionResult> AddToCart(int productId, CancellationToken ct)
     {
-        await _mediator.Send(new AddToCartCommand(productId));
+        await _mediator.Send(new AddToCartCommand(productId), ct);
         return Ok();
     }
 
     [HttpDelete("product/{productId}")]
     public async Task<IActionResult> RemoveFromCart(int productId, CancellationToken ct)
     {
-        await _mediator.Send(new RemoveFromCartCommand(productId));
+        await _mediator.Send(new RemoveFromCartCommand(productId), ct);
         return Ok();
     }
 }

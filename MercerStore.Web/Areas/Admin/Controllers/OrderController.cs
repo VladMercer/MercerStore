@@ -25,18 +25,18 @@ public class OrderController : Controller
     }
 
     [HttpGet("[area]/[controller]/update/{orderId}")]
-    public async Task<IActionResult> Details(int orderId)
+    public async Task<IActionResult> Details(int orderId, CancellationToken ct)
     {
-        var orderUpdateViewModel = await _mediator.Send(new GetUpdateOrderViewModelQuery(orderId));
+        var orderUpdateViewModel = await _mediator.Send(new GetUpdateOrderViewModelQuery(orderId), ct);
         return View(orderUpdateViewModel);
     }
 
     [HttpPost("[area]/[controller]/update/")]
-    public async Task<IActionResult> Details(UpdateOrderViewModel updateOrderViewModel)
+    public async Task<IActionResult> Details(UpdateOrderViewModel updateOrderViewModel, CancellationToken ct)
     {
         if (!ModelState.IsValid) return View(updateOrderViewModel);
 
-        await _mediator.Send(new UpdateOderCommand(updateOrderViewModel));
+        await _mediator.Send(new UpdateOderCommand(updateOrderViewModel), ct);
 
         return RedirectToAction("Index");
     }

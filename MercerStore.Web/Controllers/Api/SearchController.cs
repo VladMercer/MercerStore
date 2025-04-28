@@ -19,9 +19,9 @@ public class SearchController : ControllerBase
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> Search([FromQuery] SearchFilterRequest request)
+    public async Task<IActionResult> Search([FromQuery] SearchFilterRequest request, CancellationToken ct)
     {
-        var result = await _mediator.Send(new SearchProductQuery(request));
+        var result = await _mediator.Send(new SearchProductQuery(request), ct);
         return Ok(result);
     }
 }
