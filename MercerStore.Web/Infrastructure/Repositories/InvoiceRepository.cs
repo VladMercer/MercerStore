@@ -149,7 +149,7 @@ public class InvoiceRepository : IInvoiceRepository
     {
         var now = DateTime.UtcNow;
         var dayOfWeek = (int)now.DayOfWeek;
-        dayOfWeek = (dayOfWeek == 0) ? 7 : dayOfWeek;
+        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
         var startOfWeek = now.Date.AddDays(1 - dayOfWeek);
         var startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
         var startOfYear = new DateTime(now.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);

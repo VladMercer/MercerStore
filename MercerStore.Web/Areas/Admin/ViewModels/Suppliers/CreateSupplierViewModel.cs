@@ -16,11 +16,11 @@ public class CreateSupplierViewModel
     [Display(Name = "Контактное лицо")]
     public string ContactPerson { get; set; }
 
-    [Required][Display(Name = "Телефон")] public string Phone { get; set; }
+    [Required] [Display(Name = "Телефон")] public string Phone { get; set; }
 
-    [Required][Display(Name = "Email")] public string Email { get; set; }
+    [Required] [Display(Name = "Email")] public string Email { get; set; }
 
-    [Required][Display(Name = "Адрес")] public string Address { get; set; }
+    [Required] [Display(Name = "Адрес")] public string Address { get; set; }
 
-    [Required][Display(Name = "ИНН")] public string TaxId { get; set; }
+    [Required] [Display(Name = "ИНН")] public string TaxId { get; set; }
 }

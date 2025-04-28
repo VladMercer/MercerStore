@@ -13,10 +13,10 @@ public record UpdateProductCommand(UpdateProductViewModel UpdateProductViewModel
 
 public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Result<Unit>>
 {
+    private readonly IDateTimeConverter _dateTimeConverter;
     private readonly IElasticSearchService _elasticsearchService;
     private readonly IPhotoService _photoService;
     private readonly IProductService _productService;
-    private readonly IDateTimeConverter _dateTimeConverter;
 
     public UpdateProductHandler(IProductService productService, IPhotoService photoService,
         IElasticSearchService elasticsearchService, IDateTimeConverter dateTimeConverter)

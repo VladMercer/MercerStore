@@ -10,8 +10,8 @@ public record UpdateInvoiceCommand(UpdateInvoiceViewModel UpdateInvoiceViewModel
 
 public class UpdateInvoiceHandler : IRequestHandler<UpdateInvoiceCommand, Unit>
 {
-    private readonly IInvoiceService _invoiceService;
     private readonly IDateTimeConverter _dateTimeConverter;
+    private readonly IInvoiceService _invoiceService;
 
     public UpdateInvoiceHandler(IInvoiceService invoiceService, IDateTimeConverter dateTimeConverter)
     {

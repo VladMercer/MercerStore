@@ -10,8 +10,8 @@ public class
     GetUpdateUserProfileViewModelHandler : IRequestHandler<GetUpdateUserProfileViewModelQuery,
     UpdateUserProfileViewModel>
 {
-    private readonly IUserService _userService;
     private readonly IDateTimeConverter _dateTimeConverter;
+    private readonly IUserService _userService;
 
     public GetUpdateUserProfileViewModelHandler(IUserService userService, IDateTimeConverter dateTimeConverter)
     {

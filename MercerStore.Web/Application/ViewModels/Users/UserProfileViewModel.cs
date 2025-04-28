@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MercerStore.Web.Application.Models.Orders;
 using MercerStore.Web.Application.Models.Products;
-using MercerStore.Web.Infrastructure.Helpers;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Web.Application.ViewModels.Users;
 

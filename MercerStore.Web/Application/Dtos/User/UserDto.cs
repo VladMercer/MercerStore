@@ -1,7 +1,4 @@
-﻿using MercerStore.Web.Infrastructure.Helpers;
-using Microsoft.AspNetCore.Mvc;
-
-namespace MercerStore.Web.Application.Dtos.User;
+﻿namespace MercerStore.Web.Application.Dtos.User;
 
 public class UserDto
 {

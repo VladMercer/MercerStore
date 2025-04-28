@@ -8,8 +8,8 @@ public record GetUpdateOrderViewModelQuery(int OderId) : IRequest<UpdateOrderVie
 
 public class GetUpdateOrderViewModelHandler : IRequestHandler<GetUpdateOrderViewModelQuery, UpdateOrderViewModel>
 {
-    private readonly IOrderService _orderService;
     private readonly IDateTimeConverter _dateTimeConverter;
+    private readonly IOrderService _orderService;
 
     public GetUpdateOrderViewModelHandler(IOrderService orderService, IDateTimeConverter dateTimeConverter)
     {
@@ -22,10 +22,8 @@ public class GetUpdateOrderViewModelHandler : IRequestHandler<GetUpdateOrderView
     {
         var updateOrderVieWModel = await _orderService.GetUpdateOrderViewModel(request.OderId, ct);
         if (updateOrderVieWModel.CompletedDate.HasValue)
-        {
             updateOrderVieWModel.CompletedDate =
                 _dateTimeConverter.ConvertUtcToUserTime(updateOrderVieWModel.CompletedDate.Value);
-        }
 
         updateOrderVieWModel.CreateDate = _dateTimeConverter.ConvertUtcToUserTime(updateOrderVieWModel.CreateDate);
 

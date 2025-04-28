@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Models.sales;
 

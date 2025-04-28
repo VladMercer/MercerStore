@@ -1,4 +1,8 @@
-﻿[*.cs]
+﻿# Общие настройки для всех файлов
+[*]
+end_of_line = lf
+
+[*.cs]
 
 # CS1591: Отсутствует комментарий XML для открытого видимого типа или члена
 dotnet_diagnostic.CS1591.severity = none
@@ -117,7 +121,7 @@ dotnet_style_prefer_inferred_tuple_names = true:suggestion
 dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
 dotnet_style_prefer_compound_assignment = true:suggestion
 dotnet_style_prefer_simplified_interpolation = true:suggestion
-end_of_line = crlf
+
 csharp_style_namespace_declarations = file_scoped:warning
 
 

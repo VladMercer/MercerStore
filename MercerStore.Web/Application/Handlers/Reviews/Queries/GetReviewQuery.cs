@@ -8,9 +8,9 @@ public record GetReviewQuery(int ProductId) : IRequest<Review>;
 
 public class GetReviewHandler : IRequestHandler<GetReviewQuery, Review>
 {
+    private readonly IDateTimeConverter _dateTimeConverter;
     private readonly IReviewService _reviewService;
     private readonly IUserIdentifierService _userIdentifierService;
-    private readonly IDateTimeConverter _dateTimeConverter;
 
     public GetReviewHandler(IReviewService reviewService, IUserIdentifierService userIdentifierService,
         IDateTimeConverter dateTimeConverter)

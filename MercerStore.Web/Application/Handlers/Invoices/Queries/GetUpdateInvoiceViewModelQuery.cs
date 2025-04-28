@@ -8,8 +8,8 @@ public record GetUpdateInvoiceViewModelQuery(int InvoiceId) : IRequest<UpdateInv
 
 public class GetUpdateInvoiceViewModelHandler : IRequestHandler<GetUpdateInvoiceViewModelQuery, UpdateInvoiceViewModel>
 {
-    private readonly IInvoiceService _invoiceService;
     private readonly IDateTimeConverter _dateTimeConverter;
+    private readonly IInvoiceService _invoiceService;
 
     public GetUpdateInvoiceViewModelHandler(IInvoiceService invoiceService, IDateTimeConverter dateTimeConverter)
     {

@@ -1,6 +1,4 @@
 ﻿using MercerStore.Web.Infrastructure.Data.Enum.Order;
-using MercerStore.Web.Infrastructure.Helpers;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Web.Areas.Admin.ViewModels.Orders;
 

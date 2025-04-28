@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MercerStore.Web.Infrastructure.Data.Enum.Product;
-using MercerStore.Web.Infrastructure.Helpers;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MercerStore.Web.Areas.Admin.ViewModels.Products;
 

@@ -2,7 +2,6 @@
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Requests.Log;
 using MercerStore.Web.Areas.Admin.ViewModels.Orders;
-using MercerStore.Web.Infrastructure.Data.Enum.Order;
 
 namespace MercerStore.Web.Application.Handlers.Orders.Commands;
 
@@ -11,8 +10,8 @@ public record UpdateOderCommand(UpdateOrderViewModel UpdateOrderViewModel) :
 
 public class UpdateOrderHandler : IRequestHandler<UpdateOderCommand, Unit>
 {
-    private readonly IOrderService _orderService;
     private readonly IDateTimeConverter _dateTimeConverter;
+    private readonly IOrderService _orderService;
 
     public UpdateOrderHandler(IOrderService orderService, IDateTimeConverter dateTimeConverter)
     {
@@ -26,10 +25,8 @@ public class UpdateOrderHandler : IRequestHandler<UpdateOderCommand, Unit>
             _dateTimeConverter.ConvertUserTimeToUtc(request.UpdateOrderViewModel.CreateDate);
 
         if (request.UpdateOrderViewModel.CompletedDate.HasValue)
-        {
             request.UpdateOrderViewModel.CompletedDate =
                 _dateTimeConverter.ConvertUserTimeToUtc(request.UpdateOrderViewModel.CompletedDate.Value);
-        }
 
         await _orderService.UpdateOder(request.UpdateOrderViewModel, ct);
 
