@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-const SearchBarComponent = ({ query, setQuery, results, isDropdownVisible, setDropdownVisible, handleSubmit }) => {
+const SearchBarComponent = ({query, setQuery, results, isDropdownVisible, setDropdownVisible, handleSubmit}) => {
 
     return (
         <div className="position-relative">
@@ -19,18 +19,18 @@ const SearchBarComponent = ({ query, setQuery, results, isDropdownVisible, setDr
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
-            {isDropdownVisible && results.length > 0 &&(
+            {isDropdownVisible && results.length > 0 && (
                 <div className="search-dropdown position-absolute bg-white border rounded shadow-sm w-100">
                     {results.map(product => (
                         <div
                             key={product.id}
                             className="search-result-item d-flex align-items-center p-2"
                             onClick={() => window.location.href = `/product/details/${product.id}`}
-                            style={{ cursor: 'pointer' }}
+                            style={{cursor: 'pointer'}}
                         >
-                            <img src={product.mainImageUrl} alt={product.name} />
+                            <img src={product.mainImageUrl} alt={product.name}/>
                             <div>
-                                <h5 dangerouslySetInnerHTML={{ __html: product.name }}></h5>
+                                <h5 dangerouslySetInnerHTML={{__html: product.name}}></h5>
                                 <p>{product.description}</p>
                             </div>
                         </div>

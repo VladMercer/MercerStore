@@ -1,11 +1,11 @@
-﻿import React, { useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+﻿import React from 'react';
+import {createRoot} from 'react-dom/client';
 import ProductListApp from './ProductListApp';
 import PaginationApp from './PaginationApp';
 import PageSizeSelectorApp from './PageSizeSelectorApp';
 import SortApp from './SortApp';
-import { SearchProvider } from './SearchContext';
-import { CartProvider } from '../../cart/CartContext';
+import {SearchProvider} from './SearchContext';
+import {CartProvider} from '../../cart/CartContext';
 
 
 const renderInRoot = (elementId, Component, withCartProvider = false) => {
@@ -16,10 +16,10 @@ const renderInRoot = (elementId, Component, withCartProvider = false) => {
             <SearchProvider>
                 {withCartProvider ? (
                     <CartProvider>
-                        <Component />
+                        <Component/>
                     </CartProvider>
                 ) : (
-                    <Component />
+                    <Component/>
                 )}
             </SearchProvider>
         );

@@ -90,9 +90,9 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
-        _mediator.Send(new LogoutCommand());
+        await _mediator.Send(new LogoutCommand());
         return RedirectToAction("Index", "Home");
     }
 

@@ -1,6 +1,6 @@
-﻿import React, { Suspense, lazy } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 
 const PageSizeSelectorComponent = lazy(() => import('./components/PageSizeSelectorComponent'));
@@ -14,17 +14,17 @@ const AdminSearchBarComponent = lazy(() => import('./components/AdminSearchBarCo
 
 export const userPageApp = (store) => {
     const portals = [
-        { id: 'user-page-size-root', component: <PageSizeSelectorComponent /> },
-        { id: 'user-pagination-root', component: <PaginationComponent /> },
-        { id: 'user-sort-root', component: <SortComponent /> },
-        { id: 'user-total-info-root', component: <TotalUsersInfoComponent /> },
-        { id: 'user-filter-root', component: <FilterComponent /> },
-        { id: 'user-time-period-filter-root', component: <TimePeriodFilterComponent /> },
-        { id: 'user-list-root', component: <UsersListComponent /> },
-        { id: 'user-search-bar-root', component: <AdminSearchBarComponent /> },
+        {id: 'user-page-size-root', component: <PageSizeSelectorComponent/>},
+        {id: 'user-pagination-root', component: <PaginationComponent/>},
+        {id: 'user-sort-root', component: <SortComponent/>},
+        {id: 'user-total-info-root', component: <TotalUsersInfoComponent/>},
+        {id: 'user-filter-root', component: <FilterComponent/>},
+        {id: 'user-time-period-filter-root', component: <TimePeriodFilterComponent/>},
+        {id: 'user-list-root', component: <UsersListComponent/>},
+        {id: 'user-search-bar-root', component: <AdminSearchBarComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);

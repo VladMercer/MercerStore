@@ -56,9 +56,9 @@ public class ProductController : Controller
         return RedirectToAction("CreateProduct");
     }
 
-    public IActionResult UpdateSKus()
+    public async Task<IActionResult> UpdateSkus()
     {
-        _mediator.Send(new UpdateSkusCommand());
+        await _mediator.Send(new UpdateSkusCommand());
         return Ok("Skus обновление успешно");
     }
 

@@ -1,5 +1,4 @@
-﻿@using MercerStore.Web.Application.ViewModels.Users
-@model UserProfileViewModel
+﻿@model MercerStore.Web.Application.ViewModels.Users.UserProfileViewModel
 @{
     ViewData["Title"] = "Изменении профиля";
 }
@@ -22,7 +21,7 @@
             <div class="col-md-6 offset-md-3">
                 <h3>Изменение профиля</h3>
                 <form asp-action="EditUserProfile" method="post" enctype="multipart/form-data">
-                    <input type="hidden" id="Id" name="Id" asp-for="Id" />
+                    <input type="hidden" id="Id" name="Id" asp-for="Id"/>
                     <div class="form-group mt-3">
                         <label asp-for="UserName"><i class="fas fa-user" id="userIcon"></i> Никнейм</label>
                         <input asp-for="UserName" class="form-control" value="@Model.UserName">

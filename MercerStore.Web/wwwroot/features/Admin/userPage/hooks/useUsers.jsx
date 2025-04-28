@@ -1,8 +1,8 @@
-﻿import { useSelector } from 'react-redux';
+﻿import {useSelector} from 'react-redux';
 
 export const useUsers = () => {
 
-    
+
     const users = useSelector((state) => state.userPage.users);
     const pageNumber = useSelector((state) => state.userPage.pageNumber);
     const pageSize = useSelector((state) => state.userPage.pageSize);

@@ -1,10 +1,10 @@
-﻿import { useDispatch } from 'react-redux';
+﻿import {useDispatch} from 'react-redux';
 import React from 'react';
-import { useSuppliers } from '../hooks/useSuppliers';
-import { setPageSize } from '../redux/supplierPageSlice';
+import {useSuppliers} from '../hooks/useSuppliers';
+import {setPageSize} from '../redux/supplierPageSlice';
 
 const PageSizeSelectorComponent = () => {
-    const { pageSize } = useSuppliers();
+    const {pageSize} = useSuppliers();
     const dispatch = useDispatch();
 
     const changePageSize = (newPageSize) => {

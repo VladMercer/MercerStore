@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Dtos.OrderDto;
+using MercerStore.Web.Application.Dtos.Order;
 using MercerStore.Web.Application.Handlers.Orders.Commands;
 using MercerStore.Web.Application.Handlers.Orders.Queries;
 using MercerStore.Web.Application.Models.Orders;

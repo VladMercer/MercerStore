@@ -1,8 +1,8 @@
-﻿import { useSelector } from 'react-redux';
+﻿import {useSelector} from 'react-redux';
 
 export const useSuppliers = () => {
 
-    
+
     const suppliers = useSelector((state) => state.supplierPage.suppliers);
     const pageNumber = useSelector((state) => state.supplierPage.pageNumber);
     const pageSize = useSelector((state) => state.supplierPage.pageSize);

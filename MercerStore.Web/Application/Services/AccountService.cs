@@ -19,7 +19,7 @@ public class AccountService : IAccountService
         _userProfileRepository = userProfileRepository;
     }
 
-    public async Task<Result<JwtTokenDto>> LoginAsync(LoginViewModel loginViewModel)
+    public async Task<Result<JwtTokenDto>> LoginAsync(LoginViewModel loginViewModel, CancellationToken ct)
     {
         var user = await _userManager.FindByEmailAsync(loginViewModel.EmailAddress);
 
@@ -29,8 +29,8 @@ public class AccountService : IAccountService
         if (!passwordCheck) return Result<JwtTokenDto>.Failure("Invalid password");
 
         var userId = await _userManager.GetUserIdAsync(user);
-        var profilePictureUrl = await _userProfileRepository.GetUserPhotoUrl(userId);
-        var creationDate = await _userProfileRepository.GetUserCreationDate(userId);
+        var profilePictureUrl = await _userProfileRepository.GetUserPhotoUrl(userId, ct);
+        var creationDate = await _userProfileRepository.GetUserCreationDate(userId, ct);
 
         var jwtTokenDto = new JwtTokenDto
         {

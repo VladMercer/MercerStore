@@ -1,9 +1,9 @@
-﻿import React, { useContext } from 'react';
-import { toast, Slide } from 'react-toastify';
-import { CartContext } from './CartContext';
+﻿import React, {useContext} from 'react';
+import {Slide, toast} from 'react-toastify';
+import {CartContext} from './CartContext';
 
-const AddToCartButton = ({ productId }) => {
-    const { addToCart } = useContext(CartContext);
+const AddToCartButton = ({productId}) => {
+    const {addToCart} = useContext(CartContext);
 
     const handleAddToCart = async () => {
         try {

@@ -1,5 +1,6 @@
 ﻿import React from 'react';
-const CartOffcanvasComponent = ({ cartItems, removeFromCart, totalPrice }) => {
+
+const CartOffcanvasComponent = ({cartItems, removeFromCart, totalPrice}) => {
 
     return (
         <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
@@ -13,39 +14,44 @@ const CartOffcanvasComponent = ({ cartItems, removeFromCart, totalPrice }) => {
                         <div className="table-responsive">
                             <table className="table offcanvasCart-table">
                                 <tbody>
-                                    {cartItems.map((item) => (
-                                        <tr key={item.productId}>
-                                            <td className="product-img-td">
-                                                <a href={`/product/details/${item.productId}`}>
-                                                    <img src={item.imageUrl} alt={item.name} className="img-fluid product-image" />
-                                                </a>
-                                            </td>
-                                            <td className="product-cart-name-td">
-                                                <a href={`/product/details/${item.productId}`} className="product-name-link">
-                                                    {item.name}
-                                                </a>
-                                            </td>
-                                            <td className="product-price-td">{item.price} ₽</td>
-                                            <td className="product-quantity-td">&times;{item.quantity}</td>
-                                            <td className="remove-btn-td">
-                                                <button onClick={() => removeFromCart(item.productId)} className="remove-from-cart-button">
-                                                    <i className="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                {cartItems.map((item) => (
+                                    <tr key={item.productId}>
+                                        <td className="product-img-td">
+                                            <a href={`/product/details/${item.productId}`}>
+                                                <img src={item.imageUrl} alt={item.name}
+                                                     className="img-fluid product-image"/>
+                                            </a>
+                                        </td>
+                                        <td className="product-cart-name-td">
+                                            <a href={`/product/details/${item.productId}`}
+                                               className="product-name-link">
+                                                {item.name}
+                                            </a>
+                                        </td>
+                                        <td className="product-price-td">{item.price} ₽</td>
+                                        <td className="product-quantity-td">&times;{item.quantity}</td>
+                                        <td className="remove-btn-td">
+                                            <button onClick={() => removeFromCart(item.productId)}
+                                                    className="remove-from-cart-button">
+                                                <i className="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <td colSpan="3" className="text-end-td">Итого:</td>
-                                        <td colSpan="2" className="total-price-td">{totalPrice} ₽</td>
-                                    </tr>
+                                <tr>
+                                    <td colSpan="3" className="text-end-td">Итого:</td>
+                                    <td colSpan="2" className="total-price-td">{totalPrice} ₽</td>
+                                </tr>
                                 </tfoot>
                             </table>
                         </div>
                         <div className="text-end mt-3 d-flex justify-content-between fixed-bottom-buttons">
-                            <a href="/cart" className="btn btn-outline-warning" id="button-offcanvas-cart">Перейти в корзину</a>
-                            <a href="/checkout" className="btn btn-outline-warning" id="button-offcanvas-checkout">Оформить заказ</a>
+                            <a href="/cart" className="btn btn-outline-warning" id="button-offcanvas-cart">Перейти в
+                                корзину</a>
+                            <a href="/checkout" className="btn btn-outline-warning" id="button-offcanvas-checkout">Оформить
+                                заказ</a>
                         </div>
                     </>
                 ) : (

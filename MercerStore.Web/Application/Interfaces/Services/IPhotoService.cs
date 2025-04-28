@@ -1,11 +1,10 @@
 ﻿using CloudinaryDotNet.Actions;
 
-namespace MercerStore.Web.Application.Interfaces
-{
-    public interface IPhotoService
-    {
-        Task<ImageUploadResult> AddPhotoAsync(IFormFile file);
+namespace MercerStore.Web.Application.Interfaces.Services;
 
-        Task<DeletionResult> DeletePhotoAsync(string publicUrl);
-    }
+public interface IPhotoService
+{
+    Task<ImageUploadResult> AddPhotoAsync(IFormFile file, CancellationToken ct);
+
+    Task<DeletionResult> DeletePhotoAsync(string publicUrl);
 }

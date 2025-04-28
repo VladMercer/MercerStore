@@ -1,10 +1,10 @@
 ﻿import React from 'react';
-import { useReviews } from '../hooks/useReviews';
-import { useDispatch } from 'react-redux';
-import { setPageNumber } from '../redux/reviewPageSlice';
+import {useReviews} from '../hooks/useReviews';
+import {useDispatch} from 'react-redux';
+import {setPageNumber} from '../redux/reviewPageSlice';
 
 const PaginationComponent = () => {
-    const { pageNumber, totalPages } = useReviews();
+    const {pageNumber, totalPages} = useReviews();
     const dispatch = useDispatch();
 
     const changePageNumber = (newPageNumber) => {

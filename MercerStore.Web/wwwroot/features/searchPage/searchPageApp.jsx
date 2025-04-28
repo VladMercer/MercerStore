@@ -1,6 +1,6 @@
-﻿import React, { Suspense, lazy } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 const SortComponent = lazy(() => import('./components/SortComponent'));
 const PageSizeSelectorComponent = lazy(() => import('./components/PageSizeSelectorComponent'));
@@ -10,14 +10,14 @@ const TotalProductsInfoComponent = lazy(() => import('./components/TotalProducts
 
 export const searchPageApp = (store) => {
     const portals = [
-        { id: 'search-sort-root', component: <SortComponent /> },
-        { id: 'search-page-size-root', component: <PageSizeSelectorComponent /> },
-        { id: 'search-pagination-root', component: <PaginationComponent /> },
-        { id: 'search-result-list-root', component: <ResultListComponent /> },
-        { id: 'search-total-products-info-root', component: <TotalProductsInfoComponent /> },
+        {id: 'search-sort-root', component: <SortComponent/>},
+        {id: 'search-page-size-root', component: <PageSizeSelectorComponent/>},
+        {id: 'search-pagination-root', component: <PaginationComponent/>},
+        {id: 'search-result-list-root', component: <ResultListComponent/>},
+        {id: 'search-total-products-info-root', component: <TotalProductsInfoComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);

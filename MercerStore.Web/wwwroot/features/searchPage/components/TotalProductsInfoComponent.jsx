@@ -1,8 +1,8 @@
 ﻿import React from 'react';
-import { useSearchPage } from '../hooks/useSearchPage';
+import {useSearchPage} from '../hooks/useSearchPage';
 
 const TotalProductsInfoComponent = () => {
-    const { totalItems, pageNumber, pageSize } = useSearchPage();
+    const {totalItems, pageNumber, pageSize} = useSearchPage();
 
     return (
         <div className="total-products">

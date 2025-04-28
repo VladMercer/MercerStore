@@ -1,10 +1,9 @@
-﻿namespace MercerStore.Web.Infrastructure.Data.Enum.User
+﻿namespace MercerStore.Web.Infrastructure.Data.Enum.User;
+
+public enum Roles
 {
-    public enum Roles
-    {
-        User,
-        Manager,
-        Admin,
-        Banned
-    }
+    User,
+    Manager,
+    Admin,
+    Banned
 }

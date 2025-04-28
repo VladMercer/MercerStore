@@ -1,14 +1,14 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_SUPPLIERS_URL } from '../../../../apiConfig';
-import { notifySuccess } from '../../../notify';
+import {API_SUPPLIERS_URL} from '../../../../apiConfig';
+import {notifySuccess} from '../../../notify';
 
 export const fetchSuppliers = createAsyncThunk(
     'users/fetchSuppliers',
-    async ({ pageNumber, pageSize, query }) => {
+    async ({pageNumber, pageSize, query}) => {
 
         const response = await axios.get(`${API_SUPPLIERS_URL}/suppliers`, {
-            params: { pageNumber, pageSize, query: query },
+            params: {pageNumber, pageSize, query: query},
         });
         return response.data;
     }
@@ -22,7 +22,7 @@ export const removeReview = createAsyncThunk(
     }
 );
 
-const initialState = {  
+const initialState = {
     pageNumber: 1,
     pageSize: 30,
     query: '',
@@ -53,7 +53,7 @@ const supplierPageSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchSuppliers.fulfilled, (state, action) => {
-                const { items, totalItems, totalPages } = action.payload;
+                const {items, totalItems, totalPages} = action.payload;
                 state.suppliers = items;
                 state.totalSuppliers = totalItems;
                 state.totalPages = totalPages;

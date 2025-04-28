@@ -24,6 +24,9 @@ jobs:
 
       - name: Сборка проекта
         run: dotnet build MercerStore.sln --no-restore --configuration Release
-
+        
+      - name: Проверка форматирования и статического анализа
+        run: dotnet format --verify-no-changes --severity warn
+      
       - name: Прогон тестов
         run: dotnet test tests/MercerStore.Tests/MercerStore.Tests.csproj --verbosity normal

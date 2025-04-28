@@ -1,14 +1,13 @@
-﻿import React, { useContext } from 'react';
-import { ReviewContext } from './ReviewContext';
+﻿import React, {useContext} from 'react';
+import {ReviewContext} from './ReviewContext';
 import ProductReviewsComponent from './ProductReviewsComponent';
 
 
-
 const ProductReviewsApp = () => {
-    const {currentUserId, productReviews, review } = useContext(ReviewContext);
+    const {currentUserId, productReviews, review} = useContext(ReviewContext);
 
     return (
-        <ProductReviewsComponent productReviews={productReviews} currentUserId={currentUserId} review={review} />
+        <ProductReviewsComponent productReviews={productReviews} currentUserId={currentUserId} review={review}/>
     );
 };
 

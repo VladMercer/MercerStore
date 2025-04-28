@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-const PageSizeSelectorComponent = ({ pageSize, onChange }) => {
+const PageSizeSelectorComponent = ({pageSize, onChange}) => {
     return (
         <div className="input-group mb-3">
             <span className="input-group-text">Показывать:</span>

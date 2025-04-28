@@ -1,6 +1,7 @@
-﻿import React, { useContext, useEffect, useState, useRef } from 'react';
-import { ProductContext } from './ProductContext';
+﻿import React, {useContext, useEffect, useRef, useState} from 'react';
+import {ProductContext} from './ProductContext';
 import FilterComponent from '../../UI/FilterComponent';
+
 const FilterApp = () => {
     const {
         fetchProducts,
@@ -23,31 +24,31 @@ const FilterApp = () => {
             setSelectedMinPrice(min);
             setSelectedMaxPrice(max);
 
-            fetchProducts(min, max); 
+            fetchProducts(min, max);
         }, 500);
     };
 
     const handleMinPriceChange = (newMinPrice) => {
-        setLocalMinPrice(newMinPrice); 
-        debounceFetchProducts(newMinPrice, localMaxPrice); 
+        setLocalMinPrice(newMinPrice);
+        debounceFetchProducts(newMinPrice, localMaxPrice);
     };
 
     const handleMaxPriceChange = (newMaxPrice) => {
-        setLocalMaxPrice(newMaxPrice); 
-        debounceFetchProducts(localMinPrice, newMaxPrice); 
+        setLocalMaxPrice(newMaxPrice);
+        debounceFetchProducts(localMinPrice, newMaxPrice);
     };
 
     useEffect(() => {
-        setLocalMinPrice(minPrice); 
-        setLocalMaxPrice(maxPrice); 
-    }, [minPrice, maxPrice]); 
+        setLocalMinPrice(minPrice);
+        setLocalMaxPrice(maxPrice);
+    }, [minPrice, maxPrice]);
 
     return (
         <FilterComponent
             minPrice={minPrice}
             maxPrice={maxPrice}
-            selectedMinPrice={localMinPrice} 
-            selectedMaxPrice={localMaxPrice} 
+            selectedMinPrice={localMinPrice}
+            selectedMaxPrice={localMaxPrice}
             onMinPriceChange={handleMinPriceChange}
             onMaxPriceChange={handleMaxPriceChange}
         />

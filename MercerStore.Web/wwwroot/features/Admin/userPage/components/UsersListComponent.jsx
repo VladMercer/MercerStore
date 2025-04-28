@@ -1,10 +1,10 @@
-﻿import React, { useMemo } from 'react';
-import { useUsers } from '../hooks/useUsers';
+﻿import React, {useMemo} from 'react';
+import {useUsers} from '../hooks/useUsers';
 import useFetchUsers from '../hooks/useFetchUsers';
 
 const UsersListComponent = () => {
     useFetchUsers();
-    const { users } = useUsers();
+    const {users} = useUsers();
 
     const renderUsers = useMemo(() => {
         if (!users || users.length === 0) {
@@ -21,11 +21,11 @@ const UsersListComponent = () => {
             <tr
                 key={user.id}
                 onClick={() => (window.location.href = `/admin/user/update/${user.id}`)}
-                style={{ cursor: 'pointer', verticalAlign: 'middle' }}
+                style={{cursor: 'pointer', verticalAlign: 'middle'}}
             >
                 <td className="text-center">
                     {user.imageUrl ? (
-                        <img src={user.imageUrl} alt="User" className="rounded-circle" width="50" height="50" />
+                        <img src={user.imageUrl} alt="User" className="rounded-circle" width="50" height="50"/>
                     ) : (
                         <span className="text-muted">—</span>
                     )}
@@ -79,13 +79,13 @@ const UsersListComponent = () => {
     return (
         <table className="table table-striped table-hover table-responsive-md table-sm">
             <thead className="thead-dark">
-                <tr>
-                    <th className="text-center">Фото</th>
-                    <th className="text-center">Контакты</th>
-                    <th className="text-center">Даты</th>
-                    <th className="text-center">Статистика</th>
-                    <th className="text-center">Роли</th>
-                </tr>
+            <tr>
+                <th className="text-center">Фото</th>
+                <th className="text-center">Контакты</th>
+                <th className="text-center">Даты</th>
+                <th className="text-center">Статистика</th>
+                <th className="text-center">Роли</th>
+            </tr>
             </thead>
             <tbody>{renderUsers}</tbody>
         </table>

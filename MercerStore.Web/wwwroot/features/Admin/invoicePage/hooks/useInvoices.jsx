@@ -1,8 +1,8 @@
-﻿import { useSelector } from 'react-redux';
+﻿import {useSelector} from 'react-redux';
 
 export const useInvoices = () => {
 
-    
+
     const invoices = useSelector((state) => state.invoicePage.invoices);
     const pageNumber = useSelector((state) => state.invoicePage.pageNumber);
     const pageSize = useSelector((state) => state.invoicePage.pageSize);

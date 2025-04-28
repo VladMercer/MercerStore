@@ -1,8 +1,9 @@
-﻿import React, { useContext, useEffect } from 'react';
-import { ProductContext } from './ProductContext';
+﻿import React, {useContext, useEffect} from 'react';
+import {ProductContext} from './ProductContext';
 import PaginationComponent from '../../UI/PaginationComponent';
+
 const PaginationApp = () => {
-    const { pageNumber, setPageNumber, totalPages, fetchProducts } = useContext(ProductContext);
+    const {pageNumber, setPageNumber, totalPages, fetchProducts} = useContext(ProductContext);
 
     useEffect(() => {
         fetchProducts();

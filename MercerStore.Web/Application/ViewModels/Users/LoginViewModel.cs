@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MercerStore.Web.Application.ViewModels.Users
+namespace MercerStore.Web.Application.ViewModels.Users;
+
+public class LoginViewModel
 {
-    public class LoginViewModel
-    {
-        [Display(Name = "Почта")]
-        [Required(ErrorMessage = "Email обязателен")]
-        public string EmailAddress { get; set; }
-        [Required]
-        [Display(Name = "Пароль")]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-    }
+    [Display(Name = "Почта")]
+    [Required(ErrorMessage = "Email обязателен")]
+    public string EmailAddress { get; set; }
+
+    [Required]
+    [Display(Name = "Пароль")]
+    [DataType(DataType.Password)]
+    public string Password { get; set; }
 }

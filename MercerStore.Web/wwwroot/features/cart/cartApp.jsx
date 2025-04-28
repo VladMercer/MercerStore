@@ -1,6 +1,6 @@
-﻿import React, { lazy, Suspense } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 const CartHeaderComponent = lazy(() => import('./components/CartHeaderComponent'));
 const CartPageComponent = lazy(() => import('./components/CartPageComponent'));
@@ -9,12 +9,12 @@ const AddToCartButton = lazy(() => import('./components/AddToCartButton'));
 
 export const cartApp = (store) => {
     const portals = [
-        { id: 'cart-header-root', component: <CartHeaderComponent /> },
-        { id: 'cart-page-root', component: <CartPageComponent /> },
-        { id: 'cart-offcanvas-root', component: <CartOffcanvasComponent /> },
+        {id: 'cart-header-root', component: <CartHeaderComponent/>},
+        {id: 'cart-page-root', component: <CartPageComponent/>},
+        {id: 'cart-offcanvas-root', component: <CartOffcanvasComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);
@@ -34,7 +34,7 @@ export const cartApp = (store) => {
         root.render(
             <Provider store={store}>
                 <Suspense fallback={<div>Loading...</div>}>
-                    <AddToCartButton productId={productId} />
+                    <AddToCartButton productId={productId}/>
                 </Suspense>
             </Provider>
         );

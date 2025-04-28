@@ -2,21 +2,33 @@
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Areas.Admin.ViewModels.Orders;
 
-namespace MercerStore.Web.Application.Handlers.Orders.Queries
+namespace MercerStore.Web.Application.Handlers.Orders.Queries;
+
+public record GetUpdateOrderViewModelQuery(int OderId) : IRequest<UpdateOrderViewModel>;
+
+public class GetUpdateOrderViewModelHandler : IRequestHandler<GetUpdateOrderViewModelQuery, UpdateOrderViewModel>
 {
-    public record GetUpdateOrderViewModelQuery(int OderId) : IRequest<UpdateOrderViewModel>;
-    public class GetUpdateOrderViewModelHandler : IRequestHandler<GetUpdateOrderViewModelQuery, UpdateOrderViewModel>
+    private readonly IOrderService _orderService;
+    private readonly IDateTimeConverter _dateTimeConverter;
+
+    public GetUpdateOrderViewModelHandler(IOrderService orderService, IDateTimeConverter dateTimeConverter)
     {
-        private readonly IOrderService _orderService;
+        _orderService = orderService;
+        _dateTimeConverter = dateTimeConverter;
+    }
 
-        public GetUpdateOrderViewModelHandler(IOrderService orderService)
+    public async Task<UpdateOrderViewModel> Handle(GetUpdateOrderViewModelQuery request,
+        CancellationToken ct)
+    {
+        var updateOrderVieWModel = await _orderService.GetUpdateOrderViewModel(request.OderId, ct);
+        if (updateOrderVieWModel.CompletedDate.HasValue)
         {
-            _orderService = orderService;
+            updateOrderVieWModel.CompletedDate =
+                _dateTimeConverter.ConvertUtcToUserTime(updateOrderVieWModel.CompletedDate.Value);
         }
 
-        public async Task<UpdateOrderViewModel> Handle(GetUpdateOrderViewModelQuery request, CancellationToken cancellationToken)
-        {
-            return await _orderService.GetUpdateOrderViewModel(request.OderId);
-        }
+        updateOrderVieWModel.CreateDate = _dateTimeConverter.ConvertUtcToUserTime(updateOrderVieWModel.CreateDate);
+
+        return updateOrderVieWModel;
     }
 }

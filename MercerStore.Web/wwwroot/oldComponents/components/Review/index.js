@@ -1,12 +1,12 @@
-﻿import React, { useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+﻿import React from 'react';
+import {createRoot} from 'react-dom/client';
 import ProductReviewsApp from './ProductReviewsApp';
 import ReviewsCountApp from './ReviewsCountApp';
 import ReviewsAvgRateApp from './ReviewsAvgRateApp';
 import AddReviewApp from './AddReviewApp';
 import UpdateReviewApp from './UpdateReviewApp';
 import RemoveReviewApp from './RemoveReviewApp';
-import { ReviewProvider } from './ReviewContext';
+import {ReviewProvider} from './ReviewContext';
 
 const renderInRoot = (elementId, Component) => {
     const rootElement = document.getElementById(elementId);
@@ -14,7 +14,7 @@ const renderInRoot = (elementId, Component) => {
         const root = createRoot(rootElement);
         root.render(
             <ReviewProvider>
-                <Component />
+                <Component/>
             </ReviewProvider>
         );
     }

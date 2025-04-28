@@ -1,10 +1,10 @@
 ﻿import React from 'react';
-import { useProducts } from '../hooks/useProducts';
-import { useDispatch } from 'react-redux';
-import { setPageNumber } from '../redux/adminProductPageSlice';
+import {useProducts} from '../hooks/useProducts';
+import {useDispatch} from 'react-redux';
+import {setPageNumber} from '../redux/adminProductPageSlice';
 
 const PaginationComponent = () => {
-    const { pageNumber, totalPages } = useProducts();
+    const {pageNumber, totalPages} = useProducts();
     const dispatch = useDispatch();
 
     const changePageNumber = (newPageNumber) => {

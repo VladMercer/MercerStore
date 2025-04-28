@@ -1,12 +1,12 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useReviews } from '../hooks/useReviews';
-import { updateReview } from '../redux/reviewSlice';
+﻿import React, {useEffect, useRef, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {useReviews} from '../hooks/useReviews';
+import {updateReview} from '../redux/reviewSlice';
 
 
 const UpdateReviewComponent = () => {
     const dispatch = useDispatch();
-    const { review } = useReviews();
+    const {review} = useReviews();
 
 
     const [showModal, setShowModal] = useState(false);
@@ -76,7 +76,8 @@ const UpdateReviewComponent = () => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="modalLabel">Редактировать отзыв</h5>
-                            <button type="button" className="btn-close" aria-label="Close" onClick={handleClose}></button>
+                            <button type="button" className="btn-close" aria-label="Close"
+                                    onClick={handleClose}></button>
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>

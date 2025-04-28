@@ -1,9 +1,8 @@
 ﻿using MercerStore.Web.Application.Requests.Account;
 
-namespace MercerStore.Web.Application.Interfaces
+namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface IJwtProvider
 {
-    public interface IJwtProvider
-    {
-        Task<string> GenerateJwtToken(JwtTokenRequest request);
-    }
+    Task<string> GenerateJwtToken(JwtTokenRequest request);
 }

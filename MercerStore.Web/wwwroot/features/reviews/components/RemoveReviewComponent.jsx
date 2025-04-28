@@ -1,12 +1,12 @@
 ﻿import React from 'react';
-import { useReviews } from '../hooks/useReviews';
-import { removeReview } from '../redux/reviewSlice';
-import { useDispatch } from 'react-redux';
+import {useReviews} from '../hooks/useReviews';
+import {removeReview} from '../redux/reviewSlice';
+import {useDispatch} from 'react-redux';
 
 const RemoveReviewComponent = () => {
 
     const dispatch = useDispatch();
-    const { productId } = useReviews();
+    const {productId} = useReviews();
 
     const handleRemove = () => {
         dispatch(removeReview(productId));

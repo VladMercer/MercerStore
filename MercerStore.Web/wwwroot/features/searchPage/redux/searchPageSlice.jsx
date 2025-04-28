@@ -1,13 +1,13 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_SEARCH_URL } from '../../../apiConfig';
+import {API_SEARCH_URL} from '../../../apiConfig';
 
 export const fetchResults = createAsyncThunk(
     'search/fetchResults',
-    async ({ query, sortOrder, pageNumber, pageSize }) => {
+    async ({query, sortOrder, pageNumber, pageSize}) => {
 
         const response = await axios.get(`${API_SEARCH_URL}/search`, {
-            params: { query, sortOrder, pageNumber, pageSize },
+            params: {query, sortOrder, pageNumber, pageSize},
         });
         return response.data;
     }
@@ -24,18 +24,18 @@ const searchPageSlice = createSlice({
         pageSize: 9,
         totalPages: 0,
         sortOrder: '',
-        totalItems:0,
+        totalItems: 0,
         isPageReset: false
-      
+
     },
     reducers: {
         setQuery: (state, action) => {
             state.query = action.payload;
-         
+
         },
         setSortOrder: (state, action) => {
             state.sortOrder = action.payload;
-           
+
         },
         setPageNumber: (state, action) => {
             state.pageNumber = action.payload;
@@ -43,18 +43,18 @@ const searchPageSlice = createSlice({
         },
         setPageSize: (state, action) => {
             state.pageSize = action.payload;
-          
+
         },
         setIsPageReset: (state, action) => {
             state.isPageReset = action.payload;
 
         },
-        
+
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchResults.fulfilled, (state, action) => {
-                const { products, totalItems, totalPages } = action.payload;
+                const {products, totalItems, totalPages} = action.payload;
                 state.results = products;
                 state.totalPages = totalPages;
                 state.totalItems = totalItems

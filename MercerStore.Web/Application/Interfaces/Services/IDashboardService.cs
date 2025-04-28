@@ -1,9 +1,8 @@
 ﻿using MercerStore.Web.Areas.Admin.ViewModels;
 
-namespace MercerStore.Web.Application.Interfaces.Services
+namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface IDashboardService
 {
-    public interface IDashboardService
-    {
-        Task<DashboardViewModel> GetDashboardViewMetric();
-    }
+    Task<DashboardViewModel> GetDashboardViewMetric(CancellationToken ct);
 }

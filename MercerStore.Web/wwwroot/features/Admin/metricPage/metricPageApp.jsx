@@ -1,6 +1,6 @@
-﻿import React, { Suspense, lazy } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 
 const InvoicesChartComponent = lazy(() => import('./components/InvoicesChartComponent'));
@@ -11,13 +11,13 @@ const UsersChartComponent = lazy(() => import('./components/UsersChartComponent'
 
 export const metricPageApp = (store) => {
     const portals = [
-        { id: 'invoices-chart-root', component: <InvoicesChartComponent /> },
-        { id: 'reviews-chart-root', component: <ReviewsChartComponent /> },
-        { id: 'sales-chart-root', component: <SalesChartComponent /> },
-        { id: 'users-chart-root', component: <UsersChartComponent /> },
+        {id: 'invoices-chart-root', component: <InvoicesChartComponent/>},
+        {id: 'reviews-chart-root', component: <ReviewsChartComponent/>},
+        {id: 'sales-chart-root', component: <SalesChartComponent/>},
+        {id: 'users-chart-root', component: <UsersChartComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);

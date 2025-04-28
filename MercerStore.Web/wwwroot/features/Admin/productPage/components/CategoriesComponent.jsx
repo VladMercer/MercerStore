@@ -1,12 +1,12 @@
-﻿import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useProducts } from '../hooks/useProducts';
-import { setCategoryId, fetchCategories } from '../redux/adminProductPageSlice';
+﻿import React from 'react';
+import {useDispatch} from 'react-redux';
+import {useProducts} from '../hooks/useProducts';
+import {setCategoryId} from '../redux/adminProductPageSlice';
 
 const CategoriesComponent = () => {
     const dispatch = useDispatch();
-    const { categories, categoryId } = useProducts();
-   
+    const {categories, categoryId} = useProducts();
+
     const handleCategoryChange = (event) => {
         const newCategoryId = event.target.value;
         dispatch(setCategoryId(newCategoryId));

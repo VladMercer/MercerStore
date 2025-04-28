@@ -5,123 +5,124 @@
 }
 
 <body>
-    <div class="d-flex">
-        <nav class="admin-nav-bg text-white p-3 position-fixed">
-            <h3 class="admin-title">Админка</h3>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link admin-link" asp-controller="Dashboard" asp-action="Index">
-                        <div class="admin-icon"><i class="fa-solid fa-house"></i></div>
-                        <div class="admin-text">Главная</div>
-                    </a>
-                </li>
+<div class="d-flex">
+    <nav class="admin-nav-bg text-white p-3 position-fixed">
+        <h3 class="admin-title">Админка</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link admin-link" asp-controller="Dashboard" asp-action="Index">
+                    <div class="admin-icon"><i class="fa-solid fa-house"></i></div>
+                    <div class="admin-text">Главная</div>
+                </a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#productsMenu">
-                        <div class="admin-icon"><i class="fa-solid fa-box"></i></div>
-                        <div class="admin-text">Продукты</div>
+            <li class="nav-item">
+                <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#productsMenu">
+                    <div class="admin-icon"><i class="fa-solid fa-box"></i></div>
+                    <div class="admin-text">Продукты</div>
+                </a>
+                <div class="collapse" id="productsMenu">
+                    <a class="nav-link admin-link ps-4" asp-controller="Product" asp-action="ProductPage">
+                        <div class="admin-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        <div class="admin-text">Все продукты</div>
                     </a>
-                    <div class="collapse" id="productsMenu">
-                        <a class="nav-link admin-link ps-4" asp-controller="Product" asp-action="ProductPage">
-                            <div class="admin-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
-                            <div class="admin-text">Все продукты</div>
-                        </a>
-                        <a class="nav-link admin-link ps-4" asp-controller="Product" asp-action="SelectCategory">
-                            <div class="admin-icon"><i class="fa-solid fa-plus"></i></div>
-                            <div class="admin-text">Добавить продукт</div>
-                        </a>
-                        <a class="nav-link admin-link ps-4" asp-controller="Product" asp-action="SearchPage">
-                            <div class="admin-icon"><i class="fa-solid fa-pen-to-square"></i></div>
-                            <div class="admin-text">Изменить продукт</div>
-                        </a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#ordersMenu">
-                        <div class="admin-icon"><i class="fa-solid fa-file-invoice"></i></div>
-                        <div class="admin-text">Заказы</div>
+                    <a class="nav-link admin-link ps-4" asp-controller="Product" asp-action="SelectCategory">
+                        <div class="admin-icon"><i class="fa-solid fa-plus"></i></div>
+                        <div class="admin-text">Добавить продукт</div>
                     </a>
-                    <div class="collapse" id="ordersMenu">
-                        <a class="nav-link admin-link ps-4" asp-controller="Order" asp-action="Index">
-                            <div class="admin-icon"><i class="fa-solid fa-list"></i></div>
-                            <div class="admin-text">Все заказы</div>
-                        </a>
-                        <a class="nav-link admin-link ps-4" asp-controller="Sale" asp-action="CreateOfflineSale">
-                            <div class="admin-icon"><i class="fa-solid fa-store"></i></div>
-                            <div class="admin-text">Офлайн продажа</div>
-                        </a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#usersMenu">
-                        <div class="admin-icon"><i class="fa-solid fa-users"></i></div>
-                        <div class="admin-text">Пользователи</div>
+                    <a class="nav-link admin-link ps-4" asp-controller="Product" asp-action="SearchPage">
+                        <div class="admin-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                        <div class="admin-text">Изменить продукт</div>
                     </a>
-                    <div class="collapse" id="usersMenu">
-                        <a class="nav-link admin-link ps-4" asp-controller="User" asp-action="UsersList">
-                            <div class="admin-icon"><i class="fa-solid fa-user"></i></div>
-                            <div class="admin-text">Все пользователи</div>
-                        </a>
-                        <a class="nav-link admin-link ps-4" asp-route-area="" asp-controller="Account" asp-action="RegisterManager">
-                            <div class="admin-icon"><i class="fa-solid fa-user-plus"></i></div>
-                            <div class="admin-text">Создать менеджера</div>
-                        </a>
-                    </div>
-                </li>
+                </div>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#suppliersMenu">
-                        <div class="admin-icon"><i class="fa-solid fa-truck"></i></div>
-                        <div class="admin-text">Поставщики</div>
+            <li class="nav-item">
+                <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#ordersMenu">
+                    <div class="admin-icon"><i class="fa-solid fa-file-invoice"></i></div>
+                    <div class="admin-text">Заказы</div>
+                </a>
+                <div class="collapse" id="ordersMenu">
+                    <a class="nav-link admin-link ps-4" asp-controller="Order" asp-action="Index">
+                        <div class="admin-icon"><i class="fa-solid fa-list"></i></div>
+                        <div class="admin-text">Все заказы</div>
                     </a>
-                    <div class="collapse" id="suppliersMenu">
-                        <a class="nav-link admin-link ps-4" asp-controller="Supplier" asp-action="SupplierPage">
-                            <div class="admin-icon"><i class="fa-solid fa-people-carry-box"></i></div>
-                            <div class="admin-text">Все поставщики</div>
-                        </a>
-                        <a class="nav-link admin-link ps-4" asp-controller="Supplier" asp-action="CreateSupplier">
-                            <div class="admin-icon"><i class="fa-solid fa-user-plus"></i></div>
-                            <div class="admin-text">Добавить поставщика</div>
-                        </a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#invoicesMenu">
-                        <div class="admin-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
-                        <div class="admin-text">Поставки</div>
+                    <a class="nav-link admin-link ps-4" asp-controller="Sale" asp-action="CreateOfflineSale">
+                        <div class="admin-icon"><i class="fa-solid fa-store"></i></div>
+                        <div class="admin-text">Офлайн продажа</div>
                     </a>
-                    <div class="collapse" id="invoicesMenu">
-                        <a class="nav-link admin-link ps-4" asp-controller="Invoice" asp-action="InvoicePage">
-                            <div class="admin-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
-                            <div class="admin-text">Все поставки</div>
-                        </a>
-                        <a class="nav-link admin-link ps-4" asp-controller="Invoice" asp-action="SupplierChoice">
-                            <div class="admin-icon"><i class="fa-solid fa-file-circle-plus"></i></div>
-                            <div class="admin-text">Создать поставку</div>
-                        </a>
-                    </div>
-                </li>
+                </div>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#reviewsMenu">
-                        <div class="admin-icon"><i class="fa-solid fa-star"></i></div>
-                        <div class="admin-text">Отзывы</div>
+            <li class="nav-item">
+                <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#usersMenu">
+                    <div class="admin-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="admin-text">Пользователи</div>
+                </a>
+                <div class="collapse" id="usersMenu">
+                    <a class="nav-link admin-link ps-4" asp-controller="User" asp-action="UsersList">
+                        <div class="admin-icon"><i class="fa-solid fa-user"></i></div>
+                        <div class="admin-text">Все пользователи</div>
                     </a>
-                    <div class="collapse" id="reviewsMenu">
-                        <a class="nav-link admin-link ps-4" asp-controller="Review" asp-action="ReviewsList">
-                            <div class="admin-icon"><i class="fa-solid fa-comments"></i></div>
-                            <div class="admin-text">Все отзывы</div>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
+                    <a class="nav-link admin-link ps-4" asp-route-area="" asp-controller="Account"
+                       asp-action="RegisterManager">
+                        <div class="admin-icon"><i class="fa-solid fa-user-plus"></i></div>
+                        <div class="admin-text">Создать менеджера</div>
+                    </a>
+                </div>
+            </li>
 
-        <main class="flex-grow-1 p-4 overflow-auto" style="margin-left: 250px; height: 100vh;">
-            @RenderBody()
-        </main>
-    </div>
+            <li class="nav-item">
+                <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#suppliersMenu">
+                    <div class="admin-icon"><i class="fa-solid fa-truck"></i></div>
+                    <div class="admin-text">Поставщики</div>
+                </a>
+                <div class="collapse" id="suppliersMenu">
+                    <a class="nav-link admin-link ps-4" asp-controller="Supplier" asp-action="SupplierPage">
+                        <div class="admin-icon"><i class="fa-solid fa-people-carry-box"></i></div>
+                        <div class="admin-text">Все поставщики</div>
+                    </a>
+                    <a class="nav-link admin-link ps-4" asp-controller="Supplier" asp-action="CreateSupplier">
+                        <div class="admin-icon"><i class="fa-solid fa-user-plus"></i></div>
+                        <div class="admin-text">Добавить поставщика</div>
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#invoicesMenu">
+                    <div class="admin-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+                    <div class="admin-text">Поставки</div>
+                </a>
+                <div class="collapse" id="invoicesMenu">
+                    <a class="nav-link admin-link ps-4" asp-controller="Invoice" asp-action="InvoicePage">
+                        <div class="admin-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        <div class="admin-text">Все поставки</div>
+                    </a>
+                    <a class="nav-link admin-link ps-4" asp-controller="Invoice" asp-action="SupplierChoice">
+                        <div class="admin-icon"><i class="fa-solid fa-file-circle-plus"></i></div>
+                        <div class="admin-text">Создать поставку</div>
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link admin-link dropdown-toggle" data-bs-toggle="collapse" href="#reviewsMenu">
+                    <div class="admin-icon"><i class="fa-solid fa-star"></i></div>
+                    <div class="admin-text">Отзывы</div>
+                </a>
+                <div class="collapse" id="reviewsMenu">
+                    <a class="nav-link admin-link ps-4" asp-controller="Review" asp-action="ReviewsList">
+                        <div class="admin-icon"><i class="fa-solid fa-comments"></i></div>
+                        <div class="admin-text">Все отзывы</div>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="flex-grow-1 p-4 overflow-auto" style="margin-left: 250px; height: 100vh;">
+        @RenderBody()
+    </main>
+</div>
 </body>

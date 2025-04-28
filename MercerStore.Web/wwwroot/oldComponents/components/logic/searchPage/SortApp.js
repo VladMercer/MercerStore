@@ -1,18 +1,18 @@
-﻿import React, { useContext } from 'react';
+﻿import React, {useContext} from 'react';
 import SortComponent from '../../UI/SortComponent';
-import { SearchContext } from './SearchContext';
+import {SearchContext} from './SearchContext';
 
 const SortApp = () => {
-    const { sortOrder, setSortOrder, fetchProducts } = useContext(SearchContext);
+    const {sortOrder, setSortOrder, fetchProducts} = useContext(SearchContext);
 
     const handleSortChange = (event) => {
         const newSortOrder = event.target.value;
         setSortOrder(newSortOrder);
-        fetchProducts();  
+        fetchProducts();
     };
 
     return (
-        <SortComponent currentSort={sortOrder} onChange={handleSortChange} />
+        <SortComponent currentSort={sortOrder} onChange={handleSortChange}/>
     );
 };
 

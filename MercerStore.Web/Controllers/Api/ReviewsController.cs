@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Dtos.ReviewDto;
+using MercerStore.Web.Application.Dtos.Review;
 using MercerStore.Web.Application.Handlers.Reviews.Commands;
 using MercerStore.Web.Application.Handlers.Reviews.Queries;
 using MercerStore.Web.Application.Requests.Reviews;

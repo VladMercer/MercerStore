@@ -1,7 +1,14 @@
 ﻿import React from 'react';
 import ReactSlider from 'react-slider';
 
-const FilterComponent = ({ minPrice, maxPrice, selectedMinPrice, selectedMaxPrice, onMinPriceChange, onMaxPriceChange }) => {
+const FilterComponent = ({
+                             minPrice,
+                             maxPrice,
+                             selectedMinPrice,
+                             selectedMaxPrice,
+                             onMinPriceChange,
+                             onMaxPriceChange
+                         }) => {
     const handleSliderChange = (values) => {
         const [newMinPrice, newMaxPrice] = values;
         onMinPriceChange(newMinPrice);
@@ -19,7 +26,7 @@ const FilterComponent = ({ minPrice, maxPrice, selectedMinPrice, selectedMaxPric
                         type="text"
                         className="price-input"
                         value={selectedMinPrice}
-                       
+
                     />
                 </div>
                 <div className="price-input-block">
@@ -28,7 +35,7 @@ const FilterComponent = ({ minPrice, maxPrice, selectedMinPrice, selectedMaxPric
                         type="text"
                         className="price-input"
                         value={selectedMaxPrice}
-                       
+
                     />
                 </div>
             </div>
@@ -36,8 +43,8 @@ const FilterComponent = ({ minPrice, maxPrice, selectedMinPrice, selectedMaxPric
                 className="horizontal-slider"
                 thumbClassName="thumb"
                 trackClassName="track"
-                min={minPrice} 
-                max={maxPrice} 
+                min={minPrice}
+                max={maxPrice}
                 value={[selectedMinPrice, selectedMaxPrice]}
                 onChange={handleSliderChange}
                 ariaLabel={['Минимальная цена', 'Максимальная цена']}

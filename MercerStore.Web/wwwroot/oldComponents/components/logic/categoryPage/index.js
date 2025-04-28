@@ -1,13 +1,13 @@
-﻿import React, { useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+﻿import React from 'react';
+import {createRoot} from 'react-dom/client';
 import PageSizeSelectorApp from './PageSizeSelectorApp';
 import PaginationApp from './PaginationApp';
 import ProductListApp from './ProductListApp';
 import SortApp from './SortApp';
 import TotalProductsInfoApp from './TotalProductsInfoApp';
 import FilterApp from './FilterApp';
-import { ProductProvider } from './ProductContext';
-import { CartProvider } from '../../cart/CartContext';
+import {ProductProvider} from './ProductContext';
+import {CartProvider} from '../../cart/CartContext';
 
 
 const renderInRoot = (elementId, Component, withCartProvider = false) => {
@@ -18,10 +18,10 @@ const renderInRoot = (elementId, Component, withCartProvider = false) => {
             <ProductProvider>
                 {withCartProvider ? (
                     <CartProvider>
-                        <Component />
+                        <Component/>
                     </CartProvider>
                 ) : (
-                    <Component />
+                    <Component/>
                 )}
             </ProductProvider>
         );

@@ -1,7 +1,6 @@
-﻿namespace MercerStore.Web.Application.Interfaces
+﻿namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface ISkuUpdater
 {
-    public interface ISkuUpdater
-    {
-        public void UpdateSKUs();
-    }
+    public void UpdateSkus();
 }

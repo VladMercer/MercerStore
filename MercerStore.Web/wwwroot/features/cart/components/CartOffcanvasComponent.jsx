@@ -1,11 +1,11 @@
-﻿import React, { useEffect } from 'react';
-import { useCart } from '../hooks/useCart';
+﻿import React, {useEffect} from 'react';
+import {useCart} from '../hooks/useCart';
 import useFetchCartData from '../hooks/useFetchCartData';
-  
+
 
 const CartOffcanvasComponent = () => {
-    const cartItems = useFetchCartData(); 
-    const { totalPrice, removeFromCart } = useCart();
+    const cartItems = useFetchCartData();
+    const {totalPrice, removeFromCart} = useCart();
     useEffect(() => {
         const offcanvasCartEl = document.getElementById('offcanvasCart');
         if (offcanvasCartEl) {
@@ -29,53 +29,58 @@ const CartOffcanvasComponent = () => {
                         <div className="table-responsive">
                             <table className="table offcanvasCart-table">
                                 <tbody>
-                                    {cartItems.map((item) => (
-                                        <tr key={item.productId}>
-                                            <td className="product-img-td">
-                                                <a href={`/product/details/${item.productId}`}>
-                                                    <img src={item.imageUrl} alt={item.name} className="img-fluid product-image" />
-                                                </a>
-                                            </td>
-                                            <td className="product-cart-name-td">
-                                                <a href={`/product/details/${item.productId}`} className="product-name-link">
-                                                    {item.name}
-                                                </a>
-                                            </td>
-                                            
-                                            <td className="product-price-td">{item.discountedPrice ? (
-                                                <div className="price-container">
-                                                    <small className="old-price-card">
-                                                        {item.price.toLocaleString()}₽
-                                                    </small>
-                                                    <div className="">
-                                                        {item.discountedPrice.toLocaleString()}₽
-                                                    </div>
-                                                </div>
-                                            ) : (
+                                {cartItems.map((item) => (
+                                    <tr key={item.productId}>
+                                        <td className="product-img-td">
+                                            <a href={`/product/details/${item.productId}`}>
+                                                <img src={item.imageUrl} alt={item.name}
+                                                     className="img-fluid product-image"/>
+                                            </a>
+                                        </td>
+                                        <td className="product-cart-name-td">
+                                            <a href={`/product/details/${item.productId}`}
+                                               className="product-name-link">
+                                                {item.name}
+                                            </a>
+                                        </td>
+
+                                        <td className="product-price-td">{item.discountedPrice ? (
+                                            <div className="price-container">
+                                                <small className="old-price-card">
+                                                    {item.price.toLocaleString()}₽
+                                                </small>
                                                 <div className="">
-                                                        {item.price.toLocaleString()}₽
+                                                    {item.discountedPrice.toLocaleString()}₽
                                                 </div>
-                                            )}</td>
-                                            <td className="product-quantity-td">&times;{item.quantity}</td>
-                                            <td className="remove-btn-td">
-                                                <button onClick={() => removeFromCart(item.productId)} className="remove-from-cart-button">
-                                                    <i className="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                            </div>
+                                        ) : (
+                                            <div className="">
+                                                {item.price.toLocaleString()}₽
+                                            </div>
+                                        )}</td>
+                                        <td className="product-quantity-td">&times;{item.quantity}</td>
+                                        <td className="remove-btn-td">
+                                            <button onClick={() => removeFromCart(item.productId)}
+                                                    className="remove-from-cart-button">
+                                                <i className="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <td colSpan="3" className="text-end-td">Итого:</td>
-                                        <td colSpan="2" className="total-price-td">{totalPrice} ₽</td>
-                                    </tr>
+                                <tr>
+                                    <td colSpan="3" className="text-end-td">Итого:</td>
+                                    <td colSpan="2" className="total-price-td">{totalPrice} ₽</td>
+                                </tr>
                                 </tfoot>
                             </table>
                         </div>
                         <div className="text-end mt-3 d-flex justify-content-between fixed-bottom-buttons">
-                            <a href="/cart" className="btn btn-outline-warning" id="button-offcanvas-cart">Перейти в корзину</a>
-                            <a href="/order" className="btn btn-outline-warning" id="button-offcanvas-checkout">Оформить заказ</a>
+                            <a href="/cart" className="btn btn-outline-warning" id="button-offcanvas-cart">Перейти в
+                                корзину</a>
+                            <a href="/order" className="btn btn-outline-warning" id="button-offcanvas-checkout">Оформить
+                                заказ</a>
                         </div>
                     </>
                 ) : (

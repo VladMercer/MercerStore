@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useInvoices } from "../hooks/useInvoices";
-import { setSortOrder } from "../redux/invoicePageSlice";
+import {useDispatch} from "react-redux";
+import {useInvoices} from "../hooks/useInvoices";
+import {setSortOrder} from "../redux/invoicePageSlice";
 
 const SortComponent = () => {
     const dispatch = useDispatch();
-    const { sortOrder } = useInvoices();
+    const {sortOrder} = useInvoices();
 
     const handleSortChange = (event) => {
         dispatch(setSortOrder(event.target.value));

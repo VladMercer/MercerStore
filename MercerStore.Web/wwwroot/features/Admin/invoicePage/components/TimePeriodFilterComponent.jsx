@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useInvoices } from "../hooks/useInvoices";
-import { setTimePeriodFilter } from "../redux/invoicePageSlice";
+import {useDispatch} from "react-redux";
+import {useInvoices} from "../hooks/useInvoices";
+import {setTimePeriodFilter} from "../redux/invoicePageSlice";
 
 const TimePeriodFilterComponent = () => {
     const dispatch = useDispatch();
-    const { timePeriodFilter } = useInvoices();
+    const {timePeriodFilter} = useInvoices();
 
     const handleFilterChange = (event) => {
         const newFilter = event.target.value;

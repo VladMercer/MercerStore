@@ -1,10 +1,9 @@
-﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Product
+﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Product;
+
+public enum AdminProductFilter
 {
-    public enum AdminProductFilter
-    {
-        All,
-        OutOfStock,
-        InStock,
-        Archived
-    }
+    All,
+    OutOfStock,
+    InStock,
+    Archived
 }

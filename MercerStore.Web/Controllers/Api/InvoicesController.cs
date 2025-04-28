@@ -20,7 +20,7 @@ public class InvoicesController : ControllerBase
     }
 
     [HttpGet("invoices")]
-    public async Task<IActionResult> GetFilteredinvoices([FromQuery] InvoiceFilterRequest request)
+    public async Task<IActionResult> GetFilteredInvoices([FromQuery] InvoiceFilterRequest request)
     {
         var result = await _mediator.Send(new GetFilteredInvoicesQuery(request));
         return Ok(result);

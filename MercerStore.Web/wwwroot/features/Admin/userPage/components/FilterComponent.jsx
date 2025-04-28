@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useUsers } from "../hooks/useUsers";
-import { setFilter } from "../redux/userPageSlice";
+import {useDispatch} from "react-redux";
+import {useUsers} from "../hooks/useUsers";
+import {setFilter} from "../redux/userPageSlice";
 
 const FilterComponent = () => {
     const dispatch = useDispatch();
-    const { statusFilter } = useUsers();
+    const {statusFilter} = useUsers();
 
     const handleFilterChange = (event) => {
         dispatch(setFilter(event.target.value));
@@ -17,7 +17,7 @@ const FilterComponent = () => {
             <select className="form-select" value={statusFilter} onChange={handleFilterChange}>
                 <option value="">Все пользователи</option>
                 <option value="Online">Онлайн</option>
-                <option value="Ofline">Оффлайн</option>
+                <option value="Offline">Оффлайн</option>
                 <option value="User">Обычные пользователи</option>
                 <option value="Manager">Менеджеры</option>
                 <option value="Admin">Администраторы</option>

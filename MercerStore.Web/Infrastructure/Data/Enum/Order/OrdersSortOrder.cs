@@ -1,12 +1,11 @@
-﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Order
+﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Order;
+
+public enum OrdersSortOrder
 {
-    public enum OrdersSortOrder
-    {
-        DateTimeAsc,
-        DateTimeDesc,
-        TotalPriceAsc,
-        TotalPriceDesc,
-        StatusAsc,
-        StatusDesc,
-    }
+    DateTimeAsc,
+    DateTimeDesc,
+    TotalPriceAsc,
+    TotalPriceDesc,
+    StatusAsc,
+    StatusDesc
 }

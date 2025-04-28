@@ -1,7 +1,6 @@
-﻿import { useSelector } from "react-redux";
+﻿import {useSelector} from "react-redux";
 
 export const useMetrics = () => {
-
 
 
     const sales = useSelector((state) => state.metricPage.sales);

@@ -1,9 +1,9 @@
-﻿import React, { createContext, useState, useEffect } from 'react';
+﻿import React, {createContext, useEffect, useState} from 'react';
 import axios from 'axios';
 
 export const SearchContext = createContext();
 
-export const SearchProvider = ({ children }) => {
+export const SearchProvider = ({children}) => {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,14 +17,14 @@ export const SearchProvider = ({ children }) => {
         const searchParams = new URLSearchParams(window.location.search);
         const queryParam = searchParams.get('query');
         if (queryParam) {
-            setQuery(queryParam); 
+            setQuery(queryParam);
         }
     }, []);
 
     const fetchProducts = async () => {
         if (query) {
             setIsLoading(true);
-           
+
             try {
                 const response = await axios.get(`/SearchApi`, {
                     params: {
@@ -34,7 +34,7 @@ export const SearchProvider = ({ children }) => {
                         pageSize,
                     },
                 });
-               
+
                 setResults(response.data.products);
                 setTotalPages(response.data.totalPages || 1);
             } catch (err) {
@@ -45,7 +45,7 @@ export const SearchProvider = ({ children }) => {
             }
         }
     };
-    
+
     useEffect(() => {
         fetchProducts();
     }, [query, sortOrder, pageNumber, pageSize]);

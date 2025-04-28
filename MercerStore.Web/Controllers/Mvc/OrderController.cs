@@ -3,6 +3,9 @@ using MercerStore.Web.Application.Handlers.Orders.Commands;
 using MercerStore.Web.Application.Handlers.Orders.Queries;
 using MercerStore.Web.Application.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+
+namespace MercerStore.Web.Controllers.Mvc;
+
 public class OrderController : Controller
 {
     private readonly IMediator _mediator;
@@ -27,6 +30,7 @@ public class OrderController : Controller
             var orderViewModel = await _mediator.Send(new GetOrderViewModelQuery());
             return View("Index", orderViewModel);
         }
+
         await _mediator.Send(new CreateOrderFromCartCommand(viewModel));
 
         return RedirectToAction("Index");

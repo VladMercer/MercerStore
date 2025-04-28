@@ -1,6 +1,6 @@
-﻿import React, { useEffect, useRef } from 'react';
+﻿import React, {useEffect, useRef} from 'react';
 
-const SearchBarComponent = ({ query, setQuery, results, isDropdownVisible, setDropdownVisible, handleSubmit }) => {
+const SearchBarComponent = ({query, setQuery, results, isDropdownVisible, setDropdownVisible, handleSubmit}) => {
     const dropdownRef = useRef(null);
 
     useEffect(() => {
@@ -40,11 +40,12 @@ const SearchBarComponent = ({ query, setQuery, results, isDropdownVisible, setDr
                             key={product.id}
                             className="search-result-item d-flex align-items-center p-2"
                             onClick={() => (window.location.href = `/product/details/${product.id}`)}
-                            style={{ cursor: 'pointer' }}
+                            style={{cursor: 'pointer'}}
                         >
-                            <img src={product.mainImageUrl} alt={product.name} className="me-2" style={{ width: 50, height: 50, objectFit: 'cover' }} />
+                            <img src={product.mainImageUrl} alt={product.name} className="me-2"
+                                 style={{width: 50, height: 50, objectFit: 'cover'}}/>
                             <div>
-                                <h5 dangerouslySetInnerHTML={{ __html: product.name }}></h5>
+                                <h5 dangerouslySetInnerHTML={{__html: product.name}}></h5>
                                 <p>{product.description}</p>
                             </div>
                         </div>

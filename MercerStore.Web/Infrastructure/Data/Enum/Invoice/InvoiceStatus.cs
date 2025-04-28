@@ -1,12 +1,11 @@
-﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Invoice
+﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Invoice;
+
+public enum InvoiceStatus
 {
-    public enum InvoiceStatus
-    {
-        activ,
-        Pending,
-        Received,
-        PartiallyReceived,
-        Rejected,
-        Closed
-    }
+    Active,
+    Pending,
+    Received,
+    PartiallyReceived,
+    Rejected,
+    Closed
 }

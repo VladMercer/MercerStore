@@ -1,8 +1,8 @@
-﻿import { useSelector } from 'react-redux';
+﻿import {useSelector} from 'react-redux';
 
 export const useReviews = () => {
 
-    
+
     const reviews = useSelector((state) => state.reviewPage.reviews);
     const pageNumber = useSelector((state) => state.reviewPage.pageNumber);
     const pageSize = useSelector((state) => state.reviewPage.pageSize);

@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useOrders } from "../hooks/useOrders";
-import { setStatusFilter } from "../redux/orderPageSlice";
+import {useDispatch} from "react-redux";
+import {useOrders} from "../hooks/useOrders";
+import {setStatusFilter} from "../redux/orderPageSlice";
 
 const StatusFilterComponent = () => {
     const dispatch = useDispatch();
-    const { statusFilter } = useOrders();
+    const {statusFilter} = useOrders();
 
     const handleFilterChange = (event) => {
         const newFilter = event.target.value;

@@ -1,5 +1,4 @@
-﻿@using MercerStore.Web.Areas.Admin.ViewModels.Orders
-@model UpdateOrderViewModel
+﻿@model MercerStore.Web.Areas.Admin.ViewModels.Orders.UpdateOrderViewModel
 
 @{
     ViewData["Title"] = "Редактировать заказ";
@@ -12,28 +11,28 @@
                 <h2>Редактирование заказа</h2>
 
                 <form asp-area="Admin" asp-controller="Order" asp-action="update" method="post">
-                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Id"/>
                     <input type="hidden" asp-for=" OrderProductListId">
 
                     <div class="form-group mb-3">
                         <label asp-for="GuestId">Гостевой ID</label>
-                        <input asp-for="GuestId" class="form-control" readonly />
+                        <input asp-for="GuestId" class="form-control" readonly/>
                     </div>
 
                     <div class="form-group mb-3">
                         <label asp-for="UserId">Пользовательский ID</label>
-                        <input asp-for="UserId" class="form-control" readonly />
+                        <input asp-for="UserId" class="form-control" readonly/>
                     </div>
 
                     <div class="form-group mb-3">
                         <label asp-for="PhoneNumber">Телефон</label>
-                        <input asp-for="PhoneNumber" class="form-control" />
+                        <input asp-for="PhoneNumber" class="form-control"/>
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
                         <label asp-for="Email">Email</label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" class="form-control"/>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
@@ -57,12 +56,12 @@
 
                     <div class="form-group mb-3">
                         <label asp-for="CreateDate">Дата создания</label>
-                        <input asp-for="CreateDate" class="form-control" readonly />
+                        <input asp-for="CreateDate" class="form-control" readonly/>
                     </div>
 
                     <div class="form-group mb-3">
                         <label asp-for="CompletedDate">Дата завершения</label>
-                        <input asp-for="CompletedDate" class="form-control" readonly />
+                        <input asp-for="CompletedDate" class="form-control" readonly/>
                         <span asp-validation-for="CompletedDate" class="text-danger"></span>
                     </div>
 
@@ -70,58 +69,63 @@
                         <label>Продукты в заказе</label>
                         <table class="table table-striped table-bordered text-center table-sm">
                             <thead>
-                                <tr>
-                                    <th>Изображение</th>
-                                    <th>Название</th>
-                                    <th>Цена и общая сумма</th>
-                                    <th>Количество</th>
-                                </tr>
+                            <tr>
+                                <th>Изображение</th>
+                                <th>Название</th>
+                                <th>Цена и общая сумма</th>
+                                <th>Количество</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @for (var i = 0; i < Model.OrderItems.Count; i++)
+                            @for (var i = 0; i < Model.OrderItems.Count; i++)
+                            {
+                                var item = Model.OrderItems[i];
+
+                                if (item == null)
                                 {
-                                    var item = Model.OrderItems[i]; 
-
-                                    if (item == null)
-                                    {
-                                        continue;
-                                    }
-
-                                    <tr>
-                                        <td>
-                                            <img src="@item.ProductImageUrl" alt="@item.ProductName" style="max-width: 50px;" />
-                                        </td>
-                                        <td class="text-start">
-                                            @(item.ProductName?.Length > 20 ? item.ProductName.Substring(0, 20) + "..." : item.ProductName ?? "Без названия")
-                                        </td>
-                                        <td>
-                                            <span>Цена: @(item.PriceAtOrder.ToString("C0"))</span><br />
-                                            <span>
-                                                Сумма: @((item.PriceAtOrder != null && item.Quantity != null)
-                                             ? (item.PriceAtOrder * item.Quantity) : "N/A")
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="OrderItems[@i].Id" value="@item.Id" />
-                                            <input type="hidden" name="OrderItems[@i].ProductId" value="@item.ProductId" />
-                                            <input type="hidden" name="OrderItems[@i].PriceAtOrder" value="@item.PriceAtOrder" />
-                                            <input type="hidden" name="OrderItems[@i].ProductName" value="@item.ProductName" />
-                                            <input type="hidden" name="OrderItems[@i].ProductImageUrl" value="@item.ProductImageUrl" />
-                                            <input type="number"
-                                                   class="form-control text-center"
-                                                   name="OrderItems[@i].Quantity"
-                                                   value="@item.Quantity"
-                                                   min="0"
-                                                   style="width: 60px;">
-                                        </td>
-                                    </tr>
+                                    continue;
                                 }
+
+                                <tr>
+                                    <td>
+                                        <img src="@item.ProductImageUrl" alt="@item.ProductName"
+                                             style="max-width: 50px;"/>
+                                    </td>
+                                    <td class="text-start">
+                                        @(item.ProductName?.Length > 20 ? item.ProductName.Substring(0, 20) + "..." : item.ProductName ?? "Без названия")
+                                    </td>
+                                    <td>
+                                        <span>Цена: @(item.PriceAtOrder.ToString("C0"))</span><br/>
+                                        <span>
+                                                Сумма: @(item.PriceAtOrder != null && item.Quantity != null
+                                                               ? item.PriceAtOrder * item.Quantity
+                                                               : "N/A")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="OrderItems[@i].Id" value="@item.Id"/>
+                                        <input type="hidden" name="OrderItems[@i].ProductId" value="@item.ProductId"/>
+                                        <input type="hidden" name="OrderItems[@i].PriceAtOrder"
+                                               value="@item.PriceAtOrder"/>
+                                        <input type="hidden" name="OrderItems[@i].ProductName"
+                                               value="@item.ProductName"/>
+                                        <input type="hidden" name="OrderItems[@i].ProductImageUrl"
+                                               value="@item.ProductImageUrl"/>
+                                        <input type="number"
+                                               class="form-control text-center"
+                                               name="OrderItems[@i].Quantity"
+                                               value="@item.Quantity"
+                                               min="0"
+                                               style="width: 60px;">
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td colspan="3" class="text-end"><strong>Общая стоимость:</strong></td>
-                                    <td><strong>@Model.TotalOrderPrice</strong></td>
-                                </tr>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Общая стоимость:</strong></td>
+                                <td><strong>@Model.TotalOrderPrice</strong></td>
+                            </tr>
                             </tfoot>
                         </table>
                     </div>

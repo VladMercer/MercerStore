@@ -13,10 +13,10 @@ public class HomeService : IHomeService
         _productRepository = productRepository;
     }
 
-    public async Task<HomePageViewModel> GetHomePageProduct()
+    public async Task<HomePageViewModel> GetHomePageProduct(CancellationToken ct)
     {
-        var products = await _productRepository.GetLastProductsAsync(9);
-        var randomProducts = await _productRepository.GetRandomProductsAsync(9);
+        var products = await _productRepository.GetLastProductsAsync(9, ct);
+        var randomProducts = await _productRepository.GetRandomProductsAsync(9, ct);
 
         return new HomePageViewModel
         {

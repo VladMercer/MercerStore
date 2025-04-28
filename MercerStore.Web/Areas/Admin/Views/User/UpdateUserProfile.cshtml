@@ -1,5 +1,4 @@
-﻿@using MercerStore.Web.Areas.Admin.ViewModels.Users
-@model UpdateUserProfileViewModel
+﻿@model MercerStore.Web.Areas.Admin.ViewModels.Users.UpdateUserProfileViewModel
 
 @{
     ViewData["Title"] = "Редактирование профиля";
@@ -20,7 +19,7 @@
             <div class="card p-4 shadow-sm">
 
                 <form method="post">
-                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Id"/>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="text-center">
@@ -32,7 +31,8 @@
                             <div class="mt-2">
                                 <label asp-for="UserImgUrl" class="form-label">Ссылка на фото</label>
                                 <input asp-for="UserImgUrl" class="form-control">
-                                <button type="button" class="btn btn-danger mt-2" id="resetImageBtn">Сбросить фото</button>
+                                <button type="button" class="btn btn-danger mt-2" id="resetImageBtn">Сбросить фото
+                                </button>
                             </div>
                         </div>
                         <div class="col-md-8">
@@ -62,7 +62,8 @@
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Roles" class="form-label">Роли</label>
-                                <input type="text" class="form-control" value="@string.Join(", ", Model.Roles)" readonly>
+                                <input type="text" class="form-control" value="@string.Join(", ", Model.Roles)"
+                                       readonly>
                             </div>
                             <button type="submit" class="btn btn-outline-warning w-100">Сохранить изменения</button>
                         </div>
@@ -93,45 +94,52 @@
 
             <div class="tab-content mt-3" id="profileTabContent">
 
-                <div class="tab-pane fade show active" id="orders-tab-pane" role="tabpanel" aria-labelledby="orders-tab">
+                <div class="tab-pane fade show active" id="orders-tab-pane" role="tabpanel"
+                     aria-labelledby="orders-tab">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>№</th>
-                                <th>Дата</th>
-                                <th>Статус</th>
-                                <th>Сумма</th>
-                            </tr>
+                        <tr>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                            <th>Сумма</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Orders != null && Model.Orders.Any())
+                        @if (Model.Orders != null && Model.Orders.Any())
+                        {
+                            foreach (var order in Model.Orders)
                             {
-                                foreach (var order in Model.Orders)
-                                {
-                                    <tr style="cursor: pointer;">
-                                        <td>
-                                            <a asp-area="Admin" asp-controller="Order" asp-action="Update" asp-route-id="@order.Id"
-                                               class="text-dark text-decoration-none d-block w-100">@order.Id</a>
-                                        </td>
-                                        <td>
-                                            <a asp-area="Admin" asp-controller="Order" asp-action="Update" asp-route-id="@order.Id"
-                                               class="text-dark text-decoration-none d-block w-100">@order.СreateDate.ToShortDateString()</a>
-                                        </td>
-                                        <td>
-                                            <a asp-area="Admin" asp-controller="Order" asp-action="Update" asp-route-id="@order.Id"
-                                               class="text-dark text-decoration-none d-block w-100">@order.Status</a>
-                                        </td>
-                                        <td>
-                                            <a asp-area="Admin" asp-controller="Order" asp-action="Update" asp-route-id="@order.Id"
-                                               class="text-dark text-decoration-none d-block w-100">@order.TotalOrderPrice ₽</a>
-                                        </td>
-                                    </tr>
-                                }
+                                <tr style="cursor: pointer;">
+                                    <td>
+                                        <a asp-area="Admin" asp-controller="Order" asp-action="Update"
+                                           asp-route-id="@order.Id"
+                                           class="text-dark text-decoration-none d-block w-100">@order.Id</a>
+                                    </td>
+                                    <td>
+                                        <a asp-area="Admin" asp-controller="Order" asp-action="Update"
+                                           asp-route-id="@order.Id"
+                                           class="text-dark text-decoration-none d-block w-100">@order.СreateDate.ToShortDateString()</a>
+                                    </td>
+                                    <td>
+                                        <a asp-area="Admin" asp-controller="Order" asp-action="Update"
+                                           asp-route-id="@order.Id"
+                                           class="text-dark text-decoration-none d-block w-100">@order.Status</a>
+                                    </td>
+                                    <td>
+                                        <a asp-area="Admin" asp-controller="Order" asp-action="Update"
+                                           asp-route-id="@order.Id"
+                                           class="text-dark text-decoration-none d-block w-100">@order.TotalOrderPrice ₽</a>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <tr><td colspan="4" class="text-center">Заказов пока нет</td></tr>
-                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center">Заказов пока нет</td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -139,51 +147,58 @@
                 <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th class="text-center">Товар</th>
-                                <th>Название</th>
-                                <th>Оценка</th>
-                                <th>Дата</th>
-                                <th>Текст</th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">Товар</th>
+                            <th>Название</th>
+                            <th>Оценка</th>
+                            <th>Дата</th>
+                            <th>Текст</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Reviews != null && Model.Reviews.Any())
+                        @if (Model.Reviews != null && Model.Reviews.Any())
+                        {
+                            foreach (var review in Model.Reviews)
                             {
-                                foreach (var review in Model.Reviews)
-                                {
-                                    <tr style="cursor: pointer;">
-                                        <td class="text-center">
-                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id">
-                                                <img class="img-thumbnail"
-                                                     src="@review.Product.MainImageUrl"
-                                                     alt="Product Image"
-                                                     style="max-width: 50px;">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a asp-route-area="" asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
-                                               class="text-dark text-decoration-none d-block w-100">@review.Product?.Name</a>
-                                        </td>
-                                        <td>
-                                            <a asp-route-area="" asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
-                                               class="text-dark text-decoration-none d-block w-100">@review.Value / 5</a>
-                                        </td>
-                                        <td>
-                                            <a asp-route-area="" asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
-                                               class="text-dark text-decoration-none d-block w-100">@review.Date.ToShortDateString()</a>
-                                        </td>
-                                        <td>
-                                            <a asp-route-area="" asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
-                                               class="text-dark text-decoration-none d-block w-100">@review.ReviewText</a>
-                                        </td>
-                                    </tr>
-                                }
+                                <tr style="cursor: pointer;">
+                                    <td class="text-center">
+                                        <a asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id">
+                                            <img class="img-thumbnail"
+                                                 src="@review.Product.MainImageUrl"
+                                                 alt="Product Image"
+                                                 style="max-width: 50px;">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a asp-route-area="" asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id"
+                                           class="text-dark text-decoration-none d-block w-100">@review.Product?.Name</a>
+                                    </td>
+                                    <td>
+                                        <a asp-route-area="" asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id"
+                                           class="text-dark text-decoration-none d-block w-100">@review.Value / 5</a>
+                                    </td>
+                                    <td>
+                                        <a asp-route-area="" asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id"
+                                           class="text-dark text-decoration-none d-block w-100">@review.Date.ToShortDateString()</a>
+                                    </td>
+                                    <td>
+                                        <a asp-route-area="" asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id"
+                                           class="text-dark text-decoration-none d-block w-100">@review.ReviewText</a>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <tr><td colspan="5" class="text-center">Отзывов пока нет</td></tr>
-                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center">Отзывов пока нет</td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>

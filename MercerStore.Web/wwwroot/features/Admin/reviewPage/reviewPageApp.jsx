@@ -1,6 +1,6 @@
-﻿import React, { Suspense, lazy } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 
 const PageSizeSelectorComponent = lazy(() => import('./components/PageSizeSelectorComponent'));
@@ -14,17 +14,17 @@ const AdminSearchBarComponent = lazy(() => import('./components/AdminSearchBarCo
 
 export const reviewPageApp = (store) => {
     const portals = [
-        { id: 'review-page-size-root', component: <PageSizeSelectorComponent /> },
-        { id: 'review-pagination-root', component: <PaginationComponent /> },
-        { id: 'review-sort-root', component: <SortComponent /> },
-        { id: 'review-total-info-root', component: <TotalReviewsInfoComponent /> },
-        { id: 'review-filter-root', component: <FilterComponent /> },
-        { id: 'review-time-period-filter-root', component: <TimePeriodFilterComponent /> },
-        { id: 'review-list-root', component: <ReviewsListComponent /> },
-        { id: 'review-search-bar-root', component: <AdminSearchBarComponent /> },
+        {id: 'review-page-size-root', component: <PageSizeSelectorComponent/>},
+        {id: 'review-pagination-root', component: <PaginationComponent/>},
+        {id: 'review-sort-root', component: <SortComponent/>},
+        {id: 'review-total-info-root', component: <TotalReviewsInfoComponent/>},
+        {id: 'review-filter-root', component: <FilterComponent/>},
+        {id: 'review-time-period-filter-root', component: <TimePeriodFilterComponent/>},
+        {id: 'review-list-root', component: <ReviewsListComponent/>},
+        {id: 'review-search-bar-root', component: <AdminSearchBarComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);

@@ -1,10 +1,10 @@
 ﻿import React from 'react';
-import { useOrders } from '../hooks/useOrders';
-import { useDispatch } from 'react-redux';
-import { setPageNumber } from '../redux/orderPageSlice';
+import {useOrders} from '../hooks/useOrders';
+import {useDispatch} from 'react-redux';
+import {setPageNumber} from '../redux/orderPageSlice';
 
 const PaginationComponent = () => {
-    const { pageNumber, totalPages } = useOrders();
+    const {pageNumber, totalPages} = useOrders();
     const dispatch = useDispatch();
 
     const changePageNumber = (newPageNumber) => {

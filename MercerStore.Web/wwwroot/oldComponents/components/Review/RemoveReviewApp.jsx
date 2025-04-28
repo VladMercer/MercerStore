@@ -1,13 +1,13 @@
-﻿import React, { useContext } from 'react';
-import { ReviewContext } from './ReviewContext';
+﻿import React, {useContext} from 'react';
+import {ReviewContext} from './ReviewContext';
 import RemoveReviewComponent from './RemoveReviewComponent';
 
 
 const RemoveReviewApp = () => {
-    const { RemoveReview, productId} = useContext(ReviewContext);
+    const {RemoveReview, productId} = useContext(ReviewContext);
 
     return (
-        <RemoveReviewComponent RemoveReview={RemoveReview} productId={productId } />
+        <RemoveReviewComponent RemoveReview={RemoveReview} productId={productId}/>
     );
 };
 

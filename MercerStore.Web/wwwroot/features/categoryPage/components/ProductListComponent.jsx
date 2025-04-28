@@ -1,10 +1,11 @@
 ﻿import React from 'react';
 import AddToCartButton from '../../cart/components/AddToCartButton';
-import { useCategoryProducts } from '../../categoryPage/hooks/useCategoryProducts';
+import {useCategoryProducts} from '../../categoryPage/hooks/useCategoryProducts';
 import useFetchCategoryProducts from '../hooks/useFetchCategoryProducts';
+
 const ProductListComponent = () => {
     useFetchCategoryProducts();
-    const { products } = useCategoryProducts();
+    const {products} = useCategoryProducts();
 
     return (
         <div className="row">
@@ -14,18 +15,19 @@ const ProductListComponent = () => {
                         <div className="product-card">
                             <div className="product-thumb">
                                 <a href={`/product/details/${product.id}`}>
-                                    <img src={product.mainImageUrl} alt="фотокарточка" />
+                                    <img src={product.mainImageUrl} alt="фотокарточка"/>
                                 </a>
                             </div>
                             <div className="product-details">
                                 <h4>
                                     <a
                                         href={`/product/details/${product.id}`}
-                                        dangerouslySetInnerHTML={{ __html: product.name }}
+                                        dangerouslySetInnerHTML={{__html: product.name}}
                                     ></a>
                                 </h4>
                                 <p className="product-excerpt">{product.description}</p>
-                                <div className="product-bottom-details d-flex justify-content-between align-items-center">
+                                <div
+                                    className="product-bottom-details d-flex justify-content-between align-items-center">
                                     {product.discountedPrice ? (
                                         <div className="price-container">
                                             <small className="old-price-card">
@@ -40,7 +42,7 @@ const ProductListComponent = () => {
                                             {product.price.toLocaleString()}₽
                                         </div>
                                     )}
-                                    <AddToCartButton productId={product.id} />
+                                    <AddToCartButton productId={product.id}/>
                                 </div>
                             </div>
                         </div>

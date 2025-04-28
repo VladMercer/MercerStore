@@ -1,22 +1,22 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Interfaces;
+using MercerStore.Web.Application.Interfaces.Services;
 
-namespace MercerStore.Web.Application.Handlers.Products.Commands
+namespace MercerStore.Web.Application.Handlers.Products.Commands;
+
+public record UpdateSkusCommand : IRequest<Unit>;
+
+public class UpdateSkusHandler : IRequestHandler<UpdateSkusCommand, Unit>
 {
-    public record UpdateSkusCommand() : IRequest<Unit>;
-    public class UpdateSkusHandler : IRequestHandler<UpdateSkusCommand, Unit>
+    private readonly ISkuUpdater _skuUpdater;
+
+    public UpdateSkusHandler(ISkuUpdater SkuUpdater)
     {
-        private readonly ISkuUpdater _skuUpdater;
+        _skuUpdater = SkuUpdater;
+    }
 
-        public UpdateSkusHandler(ISkuUpdater skuUpdater)
-        {
-            _skuUpdater = skuUpdater;
-        }
-
-        public async Task<Unit> Handle(UpdateSkusCommand request, CancellationToken cancellationToken)
-        {
-            _skuUpdater.UpdateSKUs();
-            return Unit.Value;
-        }
+    public async Task<Unit> Handle(UpdateSkusCommand request, CancellationToken ct)
+    {
+        _skuUpdater.UpdateSkus();
+        return Unit.Value;
     }
 }

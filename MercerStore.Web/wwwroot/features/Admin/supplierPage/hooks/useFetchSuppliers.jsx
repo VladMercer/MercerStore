@@ -1,12 +1,12 @@
-﻿import { useDispatch } from 'react-redux';
-import { useEffect, useRef } from 'react';
-import { setPageNumber, setIsPageReset, fetchSuppliers } from '../redux/supplierPageSlice';
-import { useSuppliers } from './useSuppliers';
+﻿import {useDispatch} from 'react-redux';
+import {useEffect, useRef} from 'react';
+import {fetchSuppliers, setIsPageReset, setPageNumber} from '../redux/supplierPageSlice';
+import {useSuppliers} from './useSuppliers';
 
 
 const useFetchSuppliers = () => {
     const dispatch = useDispatch();
-    const { pageNumber, pageSize, isLoaded, isPageReset, query } = useSuppliers();
+    const {pageNumber, pageSize, isLoaded, isPageReset, query} = useSuppliers();
 
     const prevQuery = useRef(query);
 
@@ -17,27 +17,23 @@ const useFetchSuppliers = () => {
     }
 
     useEffect(() => {
-        
 
-            if (!isLoaded) {
-                dispatchFetchSuppliers();
+
+        if (!isLoaded) {
+            dispatchFetchSuppliers();
+        } else if (pageNumber > 1 && (query !== prevQuery.current) && !isPageReset) {
+            dispatch(setPageNumber(1));
+            dispatch(setIsPageReset(true));
+        } else if (!isPageReset || (isPageReset && pageNumber === 1)) {
+
+            dispatchFetchSuppliers();
+
+            if (isPageReset && pageNumber === 1) {
+                dispatch(setIsPageReset(false));
             }
+        }
 
-            else if (pageNumber > 1 && (query !== prevQuery.current) && !isPageReset) {
-                dispatch(setPageNumber(1));
-                dispatch(setIsPageReset(true));
-            }
-
-            else if (!isPageReset || (isPageReset && pageNumber === 1)) {
-
-                dispatchFetchSuppliers();
-
-                if (isPageReset && pageNumber === 1) {
-                    dispatch(setIsPageReset(false));
-                }
-            }
-
-        prevQuery.current = query; 
+        prevQuery.current = query;
     }, [pageNumber, pageSize, query]);
 };
 

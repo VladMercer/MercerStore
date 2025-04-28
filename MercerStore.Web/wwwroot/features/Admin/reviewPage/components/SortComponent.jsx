@@ -1,16 +1,16 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useReviews } from "../hooks/useReviews";
-import { setSortOrder } from "../redux/reviewPageSlice";
+import {useDispatch} from "react-redux";
+import {useReviews} from "../hooks/useReviews";
+import {setSortOrder} from "../redux/reviewPageSlice";
 
 const SortComponent = () => {
     const dispatch = useDispatch();
-    const { sortOrder } = useReviews();
+    const {sortOrder} = useReviews();
 
     const handleSortChange = (event) => {
         dispatch(setSortOrder(event.target.value));
     };
-    
+
     return (
         <div className="input-group mb-3">
             <span className="input-group-text">Сортировка:</span>

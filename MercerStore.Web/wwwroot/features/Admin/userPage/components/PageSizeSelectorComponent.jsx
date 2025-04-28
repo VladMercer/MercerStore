@@ -1,10 +1,10 @@
-﻿import { useDispatch } from 'react-redux';
+﻿import {useDispatch} from 'react-redux';
 import React from 'react';
-import { useUsers } from '../hooks/useUsers';
-import { setPageSize } from '../redux/userPageSlice';
+import {useUsers} from '../hooks/useUsers';
+import {setPageSize} from '../redux/userPageSlice';
 
 const PageSizeSelectorComponent = () => {
-    const { pageSize } = useUsers();
+    const {pageSize} = useUsers();
     const dispatch = useDispatch();
 
     const changePageSize = (newPageSize) => {

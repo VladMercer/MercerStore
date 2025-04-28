@@ -1,46 +1,47 @@
-﻿using MercerStore.Web.Application.Interfaces.Repositories;
+﻿using MercerStore.Web.Application.Dtos.Product;
+using MercerStore.Web.Application.Dtos.Search;
+using MercerStore.Web.Application.Interfaces.Repositories;
 using MercerStore.Web.Application.Interfaces.Services;
-using MercerStore.Web.Application.Dtos.SearchDto;
-using MercerStore.Web.Application.Dtos.ProductDto;
 using MercerStore.Web.Application.Requests.Search;
+using MercerStore.Web.Infrastructure.Data.Enum.Product;
 
-namespace MercerStore.Web.Application.Services
+namespace MercerStore.Web.Application.Services;
+
+public class SearchService : ISearchService
 {
-    public class SearchService : ISearchService
+    private readonly IProductRepository _productRepository;
+
+    public SearchService(IProductRepository productRepository)
     {
-        private readonly IProductRepository _productRepository;
+        _productRepository = productRepository;
+    }
 
-        public SearchService(IProductRepository productRepository)
+    public async Task<SearchResultDto> SearchProduct(IEnumerable<ProductIndexDto> productIndexDto,
+        SearchFilterRequest request, CancellationToken ct)
+    {
+        var productIds = productIndexDto.Select(x => x.Id).ToList();
+
+        var products = await _productRepository.GetProductsByIdsAsync(productIds, ct);
+
+        products = request.SortOrder switch
         {
-            _productRepository = productRepository;
-        }
-        public async Task<SearchResultDto> SearchProduct(IEnumerable<ProductIndexDto> productIndexDto, SearchFilterRequest request)
-        {
-            var productIds = productIndexDto.Select(x => x.Id).ToList();
+            "price_asc" => products.OrderBy(p => p.ProductPricing.OriginalPrice).ToList(),
+            "price_desc" => products.OrderByDescending(p => p.ProductPricing.OriginalPrice).ToList(),
+            "name_asc" => products.OrderBy(p => p.Name, StringComparer.Ordinal).ToList(),
+            "name_desc" => products.OrderByDescending(p => p.Name, StringComparer.Ordinal).ToList(),
+            _ => products
+        };
 
-            var products = await _productRepository.GetProductsByIdsAsync(productIds);
+        var totalItems = products.Count();
 
-            products = request.SortOrder switch
-            {
-                "price_asc" => products.OrderBy(p => p.ProductPricing.OriginalPrice).ToList(),
-                "price_desc" => products.OrderByDescending(p => p.ProductPricing.OriginalPrice).ToList(),
-                "name_asc" => products.OrderBy(p => p.Name).ToList(),
-                "name_desc" => products.OrderByDescending(p => p.Name).ToList(),
-                _ => products
-            };
+        if (request.PageNumber.HasValue && request.PageSize.HasValue)
+            products = products
+                .Skip((request.PageNumber.Value - 1) * request.PageSize.Value)
+                .Take(request.PageSize.Value).ToList();
 
-            var totalItems = products.Count();
+        var productIndexDict = productIndexDto.ToDictionary(dto => dto.Id);
 
-            if (request.PageNumber.HasValue && request.PageSize.HasValue)
-            {
-                products = products
-                    .Skip((request.PageNumber.Value - 1) * request.PageSize.Value)
-                    .Take(request.PageSize.Value).ToList();
-            }
-
-            var productIndexDict = productIndexDto.ToDictionary(dto => dto.Id);
-
-            var searchProduct = products
+        var searchProduct = products
             .Select(p =>
             {
                 productIndexDict.TryGetValue(p.Id, out var indexDto);
@@ -69,14 +70,15 @@ namespace MercerStore.Web.Application.Services
             })
             .ToList();
 
-            return new SearchResultDto
-            {
-                Products = searchProduct,
-                TotalItems = totalItems,
-                TotalPages = request.PageSize.HasValue ? (int)Math.Ceiling((double)totalItems / request.PageSize.Value) : (int?)null,
-                PageNumber = request.PageNumber,
-                PageSize = request.PageSize
-            };
-        }
+        return new SearchResultDto
+        {
+            Products = searchProduct,
+            TotalItems = totalItems,
+            TotalPages = request.PageSize.HasValue
+                ? (int)Math.Ceiling((double)totalItems / request.PageSize.Value)
+                : null,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize
+        };
     }
 }

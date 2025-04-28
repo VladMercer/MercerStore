@@ -4,47 +4,47 @@ using MercerStore.Web.Application.Requests.Log;
 using MercerStore.Web.Areas.Admin.ViewModels.Suppliers;
 using MercerStore.Web.Infrastructure.Helpers;
 
-namespace MercerStore.Web.Application.Handlers.Suppliers.Commands
+namespace MercerStore.Web.Application.Handlers.Suppliers.Commands;
+
+public record UpdateSupplierCommand(UpdateSupplierViewModel UpdateSupplierViewModel) :
+    LoggableRequest<Result<Unit>>("Manager update supplier", "supplier");
+
+public class UpdateSupplierHandler : IRequestHandler<UpdateSupplierCommand, Result<Unit>>
 {
-    public record UpdateSupplierCommand(UpdateSupplierViewModel UpdateSupplierViewModel) :
-        LoggableRequest<Result<Unit>>("Manager update supplier", "supplier");
-    public class UpdateSupplierHanlder : IRequestHandler<UpdateSupplierCommand, Result<Unit>>
+    private readonly ISupplierService _supplierService;
+
+    public UpdateSupplierHandler(ISupplierService supplierService)
     {
-        private readonly ISupplierService _supplierService;
+        _supplierService = supplierService;
+    }
 
-        public UpdateSupplierHanlder(ISupplierService supplierService)
+    public async Task<Result<Unit>> Handle(UpdateSupplierCommand request, CancellationToken ct)
+    {
+        var result = await _supplierService.UpdateSupplier(request.UpdateSupplierViewModel, ct);
+
+        var supplier = request.UpdateSupplierViewModel;
+        request.EntityId = supplier.Id;
+
+        if (!result.IsSuccess)
         {
-            _supplierService = supplierService;
+            request.Details = new { result.ErrorMessage };
+            return Result<Unit>.Failure(result.ErrorMessage);
         }
 
-        public async Task<Result<Unit>> Handle(UpdateSupplierCommand request, CancellationToken cancellationToken)
+        var logDetails = new
         {
-            var result = await _supplierService.UpdateSupplier(request.UpdateSupplierViewModel);
+            supplier.Address,
+            supplier.Name,
+            supplier.Phone,
+            supplier.Email,
+            supplier.ContactPerson,
+            supplier.IsCompany,
+            supplier.TaxId
+        };
 
-            var supplier = request.UpdateSupplierViewModel;
-            request.EntityId = supplier.Id;
-
-            if (!result.IsSuccess)
-            {
-                request.Details = new { result.ErrorMessage };
-                return Result<Unit>.Failure(result.ErrorMessage);
-            }
-
-            var logDetails = new
-            {
-                supplier.Address,
-                supplier.Name,
-                supplier.Phone,
-                supplier.Email,
-                supplier.ContactPerson,
-                supplier.IsCompany,
-                supplier.TaxId
-            };
-
-            request.Details = logDetails;
+        request.Details = logDetails;
 
 
-            return Result<Unit>.Success(Unit.Value);
-        }
+        return Result<Unit>.Success(Unit.Value);
     }
 }

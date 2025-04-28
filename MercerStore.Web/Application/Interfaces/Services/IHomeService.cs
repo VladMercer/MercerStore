@@ -1,9 +1,8 @@
 ﻿using MercerStore.Web.Application.ViewModels.Products;
 
-namespace MercerStore.Web.Application.Interfaces.Services
+namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface IHomeService
 {
-    public interface IHomeService
-    {
-        Task<HomePageViewModel> GetHomePageProduct();
-    }
+    Task<HomePageViewModel> GetHomePageProduct(CancellationToken ct);
 }

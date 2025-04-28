@@ -34,7 +34,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("CategoriesId");
 
-                    b.ToTable("BrandCategory");
+                    b.ToTable("BrandCategory", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Carts.Cart", b =>
@@ -51,7 +51,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Carts.CartProduct", b =>
@@ -79,7 +79,7 @@ namespace MercerStore.Web.Migrations
                     b.HasIndex("CartId", "ProductId")
                         .IsUnique();
 
-                    b.ToTable("CartProducts");
+                    b.ToTable("CartProducts", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Invoice.Invoice", b =>
@@ -119,7 +119,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("Invoices");
+                    b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Invoice.InvoiceItem", b =>
@@ -148,7 +148,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("InvoiceItems");
+                    b.ToTable("InvoiceItems", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Invoice.Supplier", b =>
@@ -188,7 +188,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Orders.Order", b =>
@@ -237,7 +237,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Orders.OrderProductList", b =>
@@ -257,7 +257,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderProductLists");
+                    b.ToTable("OrderProductLists", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Orders.OrderProductSnapshot", b =>
@@ -292,7 +292,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("OrderProductListId");
 
-                    b.ToTable("OrderProductSnapshots");
+                    b.ToTable("OrderProductSnapshots", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.Brand", b =>
@@ -313,7 +313,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.Category", b =>
@@ -336,7 +336,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.Product", b =>
@@ -370,7 +370,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.ProductDescription", b =>
@@ -398,7 +398,7 @@ namespace MercerStore.Web.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProductDescriptions");
+                    b.ToTable("ProductDescriptions", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.ProductImage", b =>
@@ -424,7 +424,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("ProductId1");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.ProductPricing", b =>
@@ -461,7 +461,7 @@ namespace MercerStore.Web.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProductPricings");
+                    b.ToTable("ProductPricings", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.ProductStatus", b =>
@@ -495,7 +495,7 @@ namespace MercerStore.Web.Migrations
                     b.HasIndex("ProductId")
                         .IsUnique();
 
-                    b.ToTable("ProductStatuses");
+                    b.ToTable("ProductStatuses", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.ProductVariant", b =>
@@ -519,7 +519,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductVariants");
+                    b.ToTable("ProductVariants", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Products.Review", b =>
@@ -558,7 +558,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.Users.AppRole", b =>
@@ -701,7 +701,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OfflineSales");
+                    b.ToTable("OfflineSales", (string)null);
                 });
 
             modelBuilder.Entity("MercerStore.Web.Models.sales.OfflineSaleItem", b =>
@@ -731,7 +731,7 @@ namespace MercerStore.Web.Migrations
 
                     b.HasIndex("OfflineSaleId");
 
-                    b.ToTable("OfflineSaleItems");
+                    b.ToTable("OfflineSaleItems", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

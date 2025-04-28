@@ -1,11 +1,11 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import ReactSlider from 'react-slider';
-import { useCategoryPriceRange } from '../hooks/useCategoryPriceRange';
-import { useFetchCategoryPriceRange } from '../hooks/useFetchCategoryPriceRange';
+import {useCategoryPriceRange} from '../hooks/useCategoryPriceRange';
+import {useFetchCategoryPriceRange} from '../hooks/useFetchCategoryPriceRange';
 
 const FilterComponent = () => {
-    const { minPrice, maxPrice, selectedMinPrice, selectedMaxPrice } = useCategoryPriceRange();
-    const { updateMinPrice, updateMaxPrice } = useFetchCategoryPriceRange();
+    const {minPrice, maxPrice, selectedMinPrice, selectedMaxPrice} = useCategoryPriceRange();
+    const {updateMinPrice, updateMaxPrice} = useFetchCategoryPriceRange();
 
     const [localMinPrice, setLocalMinPrice] = useState(selectedMinPrice);
     const [localMaxPrice, setLocalMaxPrice] = useState(selectedMaxPrice);
@@ -19,26 +19,26 @@ const FilterComponent = () => {
 
     const handleMinPriceInputChange = (e) => {
         const value = Number(e.target.value) || minPrice;
-        setLocalMinPrice(value); 
+        setLocalMinPrice(value);
     };
 
     const handleMaxPriceInputChange = (e) => {
         const value = Number(e.target.value) || maxPrice;
-        setLocalMaxPrice(value); 
+        setLocalMaxPrice(value);
     };
 
- 
+
     const handleSliderChange = (values) => {
         const [newMinPrice, newMaxPrice] = values;
-        setLocalMinPrice(newMinPrice); 
-        setLocalMaxPrice(newMaxPrice); 
+        setLocalMinPrice(newMinPrice);
+        setLocalMaxPrice(newMaxPrice);
     };
 
-   
+
     const handleSliderAfterChange = (values) => {
         const [newMinPrice, newMaxPrice] = values;
-        updateMinPrice(newMinPrice); 
-        updateMaxPrice(newMaxPrice); 
+        updateMinPrice(newMinPrice);
+        updateMaxPrice(newMaxPrice);
     };
 
     return (
@@ -72,8 +72,8 @@ const FilterComponent = () => {
                 min={minPrice}
                 max={maxPrice}
                 value={[localMinPrice, localMaxPrice]}
-                onChange={handleSliderChange}         
-                onAfterChange={handleSliderAfterChange} 
+                onChange={handleSliderChange}
+                onAfterChange={handleSliderAfterChange}
                 ariaLabel={['Минимальная цена', 'Максимальная цена']}
                 pearling
                 minDistance={10}

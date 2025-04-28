@@ -17,7 +17,8 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<(IEnumerable<Product> Products, int TotalItems)> GetProductsAsync(ProductFilterRequest request)
+    public async Task<(IEnumerable<Product> Products, int TotalItems)> GetProductsAsync(ProductFilterRequest request,
+        CancellationToken ct)
     {
         var productsQuery = _context.Products
             .Include(p => p.ProductDescription)
@@ -49,12 +50,12 @@ public class ProductRepository : IProductRepository
             _ => productsQuery.OrderBy(p => p.Name)
         };
 
-        var totalItems = await productsQuery.CountAsync();
+        var totalItems = await productsQuery.CountAsync(ct);
 
         var products = await productsQuery
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
-            .ToListAsync();
+            .ToListAsync(ct);
 
         products = request.SortOrder switch
         {
@@ -69,71 +70,74 @@ public class ProductRepository : IProductRepository
         return (products, totalItems);
     }
 
-    public async Task<IEnumerable<Product>> GetAllProductsAsync()
+    public async Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct)
     {
         return await _context.Products.Include(p => p.Category)
             .Include(p => p.ProductDescription)
             .Include(p => p.ProductPricing)
             .Include(p => p.ProductStatus)
-            .ToListAsync();
+            .ToListAsync(ct);
     }
 
-    public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int? categoryId)
+    public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(int? categoryId,
+        CancellationToken ct)
     {
         return await _context.Products.Where(p => p.CategoryId == categoryId)
             .Include(p => p.Category)
             .Include(p => p.ProductPricing)
             .Include(p => p.ProductDescription)
-            .ToListAsync();
+            .ToListAsync(ct);
     }
 
-    public async Task<int?> GetCategoryByProductId(int productId)
+    public async Task<int?> GetCategoryByProductId(int productId, CancellationToken ct)
     {
         var product = await _context.Products
             .Include(p => p.Category)
-            .FirstOrDefaultAsync(p => p.Id == productId);
+            .FirstOrDefaultAsync(p => p.Id == productId, ct);
         return product?.CategoryId;
     }
 
-    public async Task<Product> GetProductByIdAsync(int? productId)
+    public async Task<Product> GetProductByIdAsync(int? productId, CancellationToken ct)
     {
         return await _context.Products
             .Include(p => p.ProductDescription)
             .Include(p => p.ProductPricing)
             .Include(p => p.ProductStatus)
-            .FirstAsync(p => p.Id == productId);
+            .FirstAsync(p => p.Id == productId, ct);
     }
 
-    public async Task<IEnumerable<Product>> GetProductsByIdsAsync(IEnumerable<int> productIds)
+    public async Task<IEnumerable<Product>> GetProductsByIdsAsync(IEnumerable<int> productIds,
+        CancellationToken ct)
     {
         var products = await _context.Products
             .Where(p => productIds.Contains(p.Id))
             .Include(p => p.ProductDescription)
             .Include(p => p.ProductPricing)
             .Include(p => p.ProductStatus)
-            .ToListAsync();
+            .ToListAsync(ct);
 
         var productIdsList = productIds.ToList();
         return products.OrderBy(p => productIdsList.IndexOf(p.Id));
     }
 
-    public async Task<IEnumerable<Product>> GetLastProductsAsync(int count)
+    public async Task<IEnumerable<Product>> GetLastProductsAsync(int count, CancellationToken ct)
     {
         return await _context.Products.AsNoTracking()
             .OrderByDescending(p => p.Id).Take(count)
             .Include(p => p.ProductDescription)
             .Include(p => p.ProductPricing)
             .Include(p => p.ProductStatus)
-            .ToListAsync();
+            .ToListAsync(ct);
     }
 
-    public async Task AddProduct(Product product)
+    public async Task AddProduct(Product product, CancellationToken ct)
     {
-        await _context.Products.AddAsync(product);
-        await _context.SaveChangesAsync();
+        await _context.Products.AddAsync(product, ct);
+        await _context.SaveChangesAsync(ct);
     }
 
-    public async Task<IEnumerable<RandomProductViewModel>> GetRandomProductsAsync(int count)
+    public async Task<IEnumerable<RandomProductViewModel>> GetRandomProductsAsync(int count,
+        CancellationToken ct)
     {
         return await _context.Products
             .AsNoTracking()
@@ -148,57 +152,59 @@ public class ProductRepository : IProductRepository
                 DiscountedPrice = p.ProductPricing.DiscountedPrice
             })
             .Take(count)
-            .ToListAsync();
+            .ToListAsync(ct);
     }
 
-    public async Task UpdateProduct(Product product)
+    public async Task UpdateProduct(Product product, CancellationToken ct)
     {
         _context.Update(product);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(ct);
     }
 
-    public async Task DeleteProduct(int productId)
+    public async Task DeleteProduct(int productId, CancellationToken ct)
     {
-        var product = _context.Products.Find(productId);
+        var product = await _context.Products.FindAsync(productId, ct);
         if (product != null) _context.Products.Remove(product);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(ct);
     }
 
-    public async Task<IEnumerable<Review>> GetAllReview(int productId)
+    public async Task<IEnumerable<Review>> GetAllReview(int productId, CancellationToken ct)
     {
-        return await _context.Reviews.Where(p => p.ProductId == productId).Include(r => r.User).ToListAsync();
+        return await _context.Reviews.Where(p => p.ProductId == productId).Include(r => r.User)
+            .ToListAsync(ct);
     }
 
-    public Task<IEnumerable<Review>> GetAllReviewByUser(string userId)
+    public Task<IEnumerable<Review>> GetAllReviewByUser(string userId, CancellationToken ct)
     {
         throw new NotImplementedException();
     }
 
-    public async Task DecreaseProductStock(int? productId, string? sku, int quantity)
+    public async Task DecreaseProductStock(int? productId, string? sku, int quantity,
+        CancellationToken ct)
     {
         var product = await _context.Products.Include(p => p.ProductStatus)
-            .FirstOrDefaultAsync(p => p.Id == productId || p.SKU == sku);
+            .FirstOrDefaultAsync(p => p.Id == productId || p.SKU == sku, ct);
         if (product != null)
         {
             var quantityInStock = product.ProductStatus.InStock;
             quantityInStock -= quantity;
             if (quantityInStock < 0) quantityInStock = 0;
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
         }
     }
 
-    public async Task<Product> GetProductBySku(string? sku)
+    public async Task<Product> GetProductBySku(string? sku, CancellationToken ct)
     {
         return await _context.Products
             .Include(p => p.ProductDescription)
             .Include(p => p.ProductPricing)
             .Include(p => p.ProductStatus)
-            .FirstOrDefaultAsync(p => p.SKU == sku);
+            .FirstOrDefaultAsync(p => p.SKU == sku, ct);
     }
 
-    public async Task<List<Product?>> GetIsUnassignedProducts()
+    public async Task<IEnumerable<Product?>> GetIsUnassignedProducts(CancellationToken ct)
     {
         return await _context.Products.Include(p => p.ProductStatus).Where(p => p.ProductStatus.IsUnassigned == true)
-            .ToListAsync();
+            .ToListAsync(ct);
     }
 }

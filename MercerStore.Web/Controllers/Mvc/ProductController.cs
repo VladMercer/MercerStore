@@ -3,22 +3,21 @@ using MercerStore.Web.Application.Handlers.Products.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Mvc
+namespace MercerStore.Web.Controllers.Mvc;
+
+[Authorize]
+public class ProductController : Controller
 {
-    [Authorize]
-    public class ProductController : Controller
+    private readonly IMediator _mediator;
+
+    public ProductController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public ProductController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        public async Task<IActionResult> Details(int Id)
-        {
-            var productViewModel = await _mediator.Send(new GetProductDetailsQuery(Id));
-            return View(productViewModel);
-        }
+    public async Task<IActionResult> Details(int Id)
+    {
+        var productViewModel = await _mediator.Send(new GetProductDetailsQuery(Id));
+        return View(productViewModel);
     }
 }

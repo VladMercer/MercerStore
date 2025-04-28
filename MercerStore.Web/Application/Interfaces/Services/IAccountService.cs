@@ -2,12 +2,11 @@
 using MercerStore.Web.Application.ViewModels.Users;
 using MercerStore.Web.Infrastructure.Helpers;
 
-namespace MercerStore.Web.Application.Interfaces.Services
+namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface IAccountService
 {
-    public interface IAccountService
-    {
-        Task<Result<JwtTokenDto>> LoginAsync(LoginViewModel loginViewModel);
-        Task<Result<JwtTokenDto>> RegisterUserAsync(RegisterViewModel registerViewModel);
-        Task<Result<JwtTokenDto>> RegisterManagerAsync(RegisterViewModel registerViewModel);
-    }
+    Task<Result<JwtTokenDto>> LoginAsync(LoginViewModel loginViewModel, CancellationToken ct);
+    Task<Result<JwtTokenDto>> RegisterUserAsync(RegisterViewModel registerViewModel);
+    Task<Result<JwtTokenDto>> RegisterManagerAsync(RegisterViewModel registerViewModel);
 }

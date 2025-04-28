@@ -1,10 +1,10 @@
-﻿import React, { useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+﻿import React, {useEffect} from 'react';
+import {createRoot} from 'react-dom/client';
 import CartPageApp from './CartPageApp';
 import CartHeaderApp from './CartHeaderApp';
 import CartOffcanvasApp from './CartOffcanvasApp';
 import AddToCartButton from './AddToCartButton';
-import { CartProvider } from './CartContext';
+import {CartProvider} from './CartContext';
 
 const CartAppWithPortals = () => {
     useEffect(() => {
@@ -14,9 +14,7 @@ const CartAppWithPortals = () => {
         if (cartHeaderRoot) {
             const root = createRoot(cartHeaderRoot);
             root.render(
-               
-                    <CartHeaderApp />
-               
+                <CartHeaderApp/>
             );
         }
 
@@ -25,9 +23,7 @@ const CartAppWithPortals = () => {
         if (cartPageRoot) {
             const root = createRoot(cartPageRoot);
             root.render(
-                
-                    <CartPageApp />
-              
+                <CartPageApp/>
             );
         }
 
@@ -36,9 +32,7 @@ const CartAppWithPortals = () => {
         if (cartOffcanvasRoot) {
             const root = createRoot(cartOffcanvasRoot);
             root.render(
-               
-                    <CartOffcanvasApp />
-                
+                <CartOffcanvasApp/>
             );
         }
 
@@ -48,9 +42,7 @@ const CartAppWithPortals = () => {
             const productId = rootElement.getAttribute('data-product-id');
             const root = createRoot(rootElement);
             root.render(
-               
-                    <AddToCartButton productId={productId} />
-               
+                <AddToCartButton productId={productId}/>
             );
         });
     }, []);
@@ -62,7 +54,7 @@ const CartAppWithPortals = () => {
 const mainContainer = document.getElementById('cart-app');
 if (mainContainer) {
     const root = createRoot(mainContainer);
-    root.render(<CartAppWithPortals />);
+    root.render(<CartAppWithPortals/>);
 } else {
     console.error("Container with ID 'cart-app' not found");
 }

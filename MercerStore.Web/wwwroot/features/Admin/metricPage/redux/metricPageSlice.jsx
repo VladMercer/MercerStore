@@ -1,6 +1,6 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_METRICS_URL } from '../../../../apiConfig';
+import {API_METRICS_URL} from '../../../../apiConfig';
 
 export const fetchMetrics = createAsyncThunk(
     'metrics/fetchMetrics',
@@ -17,27 +17,27 @@ const initialState = {
         weekly: 0,
         monthly: 0,
         yearly: 0,
-        totalOrders: { daily: 0, weekly: 0, monthly: 0, yearly: 0 },
+        totalOrders: {daily: 0, weekly: 0, monthly: 0, yearly: 0},
         averageOrderValue: 0,
         topProducts: [],
     },
     reviews: {
         total: 0,
         averageRating: 0,
-        newReviews: { daily: 0, weekly: 0, monthly: 0 },
+        newReviews: {daily: 0, weekly: 0, monthly: 0},
         topRatedProducts: [],
     },
     users: {
         total: 0,
-        newUsers: { daily: 0, weekly: 0, monthly: 0, yearly: 0 },
+        newUsers: {daily: 0, weekly: 0, monthly: 0, yearly: 0},
     },
-    suppliers: { total: 0 },
+    suppliers: {total: 0},
     invoices: {
         daily: 0,
         weekly: 0,
         monthly: 0,
         yearly: 0,
-        totalInvoices: { daily: 0, weekly: 0, monthly: 0, yearly: 0 },
+        totalInvoices: {daily: 0, weekly: 0, monthly: 0, yearly: 0},
         averageInvoiceValue: 0,
         topProducts: [],
     },

@@ -1,24 +1,23 @@
-﻿using MercerStore.Web.Application.Interfaces;
+﻿using MercerStore.Web.Application.Interfaces.Services;
 
-namespace MercerStore.Web.Infrastructure.Services
+namespace MercerStore.Web.Infrastructure.Services;
+
+public class RequestContextService : IRequestContextService
 {
-    public class RequestContextService : IRequestContextService
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public RequestContextService(IHttpContextAccessor httpContextAccessor)
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        _httpContextAccessor = httpContextAccessor;
+    }
 
-        public RequestContextService(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
+    public void SetLogDetails(object details)
+    {
+        if (_httpContextAccessor.HttpContext != null) _httpContextAccessor.HttpContext.Items["LogDetails"] = details;
+    }
 
-        public void SetLogDetails(object details)
-        {
-            _httpContextAccessor.HttpContext.Items["LogDetails"] = details;
-        }
-
-        public object? GetLogDetails()
-        {
-            return _httpContextAccessor.HttpContext.Items["LogDetails"];
-        }
+    public object? GetLogDetails()
+    {
+        return _httpContextAccessor.HttpContext?.Items["LogDetails"];
     }
 }

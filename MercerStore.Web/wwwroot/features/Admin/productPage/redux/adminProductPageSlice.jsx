@@ -1,6 +1,6 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_CATEGORIES_URL, API_PRODUCTS_URL } from '../../../../apiConfig';
+import {API_CATEGORIES_URL, API_PRODUCTS_URL} from '../../../../apiConfig';
 
 
 export const fetchCategories = createAsyncThunk(
@@ -13,10 +13,10 @@ export const fetchCategories = createAsyncThunk(
 
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
-    async ({ categoryId, pageNumber, pageSize, sortOrder, filter}) => {
+    async ({categoryId, pageNumber, pageSize, sortOrder, filter}) => {
 
         const response = await axios.get(`${API_PRODUCTS_URL}/products/`, {
-            params: { pageNumber, pageSize, categoryId, sortOrder, filter }
+            params: {pageNumber, pageSize, categoryId, sortOrder, filter}
         });
         return response.data;
     }
@@ -62,13 +62,13 @@ const adminProductPageSlice = createSlice({
         setCategories(state, action) {
             state.isPageReset = action.payload;
         },
-        
-      
+
+
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchProducts.fulfilled, (state, action) => {
-                const { items, totalItems, totalPages } = action.payload;
+                const {items, totalItems, totalPages} = action.payload;
                 state.products = items;
                 state.totalProducts = totalItems;
                 state.totalPages = totalPages;

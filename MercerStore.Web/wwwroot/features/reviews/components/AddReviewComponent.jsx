@@ -1,12 +1,12 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useReviews } from '../hooks/useReviews';
-import { addReview } from '../redux/reviewSlice';
-import { notifySuccess } from '../../notify';
+﻿import React, {useEffect, useRef, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {useReviews} from '../hooks/useReviews';
+import {addReview} from '../redux/reviewSlice';
+import {notifySuccess} from '../../notify';
 
 const AddReviewComponent = () => {
     const dispatch = useDispatch();
-    const { productId, review, userRoles } = useReviews();
+    const {productId, review, userRoles} = useReviews();
     const [showModal, setShowModal] = useState(false);
     const [reviewText, setReviewText] = useState("");
     const [rating, setRating] = useState(1);
@@ -28,7 +28,7 @@ const AddReviewComponent = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newReview = { productId, reviewText, value: rating };
+        const newReview = {productId, reviewText, value: rating};
         dispatch(addReview(newReview));
         handleClose();
     };
@@ -65,12 +65,14 @@ const AddReviewComponent = () => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="modalLabel">Добавить отзыв</h5>
-                            <button type="button" className="btn-close" aria-label="Close" onClick={handleClose}></button>
+                            <button type="button" className="btn-close" aria-label="Close"
+                                    onClick={handleClose}></button>
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="reviewText" className="form-label"><h4>Опишите впечатления</h4></label>
+                                    <label htmlFor="reviewText" className="form-label"><h4>Опишите впечатления</h4>
+                                    </label>
                                     <textarea
                                         id="reviewText"
                                         className="form-control"

@@ -1,5 +1,4 @@
-﻿@using MercerStore.Web.Application.ViewModels
-@model OrderViewModel
+﻿@model MercerStore.Web.Application.ViewModels.OrderViewModel
 
 <div class="container-fluid">
     <div class="row">
@@ -29,7 +28,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PhoneNumber" class="form-label required"></label>
-                                <input asp-for="PhoneNumber" class="form-control" />
+                                <input asp-for="PhoneNumber" class="form-control"/>
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
@@ -37,7 +36,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Email" class="form-label"></label>
-                                <input asp-for="Email" class="form-control" />
+                                <input asp-for="Email" class="form-control"/>
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                         </div>
@@ -45,7 +44,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label asp-for="Address" class="form-label required"></label>
-                                <input asp-for="Address" class="form-control" />
+                                <input asp-for="Address" class="form-control"/>
                                 <span asp-validation-for="Address" class="text-danger"></span>
                             </div>
                         </div>
@@ -61,27 +60,28 @@
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th>Продукт</th>
-                                    <th class="text-end">Стоимость</th>
-                                </tr>
+                            <tr>
+                                <th>Продукт</th>
+                                <th class="text-end">Стоимость</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.CartViewModel.CartItems)
-                                {
-                                    <tr>
-                                        <td>
-                                            @item.Name
-                                            <small> x @item.Quantity</small>
-                                        </td>
-                                        <td class="text-end">@(((item.DiscountedPrice ?? item.Price) * item.Quantity).ToString("C0"))</td>
-                                    </tr>
-                                }
+                            @foreach (var item in Model.CartViewModel.CartItems)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Name
+                                        <small> x @item.Quantity</small>
+                                    </td>
+                                    <td class="text-end">@(((item.DiscountedPrice ?? item.Price) * item.Quantity).ToString("C0"))</td>
+                                </tr>
+                            }
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td colspan="2" class="text-end"><strong>Итого:</strong> @Model.CartViewModel.CartTotalPrice.ToString("C0")</td>
-                                </tr>
+                            <tr>
+                                <td colspan="2" class="text-end">
+                                    <strong>Итого:</strong> @Model.CartViewModel.CartTotalPrice.ToString("C0")</td>
+                            </tr>
                             </tfoot>
                         </table>
                     </div>

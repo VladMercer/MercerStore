@@ -1,15 +1,15 @@
 ﻿import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useSearchPage } from '../hooks/useSearchPage';
-import { setSortOrder } from '../redux/searchPageSlice';
+import {useDispatch} from 'react-redux';
+import {useSearchPage} from '../hooks/useSearchPage';
+import {setSortOrder} from '../redux/searchPageSlice';
 
 const SortComponent = () => {
     const dispatch = useDispatch();
-    const { sortOrder } = useSearchPage();
+    const {sortOrder} = useSearchPage();
 
     const handleSortChange = (event) => {
         const newSortOrder = event.target.value;
-        dispatch(setSortOrder(newSortOrder));  
+        dispatch(setSortOrder(newSortOrder));
     };
 
     return (

@@ -1,40 +1,39 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Requests.Log;
 using MercerStore.Web.Application.ViewModels.Categories;
 
-namespace MercerStore.Web.Application.Handlers.Categories.Commands
+namespace MercerStore.Web.Application.Handlers.Categories.Commands;
+
+public record AddCategoryCommand(CreateCategoryViewModel CreateCategoryViewModel) :
+    LoggableRequest<Unit>("Manager add new category", "Category");
+
+public class AddCategoryHandler : IRequestHandler<AddCategoryCommand, Unit>
 {
-    public record AddCategoryCommand(CreateCategoryViewModel CreateCategoryViewModel) :
-        LoggableRequest<Unit>("Manager add new category", "Category");
-    public class AddCategoryHandler : IRequestHandler<AddCategoryCommand, Unit>
+    private readonly ICategoryService _categoryService;
+    private readonly IPhotoService _photoService;
+
+    public AddCategoryHandler(IPhotoService photoService, ICategoryService categoryService)
     {
-        private readonly IPhotoService _photoService;
-        private readonly ICategoryService _categoryService;
+        _photoService = photoService;
+        _categoryService = categoryService;
+    }
 
-        public AddCategoryHandler(IPhotoService photoService, ICategoryService categoryService)
+    public async Task<Unit> Handle(AddCategoryCommand request, CancellationToken ct)
+    {
+        var categoryImgUrl = "";
+
+        if (request.CreateCategoryViewModel.CategoryImage != null)
         {
-            _photoService = photoService;
-            _categoryService = categoryService;
+            var photoResult = await _photoService.AddPhotoAsync(request.CreateCategoryViewModel.CategoryImage, ct);
+            categoryImgUrl = photoResult.Url.ToString();
         }
 
-        public async Task<Unit> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
-        {
-            var categoryImgUrl = "";
+        var category = await _categoryService.AddCategory(request.CreateCategoryViewModel, categoryImgUrl, ct);
 
-            if (request.CreateCategoryViewModel.CategoryImage != null)
-            {
-                var photoResult = await _photoService.AddPhotoAsync(request.CreateCategoryViewModel.CategoryImage);
-                categoryImgUrl = photoResult.Url.ToString();
-            }
+        request.EntityId = category.Id;
+        request.Details = new { category.Name, categoryImgUrl, category.Description };
 
-            var category = await _categoryService.AddCategory(request.CreateCategoryViewModel, categoryImgUrl);
-
-            request.EntityId = category.Id;
-            request.Details = new { category.Name, categoryImgUrl, category.Description };
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

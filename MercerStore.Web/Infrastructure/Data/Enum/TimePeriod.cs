@@ -1,12 +1,11 @@
-﻿namespace MercerStore.Web.Infrastructure.Data.Enum
+﻿namespace MercerStore.Web.Infrastructure.Data.Enum;
+
+public enum TimePeriod
 {
-    public enum TimePeriod
-    {
-        Day = -1,
-        Week = -7,
-        Month = 1,
-        Quarter = -3,
-        Year = -12,
-        All
-    }
+    Day = -1,
+    Week = -7,
+    Month = 1,
+    Quarter = -3,
+    Year = -12,
+    All
 }

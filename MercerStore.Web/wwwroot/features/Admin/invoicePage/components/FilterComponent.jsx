@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useInvoices } from "../hooks/useInvoices";
-import { setFilter } from "../redux/invoicePageSlice";
+import {useDispatch} from "react-redux";
+import {useInvoices} from "../hooks/useInvoices";
+import {setFilter} from "../redux/invoicePageSlice";
 
 const FilterComponent = () => {
     const dispatch = useDispatch();
-    const { filter } = useInvoices();
+    const {filter} = useInvoices();
 
     const handleFilterChange = (event) => {
         dispatch(setFilter(event.target.value));

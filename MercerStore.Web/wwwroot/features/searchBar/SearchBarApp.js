@@ -1,7 +1,7 @@
-﻿import { useState, useEffect } from 'react';
+﻿import {useEffect, useState} from 'react';
 import axios from 'axios';
 import SearchBarComponent from './SearchBarComponent';
-import { API_SEARCH_URL } from '../../apiConfig';
+import {API_SEARCH_URL} from '../../apiConfig';
 
 
 const SearchBarApp = () => {

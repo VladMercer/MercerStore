@@ -1,6 +1,6 @@
-﻿import React, { Suspense, lazy } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 
 const PageSizeSelectorComponent = lazy(() => import('./components/PageSizeSelectorComponent'));
@@ -12,15 +12,15 @@ const FilterComponent = lazy(() => import('./components/FilterComponent'));
 
 export const categoryApp = (store) => {
     const portals = [
-        { id: 'category-page-size-root', component: <PageSizeSelectorComponent /> },
-        { id: 'category-pagination-root', component: <PaginationComponent /> },
-        { id: 'category-sort-root', component: <SortComponent /> },
-        { id: 'total-products-info-root', component: <TotalProductsInfoComponent /> },
-        { id: 'filter-root', component: <FilterComponent /> },
-        { id: 'category-product-list-root', component: <ProductListComponent /> },
+        {id: 'category-page-size-root', component: <PageSizeSelectorComponent/>},
+        {id: 'category-pagination-root', component: <PaginationComponent/>},
+        {id: 'category-sort-root', component: <SortComponent/>},
+        {id: 'total-products-info-root', component: <TotalProductsInfoComponent/>},
+        {id: 'filter-root', component: <FilterComponent/>},
+        {id: 'category-product-list-root', component: <ProductListComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);

@@ -1,10 +1,10 @@
 ﻿import React from 'react';
-import { useInvoices } from '../hooks/useInvoices';
-import { useDispatch } from 'react-redux';
-import { setPageNumber } from '../redux/invoicePageSlice';
+import {useInvoices} from '../hooks/useInvoices';
+import {useDispatch} from 'react-redux';
+import {setPageNumber} from '../redux/invoicePageSlice';
 
 const PaginationComponent = () => {
-    const { pageNumber, totalPages } = useInvoices();
+    const {pageNumber, totalPages} = useInvoices();
     const dispatch = useDispatch();
 
     const changePageNumber = (newPageNumber) => {

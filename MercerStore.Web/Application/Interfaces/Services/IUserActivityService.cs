@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace MercerStore.Web.Application.Interfaces.Services;
 
-namespace MercerStore.Web.Application.Interfaces.Services
+public interface IUserActivityService
 {
-    public interface IUserActivityService
-    {
-        Task UpdateUserActivity();
-    }
+    Task UpdateUserActivity(CancellationToken ct);
 }

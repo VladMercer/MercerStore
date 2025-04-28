@@ -46,7 +46,7 @@ public class InvoiceController : Controller
         {
             ModelState.AddModelError("", result.ErrorMessage);
 
-            if (result.ErrorMessage == "Продукт не найден")
+            if (string.Equals(result.ErrorMessage, "Продукт не найден", StringComparison.Ordinal))
                 return RedirectToAction("CreateInvoice", new { supplierId = createInvoiceViewModel.SupplierId });
 
             return View(createInvoiceViewModel);
