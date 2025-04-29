@@ -1,7 +1,6 @@
-﻿namespace MercerStore.Web.Application.Interfaces
+﻿namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface IEntity
 {
-    public interface IEntity
-    {
-        int Id { get; set; }
-    }
+    int Id { get; set; }
 }

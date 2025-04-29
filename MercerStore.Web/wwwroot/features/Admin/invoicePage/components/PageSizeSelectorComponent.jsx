@@ -1,10 +1,10 @@
-﻿import { useDispatch } from 'react-redux';
+﻿import {useDispatch} from 'react-redux';
 import React from 'react';
-import { useInvoices } from '../hooks/useInvoices';
-import { setPageSize } from '../redux/invoicePageSlice';
+import {useInvoices} from '../hooks/useInvoices';
+import {setPageSize} from '../redux/invoicePageSlice';
 
 const PageSizeSelectorComponent = () => {
-    const { pageSize } = useInvoices();
+    const {pageSize} = useInvoices();
     const dispatch = useDispatch();
 
     const changePageSize = (newPageSize) => {

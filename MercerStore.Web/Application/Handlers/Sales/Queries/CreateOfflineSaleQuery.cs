@@ -1,26 +1,25 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Models.sales;
 
-namespace MercerStore.Web.Application.Handlers.Sales.Queries
+namespace MercerStore.Web.Application.Handlers.Sales.Queries;
+
+public record CreateOfflineSaleQuery : IRequest<OfflineSale>;
+
+public class CreateOfflineSaleHandler : IRequestHandler<CreateOfflineSaleQuery, OfflineSale>
 {
-    public record CreateOfflineSaleQuery() : IRequest<OfflineSale>;
-    public class CreateOfflineSaleHandler : IRequestHandler<CreateOfflineSaleQuery, OfflineSale>
+    private readonly ISaleService _saleService;
+    private readonly IUserIdentifierService _userIdentifierService;
+
+    public CreateOfflineSaleHandler(ISaleService saleService, IUserIdentifierService userIdentifierService)
     {
-        private readonly ISaleService _saleService;
-        private readonly IUserIdentifierService _userIdentifierService;
+        _saleService = saleService;
+        _userIdentifierService = userIdentifierService;
+    }
 
-        public CreateOfflineSaleHandler(ISaleService saleService, IUserIdentifierService userIdentifierService)
-        {
-            _saleService = saleService;
-            _userIdentifierService = userIdentifierService;
-        }
-
-        public async Task<OfflineSale> Handle(CreateOfflineSaleQuery request, CancellationToken cancellationToken)
-        {
-            var managerId = _userIdentifierService.GetCurrentIdentifier();
-            return await _saleService.CreateOfflineSale(managerId); 
-        }
+    public async Task<OfflineSale> Handle(CreateOfflineSaleQuery request, CancellationToken ct)
+    {
+        var managerId = _userIdentifierService.GetCurrentIdentifier();
+        return await _saleService.CreateOfflineSale(managerId, ct);
     }
 }

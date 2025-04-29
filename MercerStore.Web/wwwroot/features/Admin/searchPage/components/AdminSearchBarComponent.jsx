@@ -1,11 +1,11 @@
-﻿import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchResults } from '../redux/adminSearchPageSlice';
+﻿import React, {useRef} from 'react';
+import {useDispatch} from 'react-redux';
+import {fetchResults} from '../redux/adminSearchPageSlice';
 
 const AdminSearchBarComponent = () => {
     const dispatch = useDispatch();
     const debounceTimer = useRef(null);
-   
+
     const handleInputChange = (e) => {
         const newQuery = e.target.value;
 
@@ -14,8 +14,8 @@ const AdminSearchBarComponent = () => {
         }
 
         debounceTimer.current = setTimeout(() => {
-            dispatch(fetchResults({ query:newQuery}));
-          
+            dispatch(fetchResults({query: newQuery}));
+
         }, 400);
     };
 

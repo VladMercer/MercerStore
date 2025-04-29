@@ -1,10 +1,10 @@
-﻿import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchCartData, generateToken, sendHeartbeat } from '../redux/cartSlice';
+﻿import {useDispatch, useSelector} from 'react-redux';
+import {useEffect} from 'react';
+import {fetchCartData, generateToken, sendHeartbeat} from '../redux/cartSlice';
 
 const useFetchCartData = () => {
     const dispatch = useDispatch();
-    const { items, isLoaded } = useSelector((state) => state.cart);
+    const {items, isLoaded} = useSelector((state) => state.cart);
 
     useEffect(() => {
         if (!isLoaded) {
@@ -17,7 +17,7 @@ const useFetchCartData = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             dispatch(sendHeartbeat());
-        }, 60000); 
+        }, 60000);
 
         return () => clearInterval(interval);
     }, [dispatch]);

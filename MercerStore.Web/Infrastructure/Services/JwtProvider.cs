@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MercerStore.Web.Application.Interfaces;
+using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Requests.Account;
 using MercerStore.Web.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
@@ -20,7 +20,7 @@ public class JwtProvider : IJwtProvider
 
     public async Task<string> GenerateJwtToken(JwtTokenRequest request)
     {
-        var defaultProfilePictureUrl = "https://localhost:7208/img/default/default_user_image.jpg";
+        const string defaultProfilePictureUrl = "https://localhost:7208/img/default/default_user_image.jpg";
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, request.UserId),
@@ -33,6 +33,7 @@ public class JwtProvider : IJwtProvider
 
         claims.Add(new Claim("profile_picture", resolvedProfilePictureUrl));
         claims.Add(new Claim("creation_date", request.CreationDate.ToString("o")));
+        claims.Add(new Claim("time_zone", request.TimeZone!));
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.SecretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

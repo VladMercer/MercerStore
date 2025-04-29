@@ -1,13 +1,13 @@
-﻿import React, { useContext, useEffect} from 'react';
-import { ReviewContext } from './ReviewContext';
+﻿import React, {useContext} from 'react';
+import {ReviewContext} from './ReviewContext';
 import UpdateReviewComponent from './UpdateReviewComponent';
 
 
-const UpdateReviewApp = ({ review }) => {
-    const { UpdateReview} = useContext(ReviewContext);
- 
+const UpdateReviewApp = ({review}) => {
+    const {UpdateReview} = useContext(ReviewContext);
+
     return (
-        <UpdateReviewComponent UpdateReview={UpdateReview} review={review} />
+        <UpdateReviewComponent UpdateReview={UpdateReview} review={review}/>
     );
 };
 

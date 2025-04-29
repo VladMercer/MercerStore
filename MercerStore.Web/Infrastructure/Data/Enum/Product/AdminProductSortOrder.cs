@@ -1,14 +1,13 @@
-﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Product
+﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Product;
+
+public enum AdminProductSortOrder
 {
-    public enum AdminProductSortOrder
-    {
-        NameAsc,
-        NameDesc,
-        PriceAsc,
-        PriceDesc,
-        StatusAsc,
-        StatusDesc,
-        InStockAsc,
-        InStockDesc
-    }
+    NameAsc,
+    NameDesc,
+    PriceAsc,
+    PriceDesc,
+    StatusAsc,
+    StatusDesc,
+    InStockAsc,
+    InStockDesc
 }

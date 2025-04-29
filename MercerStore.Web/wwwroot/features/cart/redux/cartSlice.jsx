@@ -1,19 +1,17 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { notifySuccess } from '../../notify';
-import { API_CARTS_URL } from '../../../apiConfig';
-import { API_AUTH_URL } from '../../../apiConfig';
+import {notifySuccess} from '../../notify';
+import {API_AUTH_URL, API_CARTS_URL} from '../../../apiConfig';
 
 export const generateToken = createAsyncThunk('cart/generateToken', async () => {
     const existingToken = Cookies.get("OhCookies");
     if (existingToken) {
         return;
     }
-
-    const response = await axios.post(`${API_AUTH_URL}/generate-token`);
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    await axios.post(`${API_AUTH_URL}/generate-token`, {timeZone});
 });
-
 
 export const sendHeartbeat = createAsyncThunk('cart/sendHeartbeat', async () => {
     try {
@@ -31,14 +29,14 @@ export const fetchCartData = createAsyncThunk('cart/fetchCartData', async () => 
 });
 
 
-export const addToCart = createAsyncThunk('cart/addToCart', async (productId, { dispatch }) => {
+export const addToCart = createAsyncThunk('cart/addToCart', async (productId, {dispatch}) => {
     await axios.post(`${API_CARTS_URL}/product/${productId}`);
     dispatch(fetchCartData());
     notifySuccess('Товар успешно добавлен в корзину!');
     return productId;
 });
 
-export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (productId, { dispatch }) => {
+export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (productId, {dispatch}) => {
     await axios.delete(`${API_CARTS_URL}/product/${productId}`);
     dispatch(fetchCartData());
     notifySuccess('Товар успешно удален из корзины!');

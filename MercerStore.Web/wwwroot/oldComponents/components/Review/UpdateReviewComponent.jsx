@@ -1,11 +1,11 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+﻿import React, {useEffect, useRef, useState} from 'react';
 
-const UpdateReviewComponent = ({ review, UpdateReview }) => {
+const UpdateReviewComponent = ({review, UpdateReview}) => {
     const [showModal, setShowModal] = useState(false);
     const [reviewText, setReviewText] = useState(review?.reviewText || "");
     const [rating, setRating] = useState(review?.value || 1);
     const modalRef = useRef(null);
-    const modalInstance = useRef(null); 
+    const modalInstance = useRef(null);
 
     const handleShow = () => {
         setReviewText(review.reviewText || "");
@@ -31,7 +31,7 @@ const UpdateReviewComponent = ({ review, UpdateReview }) => {
         };
 
         UpdateReview(updatedReview);
-        handleClose(); 
+        handleClose();
     };
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const UpdateReviewComponent = ({ review, UpdateReview }) => {
             modalRef.current.addEventListener('hidden.bs.modal', handleClose);
 
             return () => {
-               
+
                 modalRef.current.removeEventListener('hidden.bs.modal', handleClose);
                 modalInstance.current = null;
             };
@@ -60,7 +60,8 @@ const UpdateReviewComponent = ({ review, UpdateReview }) => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="modalLabel">Редактировать отзыв</h5>
-                            <button type="button" className="btn-close" aria-label="Close" onClick={handleClose}></button>
+                            <button type="button" className="btn-close" aria-label="Close"
+                                    onClick={handleClose}></button>
                         </div>
                         <div className="modal-body">
                             <form onSubmit={handleSubmit}>

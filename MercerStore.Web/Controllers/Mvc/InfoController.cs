@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Mvc
+namespace MercerStore.Web.Controllers.Mvc;
+
+public class InfoController : Controller
 {
-    public class InfoController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }

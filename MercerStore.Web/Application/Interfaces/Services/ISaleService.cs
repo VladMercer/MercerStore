@@ -2,15 +2,12 @@
 using MercerStore.Web.Application.Requests.Sales;
 using MercerStore.Web.Infrastructure.Helpers;
 
-namespace MercerStore.Web.Application.Interfaces.Services
+namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface ISaleService
 {
-    public interface ISaleService
-    {
-        Task<OfflineSale> CreateOfflineSale(string managerId);
-        Task<Result<int>> AddItem(SaleRequest request);
-        Task<Result<int>> CloseSale(int saleId);
-        Task<Result<OfflineSale>> GetSummarySale(int saleId);
-
-
-    }
+    Task<OfflineSale> CreateOfflineSale(string managerId, CancellationToken ct);
+    Task<Result<int>> AddItem(SaleRequest request, CancellationToken ct);
+    Task<Result<int>> CloseSale(int saleId, CancellationToken ct);
+    Task<Result<OfflineSale>> GetSummarySale(int saleId, CancellationToken ct);
 }

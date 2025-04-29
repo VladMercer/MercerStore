@@ -1,15 +1,16 @@
-﻿namespace MercerStore.Web.Application.Models.Products
+﻿using MercerStore.Web.Infrastructure.Data.Enum.Product;
+
+namespace MercerStore.Web.Application.Models.Products;
+
+public class ProductStatus
 {
-    public class ProductStatus
-    {
-        public int Id { get; set; }
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
-        public ProductStatuses Status { get; set; }
-        public bool? IsNew { get; set; }
-        public bool? IsHit { get; set; }
-        public int InStock { get; set; }
-        public bool IsUnassigned { get; set; } = true;
-        public bool IsLowStock => InStock < 3;
-    }
+    public int Id { get; set; }
+    public int ProductId { get; set; }
+    public Product? Product { get; set; }
+    public ProductStatuses Status { get; set; }
+    public bool? IsNew { get; set; }
+    public bool? IsHit { get; set; }
+    public int InStock { get; set; }
+    public bool IsUnassigned { get; set; } = true;
+    public bool IsLowStock => InStock < 3;
 }

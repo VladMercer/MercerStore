@@ -1,4 +1,5 @@
-﻿import { toast, Slide } from 'react-toastify';
+﻿import {Slide, toast} from 'react-toastify';
+
 export const notifySuccess = (message) => {
     toast.success(message, {
         position: "bottom-right",

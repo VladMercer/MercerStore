@@ -1,10 +1,10 @@
-﻿import { useDispatch } from 'react-redux';
+﻿import {useDispatch} from 'react-redux';
 import React from 'react';
-import { useReviews } from '../hooks/useReviews';
-import { setPageSize } from '../redux/reviewPageSlice';
+import {useReviews} from '../hooks/useReviews';
+import {setPageSize} from '../redux/reviewPageSlice';
 
 const PageSizeSelectorComponent = () => {
-    const { pageSize } = useReviews();
+    const {pageSize} = useReviews();
     const dispatch = useDispatch();
 
     const changePageSize = (newPageSize) => {

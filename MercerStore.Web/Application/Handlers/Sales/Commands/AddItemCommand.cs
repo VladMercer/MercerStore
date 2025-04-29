@@ -4,40 +4,37 @@ using MercerStore.Web.Application.Requests.Log;
 using MercerStore.Web.Application.Requests.Sales;
 using MercerStore.Web.Infrastructure.Helpers;
 
-namespace MercerStore.Web.Application.Handlers.Sales.Commands
+namespace MercerStore.Web.Application.Handlers.Sales.Commands;
+
+public record AddItemCommand(SaleRequest SaleRequest) :
+    LoggableRequest<Result<Unit>>("Manager add item in Offline sale", "OfflineSaleItem");
+
+public class AddItemHandler : IRequestHandler<AddItemCommand, Result<Unit>>
 {
-    public record AddItemCommand(SaleRequest SaleRequest) :
-        LoggableRequest<Result<Unit>>("Manager add item in ofline sale", "OfflineSaleItem");
-    public class AddItemHandler : IRequestHandler<AddItemCommand, Result<Unit>>
+    private readonly ISaleService _saleService;
+
+    public AddItemHandler(ISaleService saleService)
     {
-        private readonly ISaleService _saleService;
+        _saleService = saleService;
+    }
 
-        public AddItemHandler(ISaleService saleService)
+    public async Task<Result<Unit>> Handle(AddItemCommand request, CancellationToken ct)
+    {
+        var result = await _saleService.AddItem(request.SaleRequest, ct);
+
+        if (!result.IsSuccess) return Result<Unit>.Failure(result.ErrorMessage);
+
+        var logDetails = new
         {
-            _saleService = saleService;
-        }
+            OfflineSaleId = request.SaleRequest.SaleId,
+            request.SaleRequest.ProductId,
+            request.SaleRequest.Sku,
+            request.SaleRequest.Quantity
+        };
 
-        public async Task<Result<Unit>> Handle(AddItemCommand request, CancellationToken cancellationToken)
-        {
-            var result = await _saleService.AddItem(request.SaleRequest);
+        request.EntityId = request.SaleRequest.SaleId;
+        request.Details = logDetails;
 
-            if (!result.IsSuccess)
-            {
-                return Result<Unit>.Failure(result.ErrorMessage);
-            }
-
-            var logDetails = new
-            {
-                OfflineSaleId = request.SaleRequest.SaleId,
-                request.SaleRequest.ProductId,
-                request.SaleRequest.Sku,
-                request.SaleRequest.Quantity,
-            };
-
-            request.EntityId = request.SaleRequest.SaleId;
-            request.Details = logDetails;
-
-            return Result<Unit>.Success(Unit.Value);
-        }
+        return Result<Unit>.Success(Unit.Value);
     }
 }

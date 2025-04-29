@@ -4,7 +4,7 @@ namespace MercerStore.Web.Controllers.Mvc;
 
 public class AboutUsController : Controller
 {
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }

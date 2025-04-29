@@ -1,9 +1,9 @@
-﻿import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, removeFromCart } from '../redux/cartSlice';
+﻿import {useDispatch, useSelector} from 'react-redux';
+import {addToCart, removeFromCart} from '../redux/cartSlice';
 
 export const useCart = () => {
     const dispatch = useDispatch();
-    const { items, totalPrice, itemCount } = useSelector((state) => state.cart);
+    const {items, totalPrice, itemCount} = useSelector((state) => state.cart);
 
     return {
         items,

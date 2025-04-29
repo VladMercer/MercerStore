@@ -1,10 +1,10 @@
 ﻿import React from 'react';
-import { useSearchPage } from '../hooks/useSearchPage';
-import { useDispatch } from 'react-redux';
-import { setPageNumber } from '../redux/searchPageSlice';
+import {useSearchPage} from '../hooks/useSearchPage';
+import {useDispatch} from 'react-redux';
+import {setPageNumber} from '../redux/searchPageSlice';
 
 const PaginationComponent = () => {
-    const { pageNumber, totalPages } = useSearchPage();
+    const {pageNumber, totalPages} = useSearchPage();
     const dispatch = useDispatch();
 
     const changePageNumber = (newPageNumber) => {

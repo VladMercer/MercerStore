@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useProducts } from "../hooks/useProducts";
-import { setFilter } from "../redux/adminProductPageSlice";
+import {useDispatch} from "react-redux";
+import {useProducts} from "../hooks/useProducts";
+import {setFilter} from "../redux/adminProductPageSlice";
 
 const FilterComponent = () => {
     const dispatch = useDispatch();
-    const { filter } = useProducts();
+    const {filter} = useProducts();
 
     const handleFilterChange = (event) => {
         const newFilter = event.target.value;

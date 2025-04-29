@@ -1,5 +1,4 @@
-﻿@using MercerStore.Web.Application.ViewModels.Categories
-@model CategoryPageViewModel
+﻿@model MercerStore.Web.Application.ViewModels.Categories.CategoryPageViewModel
 @{
     ViewData["Title"] = Model.Category.Name;
 }
@@ -11,7 +10,7 @@
                 <ul>
                     <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
                     <li><span>@Model.Category.Name</span></li>
-                 
+
                 </ul>
             </nav>
         </div>
@@ -30,12 +29,12 @@
 <div class="container-fluid">
     <div class="row mx-lg-5">
         <div class="col-lg-3 col-md-4">
-           <div id="filter-root"></div>
+            <div id="filter-root"></div>
         </div>
         <div class="col-lg-9 col-md-8">
             <div class="row mt-2">
-              
-             @*    <div class="col-4 col-sm-2">
+
+                @*    <div class="col-4 col-sm-2">
                     <img src="@Model.Category.CategoryImgUrl" alt="" class="img-thumbnail">
                 </div>
                 <div class="col-8 col-sm-10">
@@ -44,7 +43,7 @@
                     </p>
                 </div> *@
             </div>
-@* 
+            @* 
             <hr class=""> *@
 
             <div class="row">

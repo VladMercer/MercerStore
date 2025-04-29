@@ -4,37 +4,37 @@ using MercerStore.Web.Application.Requests.Log;
 using MercerStore.Web.Areas.Admin.ViewModels.Invoices;
 using MercerStore.Web.Infrastructure.Helpers;
 
-namespace MercerStore.Web.Application.Handlers.Invoices.Command
+namespace MercerStore.Web.Application.Handlers.Invoices.Command;
+
+public record AddInvoiceItemCommand(CreateInvoiceViewModel CreateInvoiceViewModel) :
+    LoggableRequest<Result<Unit>>("Manager add item in invoice", "invoiceItem");
+
+public class AddInvoiceItemHandler : IRequestHandler<AddInvoiceItemCommand, Result<Unit>>
 {
-    public record AddInvoiceItemCommand(CreateInvoiceViewModel CreateInvoiceViewModel) :
-        LoggableRequest<Result<Unit>>("Manager add item in invoice", "invoiceItem");
-    public class AddInvoiceItemHandler : IRequestHandler<AddInvoiceItemCommand, Result<Unit>>
+    private readonly IInvoiceService _invoiceService;
+
+    public AddInvoiceItemHandler(IInvoiceService invoiceService)
     {
-        private readonly IInvoiceService _invoiceService;
+        _invoiceService = invoiceService;
+    }
 
-        public AddInvoiceItemHandler(IInvoiceService invoiceService)
+    public async Task<Result<Unit>> Handle(AddInvoiceItemCommand request, CancellationToken ct)
+    {
+        var result = await _invoiceService.AddInvoiceItem(request.CreateInvoiceViewModel, ct);
+
+        request.EntityId = request.CreateInvoiceViewModel.ProductId;
+
+        if (!result.IsSuccess)
         {
-            _invoiceService = invoiceService;
+            request.Details = new { result.ErrorMessage };
+            return Result<Unit>.Failure(result.ErrorMessage);
         }
 
-        public async Task<Result<Unit>> Handle(AddInvoiceItemCommand request, CancellationToken cancellationToken)
+        request.Details = new
         {
-            var result = await _invoiceService.AddInvoiceItem(request.CreateInvoiceViewModel);
+            result.Data
+        };
 
-            request.EntityId = request.CreateInvoiceViewModel.ProductId;
-
-            if (!result.IsSuccess)
-            {
-                request.Details = new { result.ErrorMessage };
-                return Result<Unit>.Failure(result.ErrorMessage);
-            }
-
-            request.Details = new
-            {
-                result.Data
-            };
-
-            return Result<Unit>.Success(Unit.Value);
-        }
+        return Result<Unit>.Success(Unit.Value);
     }
 }

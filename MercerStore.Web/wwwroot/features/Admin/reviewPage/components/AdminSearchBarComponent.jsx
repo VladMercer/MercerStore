@@ -1,6 +1,6 @@
-﻿import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { setQuery } from '../redux/reviewPageSlice';
+﻿import React, {useRef} from 'react';
+import {useDispatch} from 'react-redux';
+import {setQuery} from '../redux/reviewPageSlice';
 
 const AdminSearchBarComponent = () => {
     const dispatch = useDispatch();

@@ -1,12 +1,11 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { notifySuccess } from '../../notify';
-import { API_REVIEWS_URL } from '../../../apiConfig';
-import { API_USERS_URL } from '../../../apiConfig';
+import {notifySuccess} from '../../notify';
+import {API_REVIEWS_URL, API_USERS_URL} from '../../../apiConfig';
 
 export const fethAllReviewsInfo = createAsyncThunk(
     'reviews/fethAllReviewsInfo',
-    async (productId, { dispatch }) => {
+    async (productId, {dispatch}) => {
         await dispatch(fetchProductReviews(productId));
         await dispatch(fetchCurrentReview(productId));
         await dispatch(fetchAvgProductRate(productId));
@@ -65,16 +64,16 @@ export const fetchAvgProductRate = createAsyncThunk(
 
 export const addReview = createAsyncThunk(
     'reviews/addReview',
-    async (reviewDto, { dispatch }) => {
-        await axios.post(`${API_REVIEWS_URL}/review`,reviewDto);
-        dispatch(fethAllReviewsInfo(reviewDto.productId)); 
+    async (reviewDto, {dispatch}) => {
+        await axios.post(`${API_REVIEWS_URL}/review`, reviewDto);
+        dispatch(fethAllReviewsInfo(reviewDto.productId));
         notifySuccess('Спасибо за отзыв!');
     }
 );
 
 export const updateReview = createAsyncThunk(
     'reviews/updateReview',
-    async (reviewDto, { dispatch }) => {
+    async (reviewDto, {dispatch}) => {
         await axios.put(`${API_REVIEWS_URL}/review`, reviewDto);
         dispatch(fethAllReviewsInfo(reviewDto.productId));
         notifySuccess('Отзыв успешно изменён');
@@ -83,9 +82,9 @@ export const updateReview = createAsyncThunk(
 
 export const removeReview = createAsyncThunk(
     'reviews/removeReview',
-    async (productId, { dispatch }) => {
+    async (productId, {dispatch}) => {
         await axios.delete(`${API_REVIEWS_URL}/review/${productId}`);
-        dispatch(fethAllReviewsInfo(productId)); 
+        dispatch(fethAllReviewsInfo(productId));
         notifySuccess('Отзыв успешно удалён');
     }
 );
@@ -98,7 +97,7 @@ const reviewSlice = createSlice({
         productReviews: [],
         avgReviewRate: 0,
         currentUserId: '',
-        userRoles:'',
+        userRoles: '',
         review: null,
         isLoaded: false,
     },
@@ -131,5 +130,5 @@ const reviewSlice = createSlice({
     },
 });
 
-export const { setProductId } = reviewSlice.actions;
+export const {setProductId} = reviewSlice.actions;
 export default reviewSlice.reducer;

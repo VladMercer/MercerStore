@@ -1,13 +1,13 @@
-﻿import React, { useMemo } from "react";
-import { useDispatch } from "react-redux";
-import { useSuppliers } from "../hooks/useSuppliers";
+﻿import React, {useMemo} from "react";
+import {useDispatch} from "react-redux";
+import {useSuppliers} from "../hooks/useSuppliers";
 import useFetchSuppliers from "../hooks/useFetchSuppliers";
-import { removeSupplier, fetchSuppliers } from "../redux/supplierPageSlice";
+import {fetchSuppliers, removeSupplier} from "../redux/supplierPageSlice";
 
 const SuppliersListComponent = () => {
     useFetchSuppliers();
     const dispatch = useDispatch();
-    const { suppliers, pageNumber, pageSize, query } = useSuppliers();
+    const {suppliers, pageNumber, pageSize, query} = useSuppliers();
 
     const currentPath = window.location.pathname.toLowerCase();
     const isInvoicePage = currentPath.includes('/invoice');
@@ -23,7 +23,7 @@ const SuppliersListComponent = () => {
     const handleDelete = async (supplierId) => {
         if (window.confirm("Вы уверены, что хотите удалить этого поставщика?")) {
             await dispatch(removeSupplier(supplierId)).unwrap();
-            dispatch(fetchSuppliers({ pageNumber, pageSize, query }));
+            dispatch(fetchSuppliers({pageNumber, pageSize, query}));
         }
     };
 
@@ -41,7 +41,7 @@ const SuppliersListComponent = () => {
         return suppliers.map((supplier) => (
             <tr
                 key={supplier.id}
-                style={{ cursor: "pointer", verticalAlign: "middle" }}
+                style={{cursor: "pointer", verticalAlign: "middle"}}
                 onClick={() => handleSupplierClick(supplier.id)}
             >
                 <td className="text-start">
@@ -71,7 +71,7 @@ const SuppliersListComponent = () => {
 
                 <td className="text-center">{supplier.taxId || "—"}</td>
 
-                {!isInvoicePage && ( 
+                {!isInvoicePage && (
                     <td className="text-center">
                         <button
                             className="remove-from-cart-button"
@@ -93,15 +93,15 @@ const SuppliersListComponent = () => {
             <h2>Список поставщиков</h2>
             <table className="table table-striped table-hover table-responsive-md table-sm">
                 <thead className="thead-dark">
-                    <tr>
-                        <th className="text-center">Название</th>
-                        <th className="text-center">Контакты</th>
-                        <th className="text-center">Адрес и Телефон</th>
-                        <th className="text-center">ИНН</th>
-                        {!isInvoicePage && (
-                            <th className="text-center"></th>
-                        )}
-                    </tr>
+                <tr>
+                    <th className="text-center">Название</th>
+                    <th className="text-center">Контакты</th>
+                    <th className="text-center">Адрес и Телефон</th>
+                    <th className="text-center">ИНН</th>
+                    {!isInvoicePage && (
+                        <th className="text-center"></th>
+                    )}
+                </tr>
                 </thead>
                 <tbody>{renderSuppliers}</tbody>
             </table>

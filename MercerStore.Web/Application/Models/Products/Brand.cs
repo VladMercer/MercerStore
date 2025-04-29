@@ -1,11 +1,10 @@
-﻿namespace MercerStore.Web.Application.Models.Products
+﻿namespace MercerStore.Web.Application.Models.Products;
+
+public class Brand
 {
-    public class Brand
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string LogoImgUrl { get; set; }
-        public List<Product>? Products { get; set; }
-        public List<Category>? Categories { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string LogoImgUrl { get; set; }
+    public IList<Product>? Products { get; set; }
+    public IList<Category>? Categories { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿import React, { createContext, useState, useEffect } from 'react';
+﻿import React, {createContext, useEffect, useState} from 'react';
+
 export const ProductContext = createContext();
 
 function getQueryParam(param) {
@@ -6,7 +7,7 @@ function getQueryParam(param) {
     return urlParams.get(param);
 }
 
-export const ProductProvider = ({ children }) => {
+export const ProductProvider = ({children}) => {
     const [categoryId, setCategoryId] = useState(getQueryParam('categoryId') || 1);
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize, setPageSize] = useState(9);

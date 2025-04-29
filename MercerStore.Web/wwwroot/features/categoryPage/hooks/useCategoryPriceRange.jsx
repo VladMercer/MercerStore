@@ -1,7 +1,7 @@
-﻿import { useSelector } from 'react-redux';
-  
+﻿import {useSelector} from 'react-redux';
+
 export const useCategoryPriceRange = () => {
-   
+
     const minPrice = useSelector((state) => state.category.minPrice);
     const maxPrice = useSelector((state) => state.category.maxPrice);
     const selectedMinPrice = useSelector((state) => state.category.selectedMinPrice);

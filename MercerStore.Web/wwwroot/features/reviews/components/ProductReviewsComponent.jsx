@@ -2,7 +2,7 @@
 import RemoveReviewComponent from './RemoveReviewComponent';
 import UpdateReviewComponent from './UpdateReviewComponent';
 import useFetchReviews from '../hooks/useFetchReviews';
-import { useReviews } from '../hooks/useReviews';
+import {useReviews} from '../hooks/useReviews';
 
 const ProductReviewsComponent = () => {
     useFetchReviews();
@@ -10,7 +10,7 @@ const ProductReviewsComponent = () => {
 
     return (
         <div>
-           
+
             {productReviews.map(review => (
                 review && review.userName && review.date && (
                     <div key={`${review.userId}`} className="card product-review mb-3">
@@ -27,13 +27,13 @@ const ProductReviewsComponent = () => {
                                             className={`fa-solid fa-star ${i < review.value ? 'active' : ''}`}
                                         ></i>
                                     ))}
-                                </div> 
-                                
+                                </div>
+
                                 <div className="review-buttons">
                                     {currentUserId === review.userId && (
                                         <>
-                                            <UpdateReviewComponent />
-                                            <RemoveReviewComponent />
+                                            <UpdateReviewComponent/>
+                                            <RemoveReviewComponent/>
                                         </>
                                     )}
                                 </div>

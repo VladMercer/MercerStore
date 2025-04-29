@@ -1,8 +1,7 @@
-﻿namespace MercerStore.Web.Areas.Admin.ViewModels.Invoices
+﻿namespace MercerStore.Web.Areas.Admin.ViewModels.Invoices;
+
+public class AddInvoiceItemResultViewModel
 {
-    public class AddInvoiceItemResultViewModel
-    {
-        public int ProductId { get; set; }
-        public int SupplierId { get; set; }
-    }
+    public int ProductId { get; set; }
+    public int SupplierId { get; set; }
 }

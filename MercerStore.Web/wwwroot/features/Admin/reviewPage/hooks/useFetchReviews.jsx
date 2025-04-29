@@ -1,12 +1,12 @@
-﻿import { useDispatch } from 'react-redux';
-import { useEffect, useRef } from 'react';
-import { setPageNumber, setIsPageReset, fetchReviews } from '../redux/reviewPageSlice';
-import { useReviews } from './useReviews';
+﻿import {useDispatch} from 'react-redux';
+import {useEffect, useRef} from 'react';
+import {fetchReviews, setIsPageReset, setPageNumber} from '../redux/reviewPageSlice';
+import {useReviews} from './useReviews';
 
 
 const useFetchReviews = () => {
     const dispatch = useDispatch();
-    const { pageNumber, pageSize, sortOrder, timePeriodFilter, filter, isLoaded, isPageReset, query} = useReviews();
+    const {pageNumber, pageSize, sortOrder, timePeriodFilter, filter, isLoaded, isPageReset, query} = useReviews();
 
     const prevSortOrder = useRef(sortOrder);
     const prevQuery = useRef(query);
@@ -18,28 +18,24 @@ const useFetchReviews = () => {
     }
 
     useEffect(() => {
-        
 
-            if (!isLoaded) {
-                dispatchFetchReviews();
+
+        if (!isLoaded) {
+            dispatchFetchReviews();
+        } else if (pageNumber > 1 && (sortOrder !== prevSortOrder.current || query !== prevQuery.current) && !isPageReset) {
+            dispatch(setPageNumber(1));
+            dispatch(setIsPageReset(true));
+        } else if (!isPageReset || (isPageReset && pageNumber === 1)) {
+
+            dispatchFetchReviews();
+
+            if (isPageReset && pageNumber === 1) {
+                dispatch(setIsPageReset(false));
             }
-
-            else if (pageNumber > 1 && (sortOrder !== prevSortOrder.current || query !== prevQuery.current) && !isPageReset) {
-                dispatch(setPageNumber(1));
-                dispatch(setIsPageReset(true));
-            }
-
-            else if (!isPageReset || (isPageReset && pageNumber === 1)) {
-
-                dispatchFetchReviews();
-
-                if (isPageReset && pageNumber === 1) {
-                    dispatch(setIsPageReset(false));
-                }
-            }
+        }
 
         prevSortOrder.current = sortOrder;
-        prevQuery.current = query; 
+        prevQuery.current = query;
     }, [pageNumber, pageSize, sortOrder, timePeriodFilter, filter, query]);
 };
 

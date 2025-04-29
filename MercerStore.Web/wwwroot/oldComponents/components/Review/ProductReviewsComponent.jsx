@@ -1,12 +1,11 @@
 ﻿import React from 'react';
 import RemoveReviewApp from './RemoveReviewApp';
 import UpdateReviewApp from './UpdateReviewApp';
-import AddReviewApp from './AddReviewApp';
 
-const ProductReviewsComponent = ({ currentUserId, productReviews, review }) => {
+const ProductReviewsComponent = ({currentUserId, productReviews, review}) => {
     return (
         <div>
-           
+
             {productReviews.map(review => (
                 review && review.userName && review.date && (
                     <div key={`${review.userId}`} className="card product-review mb-3">
@@ -23,13 +22,13 @@ const ProductReviewsComponent = ({ currentUserId, productReviews, review }) => {
                                             className={`fa-solid fa-star ${i < review.value ? 'active' : ''}`}
                                         ></i>
                                     ))}
-                                </div> 
-                                
+                                </div>
+
                                 <div className="review-buttons">
                                     {currentUserId === review.userId && (
                                         <>
-                                            <UpdateReviewApp review={review} />
-                                            <RemoveReviewApp />
+                                            <UpdateReviewApp review={review}/>
+                                            <RemoveReviewApp/>
                                         </>
                                     )}
                                 </div>

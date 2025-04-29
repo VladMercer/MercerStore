@@ -1,4 +1,4 @@
-﻿import { configureStore } from '@reduxjs/toolkit';
+﻿import {configureStore} from '@reduxjs/toolkit';
 import cartReducer from './features/cart/redux/cartSlice';
 import categoryReducer from './features/categoryPage/redux/categorySlice';
 import searchPageReducer from './features/searchPage/redux/searchPageSlice';

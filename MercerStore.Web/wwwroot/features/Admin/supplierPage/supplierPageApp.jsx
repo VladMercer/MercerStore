@@ -1,6 +1,6 @@
-﻿import React, { Suspense, lazy } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 
 const PageSizeSelectorComponent = lazy(() => import('./components/PageSizeSelectorComponent'));
@@ -11,14 +11,14 @@ const AdminSearchBarComponent = lazy(() => import('./components/AdminSearchBarCo
 
 export const supplierPageApp = (store) => {
     const portals = [
-        { id: 'supplier-page-size-root', component: <PageSizeSelectorComponent /> },
-        { id: 'supplier-pagination-root', component: <PaginationComponent /> },
-        { id: 'supplier-total-info-root', component: <TotalSuppliersInfoComponent /> },
-        { id: 'supplier-list-root', component: <SuppliersListComponent /> },
-        { id: 'supplier-search-bar-root', component: <AdminSearchBarComponent /> },
+        {id: 'supplier-page-size-root', component: <PageSizeSelectorComponent/>},
+        {id: 'supplier-pagination-root', component: <PaginationComponent/>},
+        {id: 'supplier-total-info-root', component: <TotalSuppliersInfoComponent/>},
+        {id: 'supplier-list-root', component: <SuppliersListComponent/>},
+        {id: 'supplier-search-bar-root', component: <AdminSearchBarComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);

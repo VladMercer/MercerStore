@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-const RemoveReviewComponent = ({ RemoveReview, productId }) => {
+const RemoveReviewComponent = ({RemoveReview, productId}) => {
 
     const handleRemove = () => {
         RemoveReview(productId);
@@ -8,11 +8,11 @@ const RemoveReviewComponent = ({ RemoveReview, productId }) => {
 
     return (
         <>
-            
-                <button className="remove-review-button" onClick={handleRemove}>
-                    <i className="fa-solid fa-trash-can"></i> 
-                </button>
-           
+
+            <button className="remove-review-button" onClick={handleRemove}>
+                <i className="fa-solid fa-trash-can"></i>
+            </button>
+
         </>
     );
 };

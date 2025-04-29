@@ -20,9 +20,9 @@ public class InvoicesController : ControllerBase
     }
 
     [HttpGet("invoices")]
-    public async Task<IActionResult> GetFilteredinvoices([FromQuery] InvoiceFilterRequest request)
+    public async Task<IActionResult> GetFilteredInvoices([FromQuery] InvoiceFilterRequest request, CancellationToken ct)
     {
-        var result = await _mediator.Send(new GetFilteredInvoicesQuery(request));
+        var result = await _mediator.Send(new GetFilteredInvoicesQuery(request), ct);
         return Ok(result);
     }
 }

@@ -1,21 +1,20 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_INVOICES_URL } from '../../../../apiConfig';
-import { notifySuccess } from '../../../notify';
+import {API_INVOICES_URL} from '../../../../apiConfig';
 
 export const fetchInvoices = createAsyncThunk(
     'invoice/fetchInvoices',
-    async ({ pageNumber, pageSize, sortOrder, timePeriodFilter, filter, query }) => {
+    async ({pageNumber, pageSize, sortOrder, timePeriodFilter, filter, query}) => {
 
         const response = await axios.get(`${API_INVOICES_URL}/invoices`, {
-            params: { pageNumber, pageSize, sortOrder, period: timePeriodFilter, filter: filter, query: query },
+            params: {pageNumber, pageSize, sortOrder, period: timePeriodFilter, filter: filter, query: query},
         });
         return response.data;
     }
 );
 
 
-const initialState = {  
+const initialState = {
     pageNumber: 1,
     pageSize: 30,
     query: '',
@@ -58,7 +57,7 @@ const invoicePageSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchInvoices.fulfilled, (state, action) => {
-                const { items, totalItems, totalPages } = action.payload;
+                const {items, totalItems, totalPages} = action.payload;
                 state.invoices = items;
                 state.totalInvoices = totalItems;
                 state.totalPages = totalPages;

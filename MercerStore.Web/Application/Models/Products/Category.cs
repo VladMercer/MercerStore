@@ -1,13 +1,12 @@
-﻿using MercerStore.Web.Application.Interfaces;
+﻿using MercerStore.Web.Application.Interfaces.Services;
 
-namespace MercerStore.Web.Application.Models.Products
+namespace MercerStore.Web.Application.Models.Products;
+
+public class Category : IEntity
 {
-    public class Category : IEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public string? CategoryImgUrl { get; set; }
-        public List<Brand>? Brands { get; set; }
-    }
+    public string Name { get; set; }
+    public string? Description { get; set; }
+    public string? CategoryImgUrl { get; set; }
+    public IList<Brand>? Brands { get; set; }
+    public int Id { get; set; }
 }

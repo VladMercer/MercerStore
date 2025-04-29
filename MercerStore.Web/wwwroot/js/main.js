@@ -3,16 +3,15 @@
 //});
 
 
-
 $(document).ready(function () {
     $(".event-carousel").owlCarousel({
         items: 1,
-        loop: true, 
-        nav: true, 
-        dots: true, 
-        autoplay: true, 
-        autoplayTimeout: 5000, 
-     
+        loop: true,
+        nav: true,
+        dots: true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+
     });
 });
 
@@ -27,7 +26,7 @@ $(document).ready(function () {
     });
 
     $('#top').click(function () {
-        $('html, body').animate({ scrollTop: 0 }, 500);
+        $('html, body').animate({scrollTop: 0}, 500);
         return false;
     });
 
@@ -39,13 +38,13 @@ $(document).ready(function () {
         autoplayTimeout: 5000,
         responsive: {
             0: {
-                items: 1 
+                items: 1
             },
             500: {
-                items: 2 
+                items: 2
             },
             700: {
-                items: 3 
+                items: 3
             }
         }
     });

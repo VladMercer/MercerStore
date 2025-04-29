@@ -1,19 +1,19 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_USERS_URL } from '../../../../apiConfig';
+import {API_USERS_URL} from '../../../../apiConfig';
 
 export const fetchUsers = createAsyncThunk(
     'users/fetchUsers',
-    async ({ pageNumber, pageSize, sortOrder, timePeriodFilter, filter, query }) => {
+    async ({pageNumber, pageSize, sortOrder, timePeriodFilter, filter, query}) => {
 
         const response = await axios.get(`${API_USERS_URL}/users`, {
-            params: { pageNumber, pageSize, sortOrder, period: timePeriodFilter, filter: filter, query: query },
+            params: {pageNumber, pageSize, sortOrder, period: timePeriodFilter, filter: filter, query: query},
         });
         return response.data;
     }
 );
 
-const initialState = {  
+const initialState = {
     pageNumber: 1,
     pageSize: 30,
     query: '',
@@ -56,7 +56,7 @@ const userPageSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchUsers.fulfilled, (state, action) => {
-                const { items, totalItems, totalPages } = action.payload;
+                const {items, totalItems, totalPages} = action.payload;
                 state.users = items;
                 state.totalUsers = totalItems;
                 state.totalPages = totalPages;

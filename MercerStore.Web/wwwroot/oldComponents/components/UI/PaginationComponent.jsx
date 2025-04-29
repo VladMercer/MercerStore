@@ -1,4 +1,4 @@
-﻿const PaginationComponent = ({ pageNumber, totalPages, onPageChange }) => {
+﻿const PaginationComponent = ({pageNumber, totalPages, onPageChange}) => {
 
     return (
         <nav aria-label="Page navigation example">

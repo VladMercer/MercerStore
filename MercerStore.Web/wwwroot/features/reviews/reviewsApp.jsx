@@ -1,6 +1,6 @@
-﻿import React, { Suspense, lazy } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 const ProductReviewsComponent = lazy(() => import('./components/ProductReviewsComponent'));
 const ReviewsCountComponent = lazy(() => import('./components/ReviewsCountComponent'));
@@ -11,15 +11,15 @@ const RemoveReviewComponent = lazy(() => import('./components/RemoveReviewCompon
 
 export const reviewsApp = (store) => {
     const portals = [
-        { id: 'product-reviews-root', component: <ProductReviewsComponent /> },
-        { id: 'reviews-count-root', component: <ReviewsCountComponent /> },
-        { id: 'reviews-avg-rate-root', component: <ReviewsAvgRateComponent /> },
-        { id: 'add-review-root', component: <AddReviewComponent /> },
-        { id: 'update-review-root', component: <UpdateReviewComponent /> },
-        { id: 'remove-review-root', component: <RemoveReviewComponent /> },
+        {id: 'product-reviews-root', component: <ProductReviewsComponent/>},
+        {id: 'reviews-count-root', component: <ReviewsCountComponent/>},
+        {id: 'reviews-avg-rate-root', component: <ReviewsAvgRateComponent/>},
+        {id: 'add-review-root', component: <AddReviewComponent/>},
+        {id: 'update-review-root', component: <UpdateReviewComponent/>},
+        {id: 'remove-review-root', component: <RemoveReviewComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);

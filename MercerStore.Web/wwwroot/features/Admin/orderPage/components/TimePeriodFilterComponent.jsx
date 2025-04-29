@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useOrders } from "../hooks/useOrders";
-import { setTimePeriodFilter } from "../redux/orderPageSlice";
+import {useDispatch} from "react-redux";
+import {useOrders} from "../hooks/useOrders";
+import {setTimePeriodFilter} from "../redux/orderPageSlice";
 
 const TimePeriodFilterComponent = () => {
     const dispatch = useDispatch();
-    const { timePeriodFilter } = useOrders();
+    const {timePeriodFilter} = useOrders();
 
     const handleFilterChange = (event) => {
         const newFilter = event.target.value;

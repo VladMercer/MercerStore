@@ -1,10 +1,10 @@
-﻿import { useDispatch } from 'react-redux';
+﻿import {useDispatch} from 'react-redux';
 import React from 'react';
-import { useSearchPage } from '../hooks/useSearchPage';
-import { setPageSize } from '../redux/searchPageSlice';
+import {useSearchPage} from '../hooks/useSearchPage';
+import {setPageSize} from '../redux/searchPageSlice';
 
 const PageSizeSelectorComponent = () => {
-    const { pageSize } = useSearchPage();
+    const {pageSize} = useSearchPage();
     const dispatch = useDispatch();
 
     const changePageSize = (newPageSize) => {

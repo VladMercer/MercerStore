@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-const SortComponent = ({ currentSort, onChange }) => {
+const SortComponent = ({currentSort, onChange}) => {
     return (
         <div className="input-group mb-3">
             <span className="input-group-text">Сортировать:</span>

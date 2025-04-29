@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Requests.Account;
 using MercerStore.Web.Application.Requests.Log;
@@ -27,7 +26,7 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Result<s
         _userIdentifierService = userIdentifierService;
     }
 
-    public async Task<Result<string>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(RegisterUserCommand request, CancellationToken ct)
     {
         var result = await _accountService.RegisterUserAsync(request.RegisterViewModel);
         request.EntityId = result.Data.UserId;
@@ -39,10 +38,11 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Result<s
         }
 
         var roles = new List<string> { RoleNames.User };
-        await _userIdentifierService.AddUserToRoleAsync(result.Data.UserId, roles);
+        await _userIdentifierService.AddUserToRoleAsync(result.Data.UserId, roles, ct);
+        var timeZone = _userIdentifierService.GetCurrentUserTimeZone();
 
         var jwtTokenRequest = new JwtTokenRequest(result.Data.UserId, roles, result.Data.ProfilePictureUrl,
-            result.Data.CreateDate);
+            result.Data.CreateDate, timeZone);
 
         var token = await _jwtProvider.GenerateJwtToken(jwtTokenRequest);
 

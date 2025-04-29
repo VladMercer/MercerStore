@@ -5,45 +5,41 @@ using MercerStore.Web.Application.ViewModels.Categories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Mvc
+namespace MercerStore.Web.Controllers.Mvc;
+
+[Authorize]
+public class CategoryController : Controller
 {
-    [Authorize]
-    public class CategoryController : Controller
+    private readonly IMediator _mediator;
+
+    public CategoryController(IMediator mediator)
     {
+        _mediator = mediator;
+    }
 
-        private readonly IMediator _mediator;
+    [HttpGet("category/create")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult CreateCategory()
+    {
+        return View(new CreateCategoryViewModel());
+    }
 
-        public CategoryController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+    [Authorize(Roles = "Admin")]
+    [HttpPost("category/create")]
+    public async Task<IActionResult> CreateCategory(CreateCategoryViewModel createCategoryViewModel,
+        CancellationToken ct)
+    {
+        if (!ModelState.IsValid) return View(createCategoryViewModel);
 
-        [HttpGet("category/create")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult CreateCategory()
-        {
-            return View(new CreateCategoryViewModel());
-        }
+        await _mediator.Send(new AddCategoryCommand(createCategoryViewModel), ct);
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("category/create")]
-        public async Task<IActionResult> CreateCategory(CreateCategoryViewModel createCategoryViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(createCategoryViewModel);
-            }
+        return RedirectToAction("CreateCategory");
+    }
 
-            await _mediator.Send(new AddCategoryCommand(createCategoryViewModel));
-
-            return RedirectToAction("CreateCategory");
-        }
-
-        [HttpGet("category/{categoryId}")]
-        public async Task<IActionResult> Index(int categoryId)
-        {
-            var categoryPageViewModel = await _mediator.Send(new GetCategoryPageViewModelQuery(categoryId));
-            return View(categoryPageViewModel);
-        }
+    [HttpGet("category/{categoryId}")]
+    public async Task<IActionResult> Index(int categoryId, CancellationToken ct)
+    {
+        var categoryPageViewModel = await _mediator.Send(new GetCategoryPageViewModelQuery(categoryId), ct);
+        return View(categoryPageViewModel);
     }
 }

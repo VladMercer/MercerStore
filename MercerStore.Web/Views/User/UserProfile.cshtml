@@ -1,5 +1,4 @@
-﻿@using MercerStore.Web.Application.ViewModels.Users
-@model UserProfileViewModel
+﻿@model MercerStore.Web.Application.ViewModels.Users.UserProfileViewModel
 
 @{
     ViewData["Title"] = "Профиль";
@@ -37,7 +36,8 @@
                         @(string.IsNullOrEmpty(Model.Address) ? "Добавьте адрес" : Model.Address)
                     </p>
                     <p>
-                        <i class="fas fa-calendar-alt" id="userIcon"></i><strong> Дата регистрации: </strong>@Model.CreateDate.Value.ToShortDateString()
+                        <i class="fas fa-calendar-alt" id="userIcon"></i><strong> Дата
+                            регистрации: </strong>@Model.CreateDate.Value.ToShortDateString()
                     </p>
                     <a asp-controller="User" asp-action="EditUserProfile" class="btn btn-outline-warning mt-2 w-100">Редактировать</a>
                 </div>
@@ -67,42 +67,45 @@
 
             <div class="tab-content mt-3" id="profileTabContent">
 
-                <div class="tab-pane fade show active" id="orders-tab-pane" role="tabpanel" aria-labelledby="orders-tab">
+                <div class="tab-pane fade show active" id="orders-tab-pane" role="tabpanel"
+                     aria-labelledby="orders-tab">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>№</th>
-                                <th>Дата</th>
-                                <th>Статус</th>
-                                <th>Сумма</th>
-                            </tr>
+                        <tr>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                            <th>Сумма</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Orders != null && Model.Orders.Any())
+                        @if (Model.Orders != null && Model.Orders.Any())
+                        {
+                            foreach (var order in Model.Orders)
                             {
-                                foreach (var order in Model.Orders)
-                                {
-                                    <tr>
-                                        <td>
-                                            <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
-                                               class="text-dark text-decoration-none">@order.Id</a>
-                                        </td>
-                                        <td>
-                                            <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
-                                               class="text-dark text-decoration-none">@order.СreateDate.ToShortDateString()</a>
-                                        </td>
-                                        <td>@order.Status</td>
-                                        <td>
-                                            <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
-                                               class="text-dark text-decoration-none">@order.TotalOrderPrice ₽</a>
-                                        </td>
-                                    </tr>
-                                }
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
+                                           class="text-dark text-decoration-none">@order.Id</a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
+                                           class="text-dark text-decoration-none">@order.СreateDate.ToShortDateString()</a>
+                                    </td>
+                                    <td>@order.Status</td>
+                                    <td>
+                                        <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
+                                           class="text-dark text-decoration-none">@order.TotalOrderPrice ₽</a>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <tr><td colspan="4" class="text-center">Заказов пока нет</td></tr>
-                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center">Заказов пока нет</td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -110,51 +113,58 @@
                 <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab">
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th class="text-center">Товар</th>
-                                <th>Название</th>
-                                <th>Оценка</th>
-                                <th>Дата</th>
-                                <th>Текст</th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">Товар</th>
+                            <th>Название</th>
+                            <th>Оценка</th>
+                            <th>Дата</th>
+                            <th>Текст</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if (Model.Reviews != null && Model.Reviews.Any())
+                        @if (Model.Reviews != null && Model.Reviews.Any())
+                        {
+                            foreach (var review in Model.Reviews)
                             {
-                                foreach (var review in Model.Reviews)
-                                {
-                                    <tr>
-                                        <td class="text-center">
-                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id">
-                                                <img class="img-thumbnail"
-                                                     src="@review.Product.MainImageUrl"
-                                                     alt="Product Image"
-                                                     style="max-width: 50px;">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
-                                               class="text-dark text-decoration-none">@review.Product?.Name</a>
-                                        </td>
-                                        <td>
-                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
-                                               class="text-dark text-decoration-none">@review.Value / 5</a>
-                                        </td>
-                                        <td>
-                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
-                                               class="text-dark text-decoration-none">@review.Date.ToShortDateString()</a>
-                                        </td>
-                                        <td>
-                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@review.Product.Id"
-                                               class="text-dark text-decoration-none">@review.ReviewText</a>
-                                        </td>
-                                    </tr>
-                                }
+                                <tr>
+                                    <td class="text-center">
+                                        <a asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id">
+                                            <img class="img-thumbnail"
+                                                 src="@review.Product.MainImageUrl"
+                                                 alt="Product Image"
+                                                 style="max-width: 50px;">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id"
+                                           class="text-dark text-decoration-none">@review.Product?.Name</a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id"
+                                           class="text-dark text-decoration-none">@review.Value / 5</a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id"
+                                           class="text-dark text-decoration-none">@review.Date.ToShortDateString()</a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Product" asp-action="Details"
+                                           asp-route-id="@review.Product.Id"
+                                           class="text-dark text-decoration-none">@review.ReviewText</a>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <tr><td colspan="5" class="text-center">Отзывов пока нет</td></tr>
-                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center">Отзывов пока нет</td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>

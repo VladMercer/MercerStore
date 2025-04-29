@@ -1,10 +1,9 @@
-﻿namespace MercerStore.Web.Application.Models.Orders
+﻿namespace MercerStore.Web.Application.Models.Orders;
+
+public class OrderProductList
 {
-    public class OrderProductList
-    {
-        public int Id { get; set; }
-        public string UserId { get; set; }
-        public List<OrderProductSnapshot> OrderProductSnapshots { get; set; }
-        public decimal TotalPrice { get; set; }
-    }
+    public int Id { get; set; }
+    public string UserId { get; set; }
+    public IList<OrderProductSnapshot>? OrderProductSnapshots { get; set; }
+    public decimal TotalPrice { get; set; }
 }

@@ -1,12 +1,12 @@
-﻿import React, { useContext } from 'react';
-import { ReviewContext } from './ReviewContext';
+﻿import React, {useContext} from 'react';
+import {ReviewContext} from './ReviewContext';
 import ReviewsCountComponent from './ReviewsCountComponent';
 
 const ReviewsCountApp = () => {
-    const { countReviews } = useContext(ReviewContext);
+    const {countReviews} = useContext(ReviewContext);
 
     return (
-        <ReviewsCountComponent countReviews={countReviews} />
+        <ReviewsCountComponent countReviews={countReviews}/>
     );
 };
 

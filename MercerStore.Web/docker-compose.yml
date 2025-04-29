@@ -31,10 +31,10 @@ services:
 
   redis:
     container_name: redis
-    image: redis:latest  
+    image: redis:latest
     restart: always
     ports:
-      - "6379:6379" 
+      - "6379:6379"
     networks:
       - elasticnetwork
 

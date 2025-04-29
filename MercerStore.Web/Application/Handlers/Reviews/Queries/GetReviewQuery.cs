@@ -1,26 +1,33 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Models.Products;
 
-namespace MercerStore.Web.Application.Handlers.Reviews.Queries
+namespace MercerStore.Web.Application.Handlers.Reviews.Queries;
+
+public record GetReviewQuery(int ProductId) : IRequest<Review>;
+
+public class GetReviewHandler : IRequestHandler<GetReviewQuery, Review>
 {
-    public record GetReviewQuery(int ProductId) : IRequest<Review>;
-    public class GetReviewHandler : IRequestHandler<GetReviewQuery, Review>
+    private readonly IDateTimeConverter _dateTimeConverter;
+    private readonly IReviewService _reviewService;
+    private readonly IUserIdentifierService _userIdentifierService;
+
+    public GetReviewHandler(IReviewService reviewService, IUserIdentifierService userIdentifierService,
+        IDateTimeConverter dateTimeConverter)
     {
-        private readonly IReviewService _reviewService;
-        private readonly IUserIdentifierService _userIdentifierService;
+        _reviewService = reviewService;
+        _userIdentifierService = userIdentifierService;
+        _dateTimeConverter = dateTimeConverter;
+    }
 
-        public GetReviewHandler(IReviewService reviewService, IUserIdentifierService userIdentifierService)
-        {
-            _reviewService = reviewService;
-            _userIdentifierService = userIdentifierService;
-        }
+    public async Task<Review> Handle(GetReviewQuery request, CancellationToken ct)
+    {
+        var userId = _userIdentifierService.GetCurrentIdentifier();
+        var review = await _reviewService.GetReview(request.ProductId, userId, ct);
 
-        public async Task<Review> Handle(GetReviewQuery request, CancellationToken cancellationToken)
-        {
-            var userId = _userIdentifierService.GetCurrentIdentifier();
-            return await _reviewService.GetReview(request.ProductId, userId);
-        }
+        review.Date = _dateTimeConverter.ConvertUtcToUserTime(review.Date);
+        review.EditDateTime = _dateTimeConverter.ConvertUtcToUserTime(review.EditDateTime);
+
+        return review;
     }
 }

@@ -1,4 +1,4 @@
-﻿import { useSelector } from 'react-redux';
+﻿import {useSelector} from 'react-redux';
 
 export const useReviews = () => {
 
@@ -10,7 +10,7 @@ export const useReviews = () => {
     const userRoles = useSelector((state) => state.reviews.userRoles);
     const review = useSelector((state) => state.reviews.review);
     const isLoaded = useSelector((state) => state.reviews.isLoaded);
- 
+
     return {
         productId,
         countReviews,

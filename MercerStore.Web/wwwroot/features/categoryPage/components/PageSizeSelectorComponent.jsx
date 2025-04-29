@@ -1,10 +1,10 @@
-﻿import { useDispatch } from 'react-redux';
+﻿import {useDispatch} from 'react-redux';
 import React from 'react';
-import { useCategoryProducts } from '../hooks/useCategoryProducts';
-import { setPageSize } from '../redux/categorySlice';
+import {useCategoryProducts} from '../hooks/useCategoryProducts';
+import {setPageSize} from '../redux/categorySlice';
 
 const PageSizeSelectorComponent = () => {
-    const { pageSize } = useCategoryProducts();
+    const {pageSize} = useCategoryProducts();
     const dispatch = useDispatch();
 
     const changePageSize = (newPageSize) => {

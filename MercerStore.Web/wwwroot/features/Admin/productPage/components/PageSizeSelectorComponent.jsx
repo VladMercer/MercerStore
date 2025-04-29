@@ -1,10 +1,10 @@
-﻿import { useDispatch } from 'react-redux';
+﻿import {useDispatch} from 'react-redux';
 import React from 'react';
-import { useProducts } from '../hooks/useProducts';
-import { setPageSize } from '../redux/adminProductPageSlice';
+import {useProducts} from '../hooks/useProducts';
+import {setPageSize} from '../redux/adminProductPageSlice';
 
 const PageSizeSelectorComponent = () => {
-    const { pageSize } = useProducts();
+    const {pageSize} = useProducts();
     const dispatch = useDispatch();
 
     const changePageSize = (newPageSize) => {

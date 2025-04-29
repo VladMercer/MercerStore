@@ -1,12 +1,11 @@
-﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Order
+﻿namespace MercerStore.Web.Infrastructure.Data.Enum.Order;
+
+public enum OrderStatuses
 {
-    public enum OrderStatuses
-    {
-        Pending,
-        InProgress,
-        Completed,
-        Cancelled,
-        Failed,
-        All
-    }
+    Pending,
+    InProgress,
+    Completed,
+    Cancelled,
+    Failed,
+    All
 }

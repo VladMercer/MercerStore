@@ -1,17 +1,18 @@
-﻿using MercerStore.Web.Application.Dtos.ResultDto;
-using MercerStore.Web.Application.Dtos.SupplierDto;
+﻿using MercerStore.Web.Application.Dtos.Result;
+using MercerStore.Web.Application.Dtos.Supplier;
 using MercerStore.Web.Application.Requests.Suppliers;
 using MercerStore.Web.Areas.Admin.ViewModels.Suppliers;
 using MercerStore.Web.Infrastructure.Helpers;
 
-namespace MercerStore.Web.Application.Interfaces.Services
+namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface ISupplierService
 {
-    public interface ISupplierService
-    {
-        Task<PaginatedResultDto<AdminSupplierDto>> GetFilteredSuppliersWithoutCache(SupplierFilterRequest request);
-        Task RemoveSupplier(int supplierId);
-        Task<int> CreateSupplier(CreateSupplierViewModel createSupplierViewModel);
-        Task<UpdateSupplierViewModel> GetUpdateSupplierViewModel(int supplierId);
-        Task<Result<int>> UpdateSupplier(UpdateSupplierViewModel updateSupplierViewModel);
-    }
+    Task<PaginatedResultDto<AdminSupplierDto>> GetFilteredSuppliersWithoutCache(SupplierFilterRequest request,
+        CancellationToken ct);
+
+    Task RemoveSupplier(int supplierId, CancellationToken ct);
+    Task<int> CreateSupplier(CreateSupplierViewModel createSupplierViewModel, CancellationToken ct);
+    Task<UpdateSupplierViewModel> GetUpdateSupplierViewModel(int supplierId, CancellationToken ct);
+    Task<Result<int>> UpdateSupplier(UpdateSupplierViewModel updateSupplierViewModel, CancellationToken ct);
 }

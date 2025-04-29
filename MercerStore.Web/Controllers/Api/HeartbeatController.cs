@@ -2,25 +2,23 @@
 using MercerStore.Web.Application.Handlers.Heartbeat.Commands;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Api
+namespace MercerStore.Web.Controllers.Api;
+
+[ApiController]
+[Route("api/heartbeat")]
+public class HeartbeatController : ControllerBase
 {
-    [ApiController]
-    [Route("api/heartbeat")]
-    public class HeartbeatController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public HeartbeatController(IMediator mediator)
     {
-       
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public HeartbeatController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateActivity()
-        {
-            await _mediator.Send(new UpdateActivityCommand());
-            return Ok();
-        }
+    [HttpPost]
+    public async Task<IActionResult> UpdateActivity(CancellationToken ct)
+    {
+        await _mediator.Send(new UpdateActivityCommand(), ct);
+        return Ok();
     }
 }

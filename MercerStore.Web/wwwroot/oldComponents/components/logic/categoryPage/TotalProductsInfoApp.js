@@ -1,11 +1,12 @@
-﻿import React, { useContext, useEffect } from 'react';
-import { ProductContext } from './ProductContext';
+﻿import React, {useContext, useEffect} from 'react';
+import {ProductContext} from './ProductContext';
 import TotalProductsInfoComponent from '../../UI/TotalProductsInfoComponent';
+
 const TotalProductsInfoApp = () => {
-    const { totalProducts, pageSize, pageNumber, fetchProducts } = useContext(ProductContext);
+    const {totalProducts, pageSize, pageNumber, fetchProducts} = useContext(ProductContext);
 
     useEffect(() => {
-        fetchProducts(); 
+        fetchProducts();
     }, []);
 
     return (

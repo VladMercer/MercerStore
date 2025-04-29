@@ -2,7 +2,7 @@
 
 const LoadingSpinner = () => (
     <div className="loading-spinner">
-        <div className="spinner" />
+        <div className="spinner"/>
         <span>Загрузка...</span>
     </div>
 );

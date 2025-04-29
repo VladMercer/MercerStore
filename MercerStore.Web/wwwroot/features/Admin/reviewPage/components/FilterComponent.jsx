@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useReviews } from "../hooks/useReviews";
-import { setFilter } from "../redux/reviewPageSlice";
+import {useDispatch} from "react-redux";
+import {useReviews} from "../hooks/useReviews";
+import {setFilter} from "../redux/reviewPageSlice";
 
 const FilterComponent = () => {
     const dispatch = useDispatch();
-    const { statusFilter } = useReviews();
+    const {statusFilter} = useReviews();
 
     const handleFilterChange = (event) => {
         dispatch(setFilter(event.target.value));

@@ -1,15 +1,15 @@
 ﻿import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useProducts } from '../hooks/useProducts';
-import { setSortOrder } from '../redux/adminProductPageSlice';
+import {useDispatch} from 'react-redux';
+import {useProducts} from '../hooks/useProducts';
+import {setSortOrder} from '../redux/adminProductPageSlice';
 
 const SortComponent = () => {
     const dispatch = useDispatch();
-    const { sortOrder } = useProducts();
+    const {sortOrder} = useProducts();
 
     const handleSortChange = (event) => {
         const newSortOrder = event.target.value;
-        dispatch(setSortOrder(newSortOrder));  
+        dispatch(setSortOrder(newSortOrder));
     };
 
     return (

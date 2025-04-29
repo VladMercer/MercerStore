@@ -1,6 +1,6 @@
-﻿import React, { Suspense, lazy } from 'react';
-import { Provider } from 'react-redux';
-import { createRoot } from 'react-dom/client';
+﻿import React, {lazy, Suspense} from 'react';
+import {Provider} from 'react-redux';
+import {createRoot} from 'react-dom/client';
 
 
 const PageSizeSelectorComponent = lazy(() => import('./components/PageSizeSelectorComponent'));
@@ -14,17 +14,17 @@ const AdminSearchBarComponent = lazy(() => import('./components/AdminSearchBarCo
 
 export const invoicePageApp = (store) => {
     const portals = [
-        { id: 'invoice-page-size-root', component: <PageSizeSelectorComponent /> },
-        { id: 'invoice-pagination-root', component: <PaginationComponent /> },
-        { id: 'invoice-sort-root', component: <SortComponent /> },
-        { id: 'invoice-total-info-root', component: <TotalInvoicesInfoComponent /> },
-        { id: 'invoice-filter-root', component: <FilterComponent /> },
-        { id: 'invoice-time-period-filter-root', component: <TimePeriodFilterComponent /> },
-        { id: 'invoice-list-root', component: <InvoicesListComponent /> },
-        { id: 'invoice-search-bar-root', component: <AdminSearchBarComponent /> },
+        {id: 'invoice-page-size-root', component: <PageSizeSelectorComponent/>},
+        {id: 'invoice-pagination-root', component: <PaginationComponent/>},
+        {id: 'invoice-sort-root', component: <SortComponent/>},
+        {id: 'invoice-total-info-root', component: <TotalInvoicesInfoComponent/>},
+        {id: 'invoice-filter-root', component: <FilterComponent/>},
+        {id: 'invoice-time-period-filter-root', component: <TimePeriodFilterComponent/>},
+        {id: 'invoice-list-root', component: <InvoicesListComponent/>},
+        {id: 'invoice-search-bar-root', component: <AdminSearchBarComponent/>},
     ];
 
-    portals.forEach(({ id, component }) => {
+    portals.forEach(({id, component}) => {
         const rootElement = document.getElementById(id);
         if (rootElement) {
             const root = createRoot(rootElement);

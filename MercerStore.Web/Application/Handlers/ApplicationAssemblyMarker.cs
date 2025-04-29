@@ -1,6 +1,5 @@
-﻿namespace MercerStore.Web.Application.Handlers
+﻿namespace MercerStore.Web.Application.Handlers;
+
+public class ApplicationAssemblyMarker
 {
-    public class ApplicationAssemblyMarker
-    {
-    }
 }

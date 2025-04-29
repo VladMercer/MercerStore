@@ -1,12 +1,12 @@
-﻿@using MercerStore.Web.Application.Models.Products
-@model  IEnumerable<Category>
+﻿@model IEnumerable<MercerStore.Web.Application.Models.Products.Category>
 
 @if (Model != null && Model.Any())
 {
     foreach (var category in Model)
     {
         <li>
-            <a class="dropdown-item" asp-controller="Category" asp-action="Index" asp-route-categoryId="@category.Id">@category.Name</a>
+            <a class="dropdown-item" asp-controller="Category" asp-action="Index"
+               asp-route-categoryId="@category.Id">@category.Name</a>
         </li>
     }
 }

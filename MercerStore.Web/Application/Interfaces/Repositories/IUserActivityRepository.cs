@@ -1,7 +1,6 @@
-﻿namespace MercerStore.Web.Application.Interfaces.Repositories
+﻿namespace MercerStore.Web.Application.Interfaces.Repositories;
+
+public interface IUserActivityRepository
 {
-    public interface IUserActivityRepository
-    {
-        Task UpdateLastActivityAsync(string userId, DateTime lastActivity);
-    }
+    Task UpdateLastActivityAsync(string userId, DateTime lastActivity, CancellationToken ct);
 }

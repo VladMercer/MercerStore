@@ -5,51 +5,46 @@ using MercerStore.Web.Application.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MercerStore.Web.Controllers.Mvc
+namespace MercerStore.Web.Controllers.Mvc;
+
+[Authorize(Policy = "BlacklistRolesPolicy")]
+public class UserController : Controller
 {
-    [Authorize(Policy = "BlacklistRolesPolicy")]
-    public class UserController : Controller
+    private readonly IMediator _mediator;
+
+    public UserController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public UserController(IMediator mediator)
+    public async Task<IActionResult> UserProfile(CancellationToken ct)
+    {
+        var userProfileViewModel = await _mediator.Send(new GetUserProfileQuery(), ct);
+        return View(userProfileViewModel);
+    }
+
+    public async Task<IActionResult> EditUserProfile(CancellationToken ct)
+    {
+        var userProfileViewModel = await _mediator.Send(new GetUserProfileForEditQuery(), ct);
+        return View(userProfileViewModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditUserProfile(UserProfileViewModel userProfileViewModel, CancellationToken ct)
+    {
+        if (!ModelState.IsValid)
         {
-            _mediator = mediator;
-        }
-
-        public async Task<IActionResult> UserProfile()
-        {
-            var userProfileViewModel = await _mediator.Send(new GetUserProfileQuery());
-            if (userProfileViewModel == null) return NotFound();
-
+            ModelState.AddModelError("", "Ошибка редактирования профиля");
             return View(userProfileViewModel);
         }
 
-        public async Task<IActionResult> EditUserProfile()
+        var result = await _mediator.Send(new UpdateUserProfileCommand(userProfileViewModel), ct);
+        if (!result.IsSuccess)
         {
-            var userProfileViewModel = await _mediator.Send(new GetUserProfileForEditQuery());
-            if (userProfileViewModel == null) return NotFound();
-
+            ModelState.AddModelError("", result.ErrorMessage);
             return View(userProfileViewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditUserProfile(UserProfileViewModel userProfileViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "Ошибка редактирования профиля");
-                return View(userProfileViewModel);
-            }
-
-            var result = await _mediator.Send(new UpdateUserProfileCommand(userProfileViewModel));
-            if (!result.IsSuccess)
-            {
-                ModelState.AddModelError("", result.ErrorMessage);
-                return View(userProfileViewModel);
-            }
-
-            return RedirectToAction("UserProfile");
-        }
+        return RedirectToAction("UserProfile");
     }
 }

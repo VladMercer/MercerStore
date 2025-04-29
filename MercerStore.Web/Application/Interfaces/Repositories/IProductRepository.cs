@@ -1,27 +1,27 @@
 ﻿using MercerStore.Web.Application.Models.Products;
 using MercerStore.Web.Application.Requests.Products;
 using MercerStore.Web.Application.ViewModels.Products;
-using MercerStore.Web.Infrastructure.Data.Enum.Product;
 
-namespace MercerStore.Web.Application.Interfaces.Repositories
+namespace MercerStore.Web.Application.Interfaces.Repositories;
+
+public interface IProductRepository
 {
-    public interface IProductRepository
-    {
-        Task<(IEnumerable<Product> Products, int TotalItems)> GetProductsAsync(ProductFilterRequest request);
-        Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<IEnumerable<Product>> GetProductsByCategoryAsync(int? categoryId);
-        Task<Product> GetProductByIdAsync(int? productId);
-        Task<IEnumerable<Product>> GetProductsByIdsAsync(IEnumerable<int> productIds);
-        Task<IEnumerable<Product>> GetLastProductsAsync(int count);
-        Task<int?> GetCategoryByProductId(int productId);
-        Task<IEnumerable<RandomProductViewModel>> GetRandomProductsAsync(int count);
-        Task<IEnumerable<Review>> GetAllReview(int productId);
-        Task<IEnumerable<Review>> GetAllReviewByUser(string userId);
-        Task AddProduct(Product product);
-        Task UpdateProduct(Product product);
-        Task DeleteProduct(int productId);
-        Task DecreaseProductStock(int? productId, string? sku, int quantity);
-        Task<Product> GetProductBySku(string? sku);
-        Task<List<Product?>> GetIsUnassignedProducts();
-    }
+    Task<(IEnumerable<Product> Products, int TotalItems)> GetProductsAsync(ProductFilterRequest request,
+        CancellationToken ct);
+
+    Task<IEnumerable<Product>> GetAllProductsAsync(CancellationToken ct);
+    Task<IEnumerable<Product>> GetProductsByCategoryAsync(int? categoryId, CancellationToken ct);
+    Task<Product> GetProductByIdAsync(int? productId, CancellationToken ct);
+    Task<IEnumerable<Product>> GetProductsByIdsAsync(IEnumerable<int> productIds, CancellationToken ct);
+    Task<IEnumerable<Product>> GetLastProductsAsync(int count, CancellationToken ct);
+    Task<int?> GetCategoryByProductId(int productId, CancellationToken ct);
+    Task<IEnumerable<RandomProductViewModel>> GetRandomProductsAsync(int count, CancellationToken ct);
+    Task<IEnumerable<Review>> GetAllReview(int productId, CancellationToken ct);
+    Task<IEnumerable<Review>> GetAllReviewByUser(string userId, CancellationToken ct);
+    Task AddProduct(Product product, CancellationToken ct);
+    Task UpdateProduct(Product product, CancellationToken ct);
+    Task DeleteProduct(int productId, CancellationToken ct);
+    Task DecreaseProductStock(int? productId, string? sku, int quantity, CancellationToken ct);
+    Task<Product> GetProductBySku(string? sku, CancellationToken ct);
+    Task<IEnumerable<Product?>> GetIsUnassignedProducts(CancellationToken ct);
 }

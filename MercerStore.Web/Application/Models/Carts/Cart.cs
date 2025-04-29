@@ -1,14 +1,10 @@
-﻿using MercerStore.Web.Application.Interfaces;
-using System.Reflection.Metadata.Ecma335;
+﻿using MercerStore.Web.Application.Interfaces.Services;
 
-namespace MercerStore.Web.Application.Models.Carts
+namespace MercerStore.Web.Application.Models.Carts;
+
+public class Cart : IEntity
 {
-    public class Cart : IEntity
-    {
-        public int Id { get; set; }
-        public string AppUserId { get; set; }
-
-        public List<CartProduct> CartProducts { get; set; }
-
-    }
+    public string AppUserId { get; set; }
+    public IList<CartProduct>? CartProducts { get; set; }
+    public int Id { get; set; }
 }

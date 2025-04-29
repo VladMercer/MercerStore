@@ -1,14 +1,13 @@
-﻿namespace MercerStore.Web.Infrastructure.Data.Enum.User
+﻿namespace MercerStore.Web.Infrastructure.Data.Enum.User;
+
+public enum UserSortOrder
 {
-    public enum UserSortOrder
-    {
-        NameAsc,
-        NameDesc,
-        Ofline,
-        Online,
-        CreateDateAsc,
-        CreateDateDesc,
-        LastActivityDateAsc,
-        LastActivityDateDesc
-    }
+    NameAsc,
+    NameDesc,
+    Offline,
+    Online,
+    CreateDateAsc,
+    CreateDateDesc,
+    LastActivityDateAsc,
+    LastActivityDateDesc
 }

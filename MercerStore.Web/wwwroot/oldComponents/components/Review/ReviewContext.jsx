@@ -1,11 +1,14 @@
-﻿import React, { createContext, useState, useEffect } from 'react';
+﻿import React, {createContext, useEffect, useState} from 'react';
 import axios from 'axios';
-import { toast, Slide } from 'react-toastify';
+import {Slide, toast} from 'react-toastify';
+
 export const ReviewContext = createContext();
+
 function getProductIdFromPath() {
     const pathParts = window.location.pathname.split('/');
     return pathParts[pathParts.length - 1];
 }
+
 const notify = (message) => {
     toast.success(message, {
         position: "bottom-right",
@@ -21,7 +24,7 @@ const notify = (message) => {
         progressClassName: 'my-custom-progress-bar'
     });
 };
-export const ReviewProvider = ({ children }) => {
+export const ReviewProvider = ({children}) => {
 
     const [currentUserId, setCurrentUserId] = useState('');
     const [productId] = useState(getProductIdFromPath() || 0);
@@ -51,7 +54,7 @@ export const ReviewProvider = ({ children }) => {
 
         const response = await axios.get(`/ReviewApi/GetProductReviews?productId=${productId}`);
 
-        const newProductReviews = response.data.map(item => ({ ...item }));
+        const newProductReviews = response.data.map(item => ({...item}));
         setProductReviews([...newProductReviews]);
 
     };
@@ -124,6 +127,6 @@ export const ReviewProvider = ({ children }) => {
             }}
         >
             {children}
-        </ReviewContext.Provider >
+        </ReviewContext.Provider>
     );
 };

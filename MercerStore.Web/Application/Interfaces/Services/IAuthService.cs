@@ -1,7 +1,8 @@
-﻿namespace MercerStore.Web.Application.Interfaces.Services
+﻿using MercerStore.Web.Application.Requests.Account;
+
+namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface IAuthService
 {
-    public interface IAuthService
-    {
-        Task<(string, string)> GenerateGuestToken();
-    }
+    Task<(string, string)> GenerateGuestToken(GenerateTokenRequest request);
 }

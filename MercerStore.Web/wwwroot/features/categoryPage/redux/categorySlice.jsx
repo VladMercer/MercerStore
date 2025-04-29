@@ -1,19 +1,19 @@
-﻿import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+﻿import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { API_CATEGORIES_URL } from '../../../apiConfig';
+import {API_CATEGORIES_URL} from '../../../apiConfig';
 
 export const fetchPriceRange = createAsyncThunk(
     'category/fetchPriceRange',
     async (categoryId) => {
         const response = await axios.get(`${API_CATEGORIES_URL}/price-range/${categoryId}`);
         return response.data;
-     
+
     }
 );
 
 export const fetchProducts = createAsyncThunk(
     'category/fetchProducts',
-    async ({ categoryId, pageNumber, pageSize, sortOrder, minPrice, maxPrice }) => {
+    async ({categoryId, pageNumber, pageSize, sortOrder, minPrice, maxPrice}) => {
         const page = pageNumber || 1;
         const size = pageSize || 9;
 
@@ -77,13 +77,13 @@ const categorySlice = createSlice({
         setIsPageReset(state, action) {
             state.isPageReset = action.payload;
         },
-        
-      
+
+
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchPriceRange.fulfilled, (state, action) => {
-                const { minPrice, maxPrice } = action.payload;
+                const {minPrice, maxPrice} = action.payload;
                 state.minPrice = minPrice;
                 state.maxPrice = maxPrice;
                 state.selectedMinPrice = minPrice;
@@ -91,7 +91,7 @@ const categorySlice = createSlice({
                 state.isPriceRangeLoaded = true;
             })
             .addCase(fetchProducts.fulfilled, (state, action) => {
-                const { items, totalItems, totalPages } = action.payload;
+                const {items, totalItems, totalPages} = action.payload;
                 state.products = items;
                 state.totalProducts = totalItems;
                 state.totalPages = totalPages;

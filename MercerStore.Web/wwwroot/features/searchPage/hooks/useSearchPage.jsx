@@ -1,4 +1,4 @@
-﻿import { useSelector } from 'react-redux';
+﻿import {useSelector} from 'react-redux';
 
 export const useSearchPage = () => {
 
@@ -23,6 +23,6 @@ export const useSearchPage = () => {
         isPageReset,
         query,
         totalItems
-        
+
     };
 };

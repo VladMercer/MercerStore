@@ -1,11 +1,11 @@
 ﻿import React from "react";
-import { useDispatch } from "react-redux";
-import { useUsers } from "../hooks/useUsers";
-import { setSortOrder } from "../redux/userPageSlice";
+import {useDispatch} from "react-redux";
+import {useUsers} from "../hooks/useUsers";
+import {setSortOrder} from "../redux/userPageSlice";
 
 const SortComponent = () => {
     const dispatch = useDispatch();
-    const { sortOrder } = useUsers();
+    const {sortOrder} = useUsers();
 
     const handleSortChange = (event) => {
         dispatch(setSortOrder(event.target.value));
@@ -22,7 +22,7 @@ const SortComponent = () => {
                 <option value="LastActivityDateAsc">Были недавно</option>
                 <option value="LastActivityDateDesc">Давно не заходили</option>
                 <option value="Online">Сначала онлайн</option>
-                <option value="Ofline">Сначала оффлайн</option>
+                <option value="Offline">Сначала оффлайн</option>
             </select>
         </div>
     );

@@ -1,8 +1,8 @@
 ﻿import React from 'react';
-import { useReviews } from '../hooks/useReviews';
+import {useReviews} from '../hooks/useReviews';
 
 const ReviewsCountComponent = () => {
-    const { countReviews } = useReviews();
+    const {countReviews} = useReviews();
 
     const getReviewText = (count) => {
         if (count % 10 === 1 && count % 100 !== 11) return 'оценка';
@@ -16,16 +16,16 @@ const ReviewsCountComponent = () => {
                     <span className="count-reviews">
                         {countReviews} {getReviewText(countReviews)}
                     </span>
-                    </h5>
+                </h5>
 
-                    ) : (
-                    <h5>
-                        <span className="no-reviews">Нет оценок</span>
-                        </h5>
-               
+            ) : (
+                <h5>
+                    <span className="no-reviews">Нет оценок</span>
+                </h5>
+
             )}
-                    </div>
-                    );
+        </div>
+    );
 }
 
-                    export default ReviewsCountComponent;
+export default ReviewsCountComponent;

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using MercerStore.Web.Application.Interfaces;
 using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Requests.Account;
 using MercerStore.Web.Application.Requests.Log;
@@ -27,9 +26,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<string>>
         _accountService = accountService;
     }
 
-    public async Task<Result<string>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(LoginCommand request, CancellationToken ct)
     {
-        var result = await _accountService.LoginAsync(request.LoginViewModel);
+        var result = await _accountService.LoginAsync(request.LoginViewModel, ct).ConfigureAwait(true);
 
         if (!result.IsSuccess)
         {
@@ -38,12 +37,13 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<string>>
         }
 
         request.EntityId = result.Data.UserId;
-        var roles = _userIdentifierService.GetUserRoles(result.Data.UserId);
+        var roles = await _userIdentifierService.GetUserRoles(result.Data.UserId, ct);
+        var timeZone = _userIdentifierService.GetCurrentUserTimeZone();
 
         var jwtTokenRequest = new JwtTokenRequest(result.Data.UserId, roles, result.Data.ProfilePictureUrl,
-            result.Data.CreateDate);
+            result.Data.CreateDate, timeZone);
 
-        var token = await _jwtProvider.GenerateJwtToken(jwtTokenRequest);
+        var token = await _jwtProvider.GenerateJwtToken(jwtTokenRequest).ConfigureAwait(true);
 
         request.Details = new { result.Data, token, result.ErrorMessage };
 

@@ -27,9 +27,9 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+    public async Task<IActionResult> Login(LoginViewModel loginViewModel, CancellationToken ct)
     {
-        var result = await _mediator.Send(new LoginCommand(loginViewModel));
+        var result = await _mediator.Send(new LoginCommand(loginViewModel), ct);
 
         if (!result.IsSuccess)
         {
@@ -50,9 +50,9 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+    public async Task<IActionResult> Register(RegisterViewModel registerViewModel, CancellationToken ct)
     {
-        var result = await _mediator.Send(new RegisterUserCommand(registerViewModel));
+        var result = await _mediator.Send(new RegisterUserCommand(registerViewModel), ct);
 
         if (!result.IsSuccess)
         {
@@ -75,9 +75,9 @@ public class AccountController : Controller
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> RegisterManager(RegisterViewModel registerViewModel)
+    public async Task<IActionResult> RegisterManager(RegisterViewModel registerViewModel, CancellationToken ct)
     {
-        var result = await _mediator.Send(new RegisterManagerCommand(registerViewModel));
+        var result = await _mediator.Send(new RegisterManagerCommand(registerViewModel), ct);
 
         if (!result.IsSuccess)
         {
@@ -90,9 +90,9 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
-        _mediator.Send(new LogoutCommand());
+        await _mediator.Send(new LogoutCommand());
         return RedirectToAction("Index", "Home");
     }
 

@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-const CartPageComponent = ({ cartItems, totalPrice, onRemoveFromCart }) => {
+const CartPageComponent = ({cartItems, totalPrice, onRemoveFromCart}) => {
     return (
         <div className="container-fluid">
             <div className="row">
@@ -20,52 +20,53 @@ const CartPageComponent = ({ cartItems, totalPrice, onRemoveFromCart }) => {
                         <div className="table-responsive">
                             <table className="table align-middle table-hover">
                                 <thead className="table-grey">
-                                    <tr>
-                                        <th>Картинка</th>
-                                        <th>Продукт</th>
-                                        <th>Стоимость</th>
-                                        <th>Кол-во</th>
-                                        <th></th>
-                                    </tr>
+                                <tr>
+                                    <th>Картинка</th>
+                                    <th>Продукт</th>
+                                    <th>Стоимость</th>
+                                    <th>Кол-во</th>
+                                    <th></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {cartItems.length > 0 ? (
-                                        cartItems.map(item => (
-                                            <tr key={item.productId} className="cart-tr-middle-text">
-                                                <td className="product-img-td">
-                                                    <a href={`/Product/Details/${item.productId}`} className="cart-a-hover">
-                                                        <img src={item.imageUrl} alt={item.name} />
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href={`/Product/Details/${item.productId}`} className="cart-content-title">{item.name}</a>
-                                                </td>
-                                                <td>{item.price} ₽</td>
-                                                <td>{item.quantity}</td>
-                                                <td>
-                                                    <button
-                                                        className="remove-from-cart-button"
-                                                        onClick={() => {
-                                                            
-                                                            onRemoveFromCart(item.productId);
-                                                        }}>
-                                                        <i className="fa-solid fa-trash-can"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    ) : (
-                                        <tr>
-                                            <td colSpan="5" className="text-center">Корзина пуста</td>
+                                {cartItems.length > 0 ? (
+                                    cartItems.map(item => (
+                                        <tr key={item.productId} className="cart-tr-middle-text">
+                                            <td className="product-img-td">
+                                                <a href={`/Product/Details/${item.productId}`} className="cart-a-hover">
+                                                    <img src={item.imageUrl} alt={item.name}/>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href={`/Product/Details/${item.productId}`}
+                                                   className="cart-content-title">{item.name}</a>
+                                            </td>
+                                            <td>{item.price} ₽</td>
+                                            <td>{item.quantity}</td>
+                                            <td>
+                                                <button
+                                                    className="remove-from-cart-button"
+                                                    onClick={() => {
+
+                                                        onRemoveFromCart(item.productId);
+                                                    }}>
+                                                    <i className="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </td>
                                         </tr>
-                                    )}
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5" className="text-center">Корзина пуста</td>
+                                    </tr>
+                                )}
                                 </tbody>
                                 <tfoot>
-                                    <tr>
-                                        <td colSpan="5" className="text-end">
-                                            <a href="/" className="btn btn-outline-warning">Продолжить покупки</a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td colSpan="5" className="text-end">
+                                        <a href="/" className="btn btn-outline-warning">Продолжить покупки</a>
+                                    </td>
+                                </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -83,15 +84,16 @@ const CartPageComponent = ({ cartItems, totalPrice, onRemoveFromCart }) => {
 
                         <div className="d-flex justify-content-between my-3 border-bottom">
                             <h6>Доставка</h6>
-                           
+
                         </div>
 
-                        <button className="btn btn-link px-0 btn-coupon" data-bs-toggle="collapse" data-bs-target="#collapseCoupon">
+                        <button className="btn btn-link px-0 btn-coupon" data-bs-toggle="collapse"
+                                data-bs-target="#collapseCoupon">
                             Есть купон?
                         </button>
 
                         <div className="input-group collapse" id="collapseCoupon">
-                            <input type="text" className="form-control" placeholder="Coupon Code" />
+                            <input type="text" className="form-control" placeholder="Coupon Code"/>
                             <button className="btn btn-outline-warning">
                                 <i className="fa-regular fa-circle-check"></i>
                             </button>

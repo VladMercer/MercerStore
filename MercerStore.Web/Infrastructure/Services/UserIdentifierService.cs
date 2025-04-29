@@ -1,7 +1,7 @@
-﻿using MercerStore.Web.Application.Interfaces;
+﻿using MercerStore.Web.Application.Interfaces.Services;
 using MercerStore.Web.Application.Models.Users;
 using MercerStore.Web.Infrastructure.Data;
-using MercerStore.Web.Infrastructure.Extentions;
+using MercerStore.Web.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace MercerStore.Web.Infrastructure.Services;
@@ -29,26 +29,32 @@ public class UserIdentifierService : IUserIdentifierService
         return user?.GetUserRoles();
     }
 
-    public List<string> GetUserRoles(string userId)
+    public async Task<IList<string>> GetUserRoles(string userId, CancellationToken ct)
     {
-        var roles = _context.UserRoles
+        var roles = await _context.UserRoles
             .AsNoTracking()
             .Include(ur => ur.Role)
             .Where(ur => ur.UserId == userId)
             .Select(ur => ur.Role.Name)
-            .ToList();
+            .ToListAsync(ct);
         return roles;
     }
 
-    public async Task AddUserToRoleAsync(string userId, List<string> roleNames)
+    public async Task AddUserToRoleAsync(string userId, IList<string> roleNames, CancellationToken ct)
     {
         foreach (var roleName in roleNames)
         {
-            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName);
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName, ct);
 
             var userRole = new AppUserRole { UserId = userId, RoleId = role.Id };
-            await _context.Set<AppUserRole>().AddAsync(userRole);
-            await _context.SaveChangesAsync();
+            await _context.Set<AppUserRole>().AddAsync(userRole, ct);
+            await _context.SaveChangesAsync(ct);
         }
+    }
+
+    public string? GetCurrentUserTimeZone()
+    {
+        var user = _httpContextAccessor.HttpContext?.User;
+        return user?.GetUserTimeZone() ?? "UTC";
     }
 }

@@ -1,22 +1,22 @@
 ﻿using MediatR;
 using MercerStore.Web.Application.Interfaces.Services;
 
-namespace MercerStore.Web.Application.Handlers.Heartbeat.Commands
+namespace MercerStore.Web.Application.Handlers.Heartbeat.Commands;
+
+public record UpdateActivityCommand : IRequest<Unit>;
+
+public class HeartbeatHandler : IRequestHandler<UpdateActivityCommand, Unit>
 {
-    public record UpdateActivityCommand() : IRequest<Unit>;
-    public class HeartbeatHandler : IRequestHandler<UpdateActivityCommand, Unit>
+    private readonly IUserActivityService _userActivityService;
+
+    public HeartbeatHandler(IUserActivityService userActivityService)
     {
-        private readonly IUserActivityService _userActivityService;
+        _userActivityService = userActivityService;
+    }
 
-        public HeartbeatHandler(IUserActivityService userActivityService)
-        {
-            _userActivityService = userActivityService;
-        }
-
-        public async Task<Unit> Handle(UpdateActivityCommand request, CancellationToken cancellationToken)
-        {
-            await _userActivityService.UpdateUserActivity();
-            return Unit.Value;
-        }
+    public async Task<Unit> Handle(UpdateActivityCommand request, CancellationToken ct)
+    {
+        await _userActivityService.UpdateUserActivity(ct);
+        return Unit.Value;
     }
 }

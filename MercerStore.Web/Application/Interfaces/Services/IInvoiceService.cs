@@ -1,23 +1,20 @@
-﻿using MercerStore.Web.Application.Dtos.InvoiceDto;
-using MercerStore.Web.Application.Dtos.ResultDto;
-using MercerStore.Web.Infrastructure.Data.Enum.Invoice;
-using MercerStore.Web.Infrastructure.Data.Enum;
+﻿using MercerStore.Web.Application.Dtos.Invoice;
+using MercerStore.Web.Application.Dtos.Result;
+using MercerStore.Web.Application.Models.Invoices;
 using MercerStore.Web.Application.Requests.Invoices;
 using MercerStore.Web.Areas.Admin.ViewModels.Invoices;
 using MercerStore.Web.Infrastructure.Helpers;
-using MercerStore.Web.Application.Models.Invoice;
 
-namespace MercerStore.Web.Application.Interfaces.Services
+namespace MercerStore.Web.Application.Interfaces.Services;
+
+public interface IInvoiceService
 {
-    public interface IInvoiceService
-    {
-        Task<PaginatedResultDto<InvoiceDto>> GetFilteredInvoicesWithoutCache(InvoiceFilterRequest request);
-        Task<CreateInvoiceViewModel> GetCreateInvoiceViewModel(int supplierId, string managerId);
-        Task<Result<Invoice>> AddInvoiceItem(CreateInvoiceViewModel createInvoiceViewModel);
-        Task<Result<Invoice>> CloseInvoice(int invoiceId, string notes);
-        Task<UpdateInvoiceViewModel> GetUpdateInvoiceViewModel(int invoiceId);
-        Task<Invoice> UpdateInvoice(UpdateInvoiceViewModel updateInvoiceViewModel);
+    Task<PaginatedResultDto<InvoiceDto>> GetFilteredInvoicesWithoutCache(InvoiceFilterRequest request,
+        CancellationToken ct);
 
-
-    }
+    Task<CreateInvoiceViewModel> GetCreateInvoiceViewModel(int supplierId, string managerId, CancellationToken ct);
+    Task<Result<Invoice>> AddInvoiceItem(CreateInvoiceViewModel createInvoiceViewModel, CancellationToken ct);
+    Task<Result<Invoice>> CloseInvoice(int invoiceId, string notes, CancellationToken ct);
+    Task<UpdateInvoiceViewModel> GetUpdateInvoiceViewModel(int invoiceId, CancellationToken ct);
+    Task<Invoice> UpdateInvoice(UpdateInvoiceViewModel updateInvoiceViewModel, CancellationToken ct);
 }
